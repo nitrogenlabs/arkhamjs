@@ -118,3 +118,109 @@ export default class AppView extends Component {
 
 export default AppActions;
 ```
+
+### API
+#### `on(eventType, data)`
+
+Adds an event listener. It is called any time an action is dispatched to Flux, and some part of the state tree may 
+potentially have changed. You may then call getStore() to read the current state tree inside the callback.
+
+#### Arguments
+
+* [`eventType`] \(*String*): Event to subscribe for store updates.
+* [`listener`] \(*Function*): The callback to be invoked any time an action has been dispatched.
+
+#### `off()`
+
+Removes the event listener.
+
+* [`eventType`] \(*String*): Event to unsubscribe.
+* [`listener`] \(*Function*): The callback associated with the subscribed event.
+
+#### `dispatch(action)`
+
+Dispatches an Action to all stores
+
+* [`action`] \(*Object*): An action object. The only required property is *type* which will indicate what is called in
+the stores, all other properties will be sent to the store within the *data* object.
+
+#### `getStore(name)`
+
+Get the state tree. If only a particular store is needed, it can be specified.
+
+* [`name`] \(*String*): (optional) A store name.
+
+#### `getClass(name)`
+
+Get the store class object.
+
+* [`name`] \(*String*): Name of the store class. 
+
+#### `registerStore(Class)`
+
+Registers the store with Flux.
+
+* [`Class`] \(*Class*): The store class.
+
+#####Returns
+
+A new object from the class. This is usually exported at the end of the store class.
+
+#### `deregisterStore(name)`
+
+Unregisters the store with Flux.
+
+* [`name`] \(*String*): Name of store to remove from Flux.
+
+#### `getSessionData(key)`
+
+Get an object from sessionStorage.
+
+* [`key`] \(*String*): Key of object to retrieve.
+
+#####Returns
+
+An Immutable object or a string.
+
+#### `setSessionData(key, value)`
+
+Save an object to sessionStorage.
+
+* [`key`] \(*String*): Key to reference object.
+* [`value`] \(*String|Object|Immutable*): A string or object to save. Immutable objects will be converted to JSON. All 
+objects will converted to a string before saving.
+
+#### `delSessionData(key)`
+
+Remove an object from sessionStorage.
+
+* [`key`] \(*String*): Key of object to delete.
+
+#### `getLocalData(key)`
+
+Get an object from localStorage.
+
+* [`key`] \(*String*): Key of object to retrieve.
+
+#####Returns
+
+An Immutable object or a string.
+
+#### `setLocalData(key, value)`
+
+Save an object to localStorage.
+
+* [`key`] \(*String*): Key to reference object.
+* [`value`] \(*String|Object|Immutable*): A string or object to save. Immutable objects will be converted to JSON. All 
+objects will converted to a string before saving.
+
+#### `delLocalData(key)`
+
+Remove an object from localStorage.
+
+* [`key`] \(*String*): Key of the object to remove.
+
+#### `enableDebugger()`
+
+Turn on the console debugger to display each action call and store changes.
+

@@ -11,14 +11,14 @@
   "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
   "repository": {
     "type": "git",
-    "url": "http://github.com/nitrog7/nl-flux"
+    "url": "http://github.com/nitrogenlabs/nl-flux"
   },
-  "homepage": "https://github.com/nitrog7/nl-flux",
+  "homepage": "https://github.com/nitrogenlabs/nl-flux",
   "bugs": {
-    "url": "https://github.com/nitrog7/nl-flux/issues"
+    "url": "https://github.com/nitrogenlabs/nl-flux/issues"
   },
   "engines": {
-    "node": ">5.0.0",
+    "node": ">6.0.0",
     "npm": ">3.3.6"
   },
   "scripts": {

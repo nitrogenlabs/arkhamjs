@@ -30,7 +30,7 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * Dispatches an Action to all stores
+   * Dispatches an action to all stores
    *
    * @param {...Objects} actions to dispatch to all the stores
    */
