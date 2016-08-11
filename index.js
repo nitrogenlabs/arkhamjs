@@ -9,5 +9,5 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-exports.Dispatcher = _interopRequireDefault(require('./lib/Dispatcher'))['default'];
+exports.Dispatcher = _interopRequireDefault(require('./lib/Flux'))['default'];
 exports.Store = _interopRequireDefault(require('./lib/Store'))['default'];

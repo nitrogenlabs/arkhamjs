@@ -15,7 +15,7 @@ Then with a module bundler like [webpack](https://webpack.github.io/) that suppo
 
 ```js
 // Using an ES6 transpiler
-import { Flux, Store } from 'nl-flux';
+import {Flux, Store} from 'nl-flux';
 
 // not using an ES6 transpiler
 var Flux = require('nl-flux').Flux;
