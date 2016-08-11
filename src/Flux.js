@@ -52,7 +52,7 @@ class Flux extends EventEmitter {
       this._storeClasses.map(store => {
         const name = store.name;
         const state = this._store.get(name) || Immutable.fromJS(store.initialState()) || Map();
-        this._store = this._store.set(name, store.onAction(type, data, state));
+        this._store = this._store.set(name, store.onAction(type, data, state) || oldState);
       });
 
       if(!this._store.equals(oldState)) {
@@ -63,9 +63,9 @@ class Flux extends EventEmitter {
           console.log('%c New State: ', 'color: #00d484', this._store.toJS());
           console.groupEnd();
         }
-
-        this.emit(type, data);
       }
+
+      this.emit(type, data);
     });
   }
 
