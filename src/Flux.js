@@ -53,7 +53,7 @@ class Flux extends EventEmitter {
         const name = storeClass.name;
         const state = this._store.get(name) || Immutable.fromJS(storeClass.initialState()) || Map();
         this._store = this._store.set(name, storeClass.onAction(type, data, state) || state);
-        return storeClass.setState(this._store);
+        return storeClass.setState(this._store.get(name));
       });
 
       if(!this._store.equals(oldState)) {

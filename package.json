@@ -1,6 +1,6 @@
 {
   "name": "nl-flux",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "An ES6 Flux library for ReactJS",
   "license": "MIT",
   "main": "index.js",
