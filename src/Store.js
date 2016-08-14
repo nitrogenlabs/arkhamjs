@@ -1,4 +1,4 @@
-import Immutable from 'immutable';
+import {Map} from 'immutable';
 
 /**
  * Copyright (c) 2016, Nitrogen Labs, Inc.
@@ -13,18 +13,23 @@ export default class Store {
    * @this {Store}
    */
   constructor() {
+    this.state = Map();
   }
 
+  /**
+   * Initial state.
+   *
+   */
   initialState() {
-    return Immutable.Map();
+    return Map();
   }
 
   /**
    * Action listener. It should return an altered state depending on the event dispatched.
    *
    * @param {String} type Dispatched event
-   * @param {String} data Data payload associated with the called action
-   * @param {String} state The current state
+   * @param {Object} data Data payload associated with the called action
+   * @param {Immutable} state The current state
    * @return {String}
    */
   onAction(type, data, state) {
@@ -37,5 +42,14 @@ export default class Store {
    */
   get name() {
     return this.constructor.name.toLowerCase();
+  }
+
+  /**
+   * Set the state after each dispatch.
+   *
+   * @param {Immutable} state The current state
+   */
+  setState(state) {
+    this.state = state;
   }
 }

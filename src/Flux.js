@@ -49,10 +49,11 @@ class Flux extends EventEmitter {
       const oldState = Map(this._store);
 
       // When an action comes in, it must be completely handled by all stores
-      this._storeClasses.map(store => {
-        const name = store.name;
-        const state = this._store.get(name) || Immutable.fromJS(store.initialState()) || Map();
-        this._store = this._store.set(name, store.onAction(type, data, state) || state);
+      this._storeClasses.map(storeClass => {
+        const name = storeClass.name;
+        const state = this._store.get(name) || Immutable.fromJS(storeClass.initialState()) || Map();
+        this._store = this._store.set(name, storeClass.onAction(type, data, state) || state);
+        return storeClass.setState(this._store);
       });
 
       if(!this._store.equals(oldState)) {
@@ -146,7 +147,7 @@ class Flux extends EventEmitter {
    */
   setSessionData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
-      value = Immutable.toJS();
+      value = value.toJS();
     }
 
     sessionStorage.setItem(key, JSON.stringify(value));
@@ -179,7 +180,7 @@ class Flux extends EventEmitter {
    */
   setLocalData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
-      value = Immutable.toJS();
+      value = value.toJS();
     }
 
     localStorage.setItem(key, JSON.stringify(value));
