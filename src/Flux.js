@@ -56,8 +56,9 @@ class Flux extends EventEmitter {
 
       if(this.debug) {
         const actionObj = Immutable.fromJS(a).toJS();
+        const changed = this._store.equals(oldState) ? '' : '(Unchanged)';
 
-        console.group(`%c FLUX ACTION: ${type}`, 'font-weight:700');
+        console.group(`%c FLUX ACTION: ${type} ${changed}`, 'font-weight:700');
         console.log('%c Action: ', 'color: #00C4FF', actionObj);
         console.log('%c Last State: ', 'color: #959595', oldState.toJS());
         console.log('%c New State: ', 'color: #00d484', this._store.toJS());
