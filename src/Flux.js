@@ -13,13 +13,11 @@ class Flux extends EventEmitter {
    *
    * @constructor
    * @this {Flux}
-   * @param {object} options  Over-rides for the default set of options
    */
-  constructor(options = {}) {
+  constructor() {
     super();
-    this.options = options;
 
-    // Create a hash of all the stores - used for registration / deregistration
+    // Create a hash of all the stores - used for registration / de-registration
     this._storeClasses = Map();
     this._store = Map();
     this.debug = false;
@@ -46,7 +44,7 @@ class Flux extends EventEmitter {
       }
 
       const {type, ...data} = a;
-      const oldState = Map(this._store);
+      const oldState = this._store;
 
       // When an action comes in, it must be completely handled by all stores
       this._storeClasses.map(storeClass => {
@@ -56,14 +54,14 @@ class Flux extends EventEmitter {
         return storeClass.setState(this._store.get(name));
       });
 
-      if(!this._store.equals(oldState)) {
-        if(this.debug) {
-          console.group(`%c FLUX ACTION: ${type}`, 'font-weight:700');
-          console.log('%c Action: ', 'color: #00C4FF', a);
-          console.log('%c Last State: ', 'color: #959595', oldState.toJS());
-          console.log('%c New State: ', 'color: #00d484', this._store.toJS());
-          console.groupEnd();
-        }
+      if(this.debug) {
+        const actionObj = Immutable.fromJS(a).toJS();
+
+        console.group(`%c FLUX ACTION: ${type}`, 'font-weight:700');
+        console.log('%c Action: ', 'color: #00C4FF', actionObj);
+        console.log('%c Last State: ', 'color: #959595', oldState.toJS());
+        console.log('%c New State: ', 'color: #00d484', this._store.toJS());
+        console.groupEnd();
       }
 
       this.emit(type, data);
@@ -87,7 +85,10 @@ class Flux extends EventEmitter {
   getStore(name = '') {
     let store;
 
-    if(name !== '') {
+    if(Array.isArray(name)) {
+      store = this._store.getIn(name);
+    }
+    else if(name !== '') {
       store = this._store.get(name);
     } else {
       store = this._store;
@@ -142,8 +143,8 @@ class Flux extends EventEmitter {
   /**
    * Saves data to the sessionStore
    *
-   * @param {string} key The name of the store
-   * @param {string|object|array|Immutable} value The name of the store
+   * @param {string} key Key to store data
+   * @param {string|object|array|Immutable} value Data to store.
    */
   setSessionData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
@@ -156,7 +157,7 @@ class Flux extends EventEmitter {
   /**
    * Gets data from
    *
-   * @param {string} name The name of the store
+   * @param {string} key The key for data
    * @returns {Immutable} the data object associated with the key
    */
   getSessionData(key) {
@@ -175,8 +176,8 @@ class Flux extends EventEmitter {
   /**
    * Saves data to localStore
    *
-   * @param {string} name The name of the store
-   * @param {string|object|array|Immutable} value The name of the store
+   * @param {string} key Key to store data
+   * @param {string|object|array|Immutable} value Data to store.
    */
   setLocalData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
@@ -189,7 +190,7 @@ class Flux extends EventEmitter {
   /**
    * Gets a store that is registered with Flux
    *
-   * @param {string} name The name of the store
+   * @param {string} key The key for data
    * @returns {Immutable} the data object associated with the key
    */
   getLocalData(key) {
