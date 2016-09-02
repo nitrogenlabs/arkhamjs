@@ -56,7 +56,7 @@ class Flux extends EventEmitter {
 
       if(this.debug) {
         const actionObj = Immutable.fromJS(a).toJS();
-        const hasChanged = this._store.equals(oldState);
+        const hasChanged = !this._store.equals(oldState);
         const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
         const updatedColor = hasChanged ? '#00d484' : '#959595';
 
@@ -85,19 +85,19 @@ class Flux extends EventEmitter {
    *   objects.
    * @returns {Map} the state object
    */
-  getStore(name = '') {
+  getStore(name = '', defaultValue) {
     let store;
 
     if(Array.isArray(name)) {
-      store = this._store.getIn(name);
+      store = this._store.getIn(name, defaultValue);
     }
     else if(name !== '') {
-      store = this._store.get(name);
+      store = this._store.get(name, defaultValue);
     } else {
-      store = this._store;
+      store = this._store || Map();
     }
 
-    return store || Map();
+    return store;
   }
 
   /**
