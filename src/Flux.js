@@ -14,13 +14,17 @@ class Flux extends EventEmitter {
    * @constructor
    * @this {Flux}
    */
-  constructor() {
+  constructor(options = {}) {
     super();
+
+    // Options
+    options = Immutable.fromJS(options);
 
     // Create a hash of all the stores - used for registration / de-registration
     this._storeClasses = Map();
     this._store = Map();
-    this.debug = false;
+    this._debug = !!options.get('debug', false);
+    this._useCache = !!options.get('cache', true);
   }
 
   off(event, listener) {
@@ -51,10 +55,16 @@ class Flux extends EventEmitter {
         const name = storeClass.name;
         const state = this._store.get(name) || Immutable.fromJS(storeClass.initialState()) || Map();
         this._store = this._store.set(name, storeClass.onAction(type, data, state) || state);
+
+        // Save cache in session storage
+        if(this._useCache) {
+          this.setSessionData('nlFlux', this._store);
+        }
+
         return storeClass.setState(this._store.get(name));
       });
 
-      if(this.debug) {
+      if(this._debug) {
         const actionObj = Immutable.fromJS(a).toJS();
         const hasChanged = !this._store.equals(oldState);
         const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
@@ -69,13 +79,6 @@ class Flux extends EventEmitter {
 
       this.emit(type, data);
     });
-  }
-
-  /**
-   * Enables the console debugger
-   */
-  enableDebugger() {
-    this.debug = true;
   }
 
   /**
@@ -113,9 +116,19 @@ class Flux extends EventEmitter {
       const store = new StoreClass();
       this._storeClasses = this._storeClasses.set(name, store);
 
+      // Get cached data
+      const data = this.getSessionData('nlFlux');
+      const cache = this._useCache && Map.isMap(data) ? data : Map();
+
       // Get default values
-      const state = this._store.get(name) || Immutable.fromJS(store.initialState()) || Map();
+      const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(store.initialState()) || Map();
       this._store = this._store.set(name, state);
+
+
+      // Save cache in session storage
+      if(this._useCache) {
+        this.setSessionData('nlFlux', this._store);
+      }
     }
 
     return this._storeClasses.get(name);
@@ -208,7 +221,14 @@ class Flux extends EventEmitter {
   delLocalData(key) {
     localStorage.removeItem(key);
   }
+
+  /**
+   * Enables the console debugger
+   */
+  enableDebugger() {
+    this._debug = true;
+  }
 }
 
-const flux = new Flux();
+const flux = new Flux(window.nlFlux);
 export default flux;
