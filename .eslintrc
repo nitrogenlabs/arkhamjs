@@ -152,7 +152,7 @@
       2,
       "as-needed"
     ],
-    "babel/no-await-in-loop": 1,
+    "babel/no-await-in-loop": 0,
     "react/display-name": 0,
     "react/jsx-boolean-value": 2,
     "react/jsx-no-undef": 2,

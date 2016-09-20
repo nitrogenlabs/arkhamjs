@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import {AsyncStorage} from 'react-native';
 import Immutable, {Map} from 'immutable';
 
 /**
@@ -167,7 +168,19 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    sessionStorage.setItem(key, JSON.stringify(value));
+    value = JSON.stringify(value);
+
+    if(window && window.sessionStorage) {
+      window.sessionStorage.setItem(key, value);
+    } else {
+      return async() => {
+        try {
+          await AsyncStorage.setItem(key, value);
+        }
+        catch(error) {
+        }
+      }
+    }
   }
 
   /**
@@ -177,7 +190,20 @@ class Flux extends EventEmitter {
    * @returns {Immutable} the data object associated with the key
    */
   getSessionData(key) {
-    return Immutable.fromJS(JSON.parse(sessionStorage.getItem(key) || '""'));
+    if(window && window.sessionStorage) {
+      return Immutable.fromJS(JSON.parse(window.sessionStorage.getItem(key) || '""'));
+    } else {
+      return async() => {
+        return async() => {
+          try {
+            const value = await AsyncStorage.getItem(key);
+            return Immutable.fromJS(JSON.parse(value || '""'));
+          }
+          catch(error) {
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -186,7 +212,11 @@ class Flux extends EventEmitter {
    * @param {string} key Key associated with the data to remove
    */
   delSessionData(key) {
-    sessionStorage.removeItem(key);
+    if(window && window.sessionStorage) {
+      window.sessionStorage.removeItem(key);
+    } else {
+
+    }
   }
 
   /**
@@ -200,7 +230,19 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    localStorage.setItem(key, JSON.stringify(value));
+    value = JSON.stringify(value);
+
+    if(window && window.localStorage) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } else {
+      return async() => {
+        try {
+          await AsyncStorage.setItem(key, value);
+        }
+        catch(error) {
+        }
+      }
+    }
   }
 
   /**
@@ -210,7 +252,17 @@ class Flux extends EventEmitter {
    * @returns {Immutable} the data object associated with the key
    */
   getLocalData(key) {
-    return Immutable.fromJS(JSON.parse(localStorage.getItem(key) || '""'));
+    if(window && window.localStorage) {
+      return Immutable.fromJS(JSON.parse(window.localStorage.getItem(key) || '""'));
+    } else {
+      return async() => {
+        try {
+          const value = await AsyncStorage.getItem(key);
+          return Immutable.fromJS(JSON.parse(value || '""'));
+        }
+        catch(error) {}
+      }
+    }
   }
 
   /**
@@ -219,7 +271,9 @@ class Flux extends EventEmitter {
    * @param {string} key Key associated with the data to remove
    */
   delLocalData(key) {
-    localStorage.removeItem(key);
+    if(window && window.localStorage) {
+      window.localStorage.removeItem(key);
+    }
   }
 
   /**
