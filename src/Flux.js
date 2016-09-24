@@ -58,7 +58,7 @@ class Flux extends EventEmitter {
 
         // Save cache in session storage
         if(this._useCache) {
-          this.setSessionData('nlFlux', this._store);
+          Flux.setSessionData('nlFlux', this._store);
         }
 
         return storeClass.setState(this._store.get(name));
@@ -125,7 +125,7 @@ class Flux extends EventEmitter {
       this._storeClasses = this._storeClasses.set(name, store);
 
       // Get cached data
-      const data = this.getSessionData('nlFlux');
+      const data = Flux.getSessionData('nlFlux');
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
@@ -135,7 +135,7 @@ class Flux extends EventEmitter {
 
       // Save cache in session storage
       if(this._useCache) {
-        this.setSessionData('nlFlux', this._store);
+        Flux.setSessionData('nlFlux', this._store);
       }
     }
 
