@@ -58,7 +58,7 @@ class Flux extends EventEmitter {
 
         // Save cache in session storage
         if(this._useCache) {
-          Flux.setSessionData('nlFlux', this._store);
+          this.setSessionData('nlFlux', this._store);
         }
 
         return storeClass.setState(this._store.get(name));
@@ -125,7 +125,7 @@ class Flux extends EventEmitter {
       this._storeClasses = this._storeClasses.set(name, store);
 
       // Get cached data
-      const data = Flux.getSessionData('nlFlux');
+      const data = this.getSessionData('nlFlux');
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
@@ -135,7 +135,7 @@ class Flux extends EventEmitter {
 
       // Save cache in session storage
       if(this._useCache) {
-        Flux.setSessionData('nlFlux', this._store);
+        this.setSessionData('nlFlux', this._store);
       }
     }
 
@@ -170,7 +170,7 @@ class Flux extends EventEmitter {
    * @param {string} key Key to store data
    * @param {string|object|array|Immutable} value Data to store.
    */
-  static setSessionData(key, value) {
+  setSessionData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
       value = value.toJS();
     }
@@ -188,7 +188,7 @@ class Flux extends EventEmitter {
    * @param {string} key The key for data
    * @returns {Immutable} the data object associated with the key
    */
-  static getSessionData(key) {
+  getSessionData(key) {
     let value = '';
 
     if(window && window.sessionStorage) {
@@ -203,7 +203,7 @@ class Flux extends EventEmitter {
    *
    * @param {string} key Key associated with the data to remove
    */
-  static delSessionData(key) {
+  delSessionData(key) {
     if(window && window.sessionStorage) {
       window.sessionStorage.removeItem(key);
     }
@@ -215,7 +215,7 @@ class Flux extends EventEmitter {
    * @param {string} key Key to store data
    * @param {string|object|array|Immutable} value Data to store.
    */
-  static setLocalData(key, value) {
+  setLocalData(key, value) {
     if(Immutable.Iterable.isIterable(value)) {
       value = value.toJS();
     }
@@ -233,7 +233,7 @@ class Flux extends EventEmitter {
    * @param {string} key The key for data
    * @returns {Immutable} the data object associated with the key
    */
-  static getLocalData(key) {
+  getLocalData(key) {
     let value = '';
 
     if(window && window.localStorage) {
@@ -248,7 +248,7 @@ class Flux extends EventEmitter {
    *
    * @param {string} key Key associated with the data to remove
    */
-  static delLocalData(key) {
+  delLocalData(key) {
     if(window && window.localStorage) {
       window.localStorage.removeItem(key);
     }
