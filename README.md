@@ -3,6 +3,7 @@ NL Flux
 
 An ES6 Flux library that includes:
 - Flux
+- FluxNative
 - Store
 
 ### Installation
@@ -11,14 +12,26 @@ Using [npm](https://www.npmjs.com/):
 
     $ npm install nl-flux
 
+###Web App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
 ```js
-// Using an ES6 transpiler
+// Using an ES6 transpiler for web apps
 import {Flux, Store} from 'nl-flux';
 
 // not using an ES6 transpiler
 var Flux = require('nl-flux').Flux;
+var Store = require('nl-flux').Store;
+```
+
+###React Native Usage
+
+```js
+// Using an ES6 transpiler for React Native apps
+import {Flux as FluxNative, Store} from 'nl-flux';
+
+// not using an ES6 transpiler
+var Flux = require('nl-flux').FluxNative;
 var Store = require('nl-flux').Store;
 ```
 
@@ -101,8 +114,7 @@ export default class AppView extends Component {
   
   onAppTest() {
     // Gets the immutable store
-    const store = Flux.getStore();
-    const myTest = store.getIn(['app', 'test']);
+    const myTest = Flux.getStore(['app', 'test']);
     
     // Show the output in the console
     console.log('onAppTest::myTest', myTest);

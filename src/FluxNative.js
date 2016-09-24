@@ -1,12 +1,14 @@
 import EventEmitter from 'events';
+import {AsyncStorage} from 'react-native';
 import Immutable, {Map} from 'immutable';
+import Promise from 'bluebird';
 
 /**
  * Copyright (c) 2016, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
-class Flux extends EventEmitter {
+class FluxNative extends EventEmitter {
   /**
    * Create a new instance of Flux.  Note that the Flux object
    * is a Singleton pattern, so only one should ever exist.
@@ -49,6 +51,7 @@ class Flux extends EventEmitter {
 
       const {type, ...data} = a;
       const oldState = this._store;
+      let promises = [];
 
       // When an action comes in, it must be completely handled by all stores
       this._storeClasses.map(storeClass => {
@@ -58,7 +61,7 @@ class Flux extends EventEmitter {
 
         // Save cache in session storage
         if(this._useCache) {
-          this.setSessionData('nlFlux', this._store);
+          promises.push(FluxNative.setSessionData('nlFlux', this._store));
         }
 
         return storeClass.setState(this._store.get(name));
@@ -84,7 +87,9 @@ class Flux extends EventEmitter {
         }
       }
 
-      this.emit(type, data);
+      Promise.all(promises).then(() => {
+        this.emit(type, data);
+      });
     });
   }
 
@@ -93,7 +98,6 @@ class Flux extends EventEmitter {
    *
    * @param {string} [name] (optional) The name of the store for just that object, otherwise it will return all store
    *   objects.
-   * @param {string} [defaultValue] (optional) A default value to return if null.
    * @returns {Map} the state object
    */
   getStore(name = '', defaultValue) {
@@ -125,17 +129,17 @@ class Flux extends EventEmitter {
       this._storeClasses = this._storeClasses.set(name, store);
 
       // Get cached data
-      const data = this.getSessionData('nlFlux');
-      const cache = this._useCache && Map.isMap(data) ? data : Map();
-
-      // Get default values
-      const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(store.initialState()) || Map();
-      this._store = this._store.set(name, state);
-
-
-      // Save cache in session storage
       if(this._useCache) {
-        this.setSessionData('nlFlux', this._store);
+        FluxNative.getSessionData('nlFlux').then(data => {
+          const cache = Map.isMap(data) ? data : Map();
+
+          // Get default values
+          const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(store.initialState()) || Map();
+          this._store = this._store.set(name, state);
+
+          // Save cache in session storage
+          FluxNative.setSessionData('nlFlux', this._store);
+        });
       }
     }
 
@@ -177,9 +181,14 @@ class Flux extends EventEmitter {
 
     value = JSON.stringify(value);
 
-    if(window && window.sessionStorage) {
-      window.sessionStorage.setItem(key, value);
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.setItem(key, value).then(resolve);
+      }
+      catch(error) {
+        reject(error);
+      }
+    });
   }
 
   /**
@@ -189,13 +198,17 @@ class Flux extends EventEmitter {
    * @returns {Immutable} the data object associated with the key
    */
   static getSessionData(key) {
-    let value = '';
-
-    if(window && window.sessionStorage) {
-      value = JSON.parse(window.sessionStorage.getItem(key) || '""');
-    }
-
-    return Immutable.fromJS(value);
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.getItem(key)
+          .then(value => {
+            resolve(Immutable.fromJS(JSON.parse(value || '""')));
+          });
+      }
+      catch(error) {
+        reject(error);
+      }
+    });
   }
 
   /**
@@ -204,54 +217,14 @@ class Flux extends EventEmitter {
    * @param {string} key Key associated with the data to remove
    */
   static delSessionData(key) {
-    if(window && window.sessionStorage) {
-      window.sessionStorage.removeItem(key);
-    }
-  }
-
-  /**
-   * Saves data to localStore
-   *
-   * @param {string} key Key to store data
-   * @param {string|object|array|Immutable} value Data to store.
-   */
-  static setLocalData(key, value) {
-    if(Immutable.Iterable.isIterable(value)) {
-      value = value.toJS();
-    }
-
-    value = JSON.stringify(value);
-
-    if(window && window.localStorage) {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    }
-  }
-
-  /**
-   * Gets a store that is registered with Flux
-   *
-   * @param {string} key The key for data
-   * @returns {Immutable} the data object associated with the key
-   */
-  static getLocalData(key) {
-    let value = '';
-
-    if(window && window.localStorage) {
-      value = JSON.parse(window.localStorage.getItem(key) || '""');
-    }
-
-    return Immutable.fromJS(value);
-  }
-
-  /**
-   * Removes a key from localStorage
-   *
-   * @param {string} key Key associated with the data to remove
-   */
-  static delLocalData(key) {
-    if(window && window.localStorage) {
-      window.localStorage.removeItem(key);
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        AsyncStorage.removeItem(key).then(resolve);
+      }
+      catch(error) {
+        reject(error);
+      }
+    });
   }
 
   /**
@@ -262,5 +235,5 @@ class Flux extends EventEmitter {
   }
 }
 
-const flux = new Flux(window.nlFlux);
-export default flux;
+const fluxNative = new FluxNative(window.nlFlux);
+export default fluxNative;

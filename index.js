@@ -10,4 +10,5 @@ exports.__esModule = true;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 exports.Flux = _interopRequireDefault(require('./lib/Flux'))['default'];
+exports.FluxNative = _interopRequireDefault(require('./lib/FluxNative'))['default'];
 exports.Store = _interopRequireDefault(require('./lib/Store'))['default'];
