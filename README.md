@@ -3,7 +3,6 @@ NL Flux
 
 An ES6 Flux library that includes:
 - Flux
-- FluxNative
 - Store
 
 ### Installation
@@ -12,7 +11,7 @@ Using [npm](https://www.npmjs.com/):
 
     $ npm install nl-flux
 
-###Web App Usage
+###App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
 ```js
@@ -21,17 +20,6 @@ import {Flux, Store} from 'nl-flux';
 
 // not using an ES6 transpiler
 var Flux = require('nl-flux').Flux;
-var Store = require('nl-flux').Store;
-```
-
-###React Native Usage
-
-```js
-// Using an ES6 transpiler for React Native apps
-import {Flux as FluxNative, Store} from 'nl-flux';
-
-// not using an ES6 transpiler
-var Flux = require('nl-flux').FluxNative;
 var Store = require('nl-flux').Store;
 ```
 
