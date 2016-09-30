@@ -175,9 +175,8 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    value = JSON.stringify(value);
-
     if(window && window.sessionStorage) {
+      value = JSON.stringify(value);
       window.sessionStorage.setItem(key, value);
     }
   }
@@ -220,10 +219,9 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    value = JSON.stringify(value);
-
     if(window && window.localStorage) {
-      window.localStorage.setItem(key, JSON.stringify(value));
+      value = JSON.stringify(value);
+      window.localStorage.setItem(key, value);
     }
   }
 
