@@ -125,14 +125,12 @@ export default AppActions;
 Adds an event listener. It is called any time an action is dispatched to Flux, and some part of the state tree may 
 potentially have changed. You may then call getStore() to read the current state tree inside the callback.
 
-#### Arguments
-
 * [`eventType`] \(*String*): Event to subscribe for store updates.
 * [`listener`] \(*Function*): The callback to be invoked any time an action has been dispatched.
 
 #### `off()`
 
-Removes the event listener.
+Removes an event listener.
 
 * [`eventType`] \(*String*): Event to unsubscribe.
 * [`listener`] \(*Function*): The callback associated with the subscribed event.
@@ -144,15 +142,27 @@ Dispatches an Action to all stores
 * [`action`] \(*Object*): An action object. The only required property is *type* which will indicate what is called in
 the stores, all other properties will be sent to the store within the *data* object.
 
-#### `getStore(name)`
+#### `getStore(name, default)`
 
 Get the state tree. If only a particular store is needed, it can be specified.
 
-* [`name`] \(*String*): (optional) A store name.
+* [`name`] \(*String*/*Array*): (optional) A store name. May also use an array to get a nested property value.
+* [`default`] \(*String*/*Immutable*): (optional) The default value if undefined. This may be a string or immutable 
+object (ie. Map, List, etc.).
+
+#####Returns
+
+An Immutable object or a string.
 
 #### `getClass(name)`
 
 Get the store class object.
+
+* [`name`] \(*String*): The name of the store class object to retrieve.
+
+#####Returns
+
+A store class object.
 
 * [`name`] \(*String*): Name of the store class. 
 
