@@ -1,4 +1,4 @@
-NL Flux
+ArkhamJS - Flux Framework
 =======================
 
 An ES6 Flux library that includes:
@@ -9,27 +9,27 @@ An ES6 Flux library that includes:
 
 Using [npm](https://www.npmjs.com/):
 
-    $ npm install nl-flux
+    $ npm install arkhamjs
 
 ###App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
 ```js
 // Using an ES6 transpiler for web apps
-import {Flux, Store} from 'nl-flux';
+import {Flux, Store} from 'arkhamjs';
 
 // not using an ES6 transpiler
-var Flux = require('nl-flux').Flux;
-var Store = require('nl-flux').Store;
+var Flux = require('arkhamjs').Flux;
+var Store = require('arkhamjs').Store;
 ```
 
 ### How to use
 
-A complete example can be found in the [nl-react-skeleton](https://github.com/nitrog7/nl-react-skeleton). Below is an example of an action and a store.
+A complete example can be found in the [arkhamjs-skeleton](https://github.com/nitrog7/arkhamjs-skeleton). Below is an example of an action and a store.
 
 **Store:**
 ```js
-import {Flux, Store} from 'nl-flux';
+import {Flux, Store} from 'arkhamjs';
 import {Map} from 'immutable';
 
 class App extends Store {
@@ -56,7 +56,7 @@ export default Flux.registerStore(App);
 
 **Action:**
 ```js
-import {Flux} from 'nl-flux';
+import {Flux} from 'arkhamjs';
 
 const AppActions = {
   test: (str) => {
@@ -102,7 +102,7 @@ export default class AppView extends Component {
   
   onAppTest() {
     // Gets the immutable store
-    const myTest = Flux.getStore(['app', 'test']);
+    const myTest = Flux.getStore(['app', 'test'], '');
     
     // Show the output in the console
     console.log('onAppTest::myTest', myTest);
