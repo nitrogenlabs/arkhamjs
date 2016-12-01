@@ -22,7 +22,8 @@ class Flux extends EventEmitter {
 
     // Create a hash of all the stores - used for registration / de-registration
     this._storeClasses = Map();
-    this._store = this.getSessionData('nlFlux') || Map();
+    this._window = window || {};
+    this._store = this.getSessionData('arkhamjs') || Map();
     this._debug = !!options.get('debug', false);
     this._useCache = !!options.get('cache', true);
   }
@@ -61,7 +62,7 @@ class Flux extends EventEmitter {
 
         // Save cache in session storage
         if(this._useCache) {
-          this.setSessionData('ArkhamJS', this._store);
+          this.setSessionData('arkhamjs', this._store);
         }
 
         return storeClass.setState(this._store.get(name));
@@ -117,6 +118,7 @@ class Flux extends EventEmitter {
    * Registers a new Store with Flux
    *
    * @param {Class} StoreClass A unique name for the Store
+   * @returns {Object} the class object
    */
   registerStore(StoreClass) {
     const name = StoreClass.name.toLowerCase();
@@ -127,7 +129,7 @@ class Flux extends EventEmitter {
       this._storeClasses = this._storeClasses.set(name, store);
 
       // Get cached data
-      const data = this.getSessionData('nlFlux');
+      const data = this.getSessionData('arkhamjs');
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
@@ -137,7 +139,7 @@ class Flux extends EventEmitter {
 
       // Save cache in session storage
       if(this._useCache) {
-        this.setSessionData('nlFlux', this._store);
+        this.setSessionData('arkhamjs', this._store);
       }
     }
 
@@ -151,7 +153,7 @@ class Flux extends EventEmitter {
    */
   deregisterStore(name = '') {
     name = name.toLowerCase();
-    this._storeClasses.delete(name);
+    this._storeClasses = this._storeClasses.delete(name);
     this._store = this._store.delete(name);
   }
 
@@ -177,9 +179,9 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    if(window && window.sessionStorage) {
+    if(this._window && this._window.sessionStorage) {
       value = JSON.stringify(value);
-      window.sessionStorage.setItem(key, value);
+      this._window.sessionStorage.setItem(key, value);
     }
   }
 
@@ -192,8 +194,8 @@ class Flux extends EventEmitter {
   getSessionData(key) {
     let value = '';
 
-    if(window && window.sessionStorage) {
-      value = JSON.parse(window.sessionStorage.getItem(key) || '""');
+    if(this._window && this._window.sessionStorage) {
+      value = JSON.parse(this._window.sessionStorage.getItem(key) || '""');
     }
 
     return Immutable.fromJS(value);
@@ -205,8 +207,8 @@ class Flux extends EventEmitter {
    * @param {string} key Key associated with the data to remove
    */
   delSessionData(key) {
-    if(window && window.sessionStorage) {
-      window.sessionStorage.removeItem(key);
+    if(this._window && this._window.sessionStorage) {
+      this._window.sessionStorage.removeItem(key);
     }
   }
 
@@ -221,9 +223,9 @@ class Flux extends EventEmitter {
       value = value.toJS();
     }
 
-    if(window && window.localStorage) {
+    if(this._window && this._window.localStorage) {
       value = JSON.stringify(value);
-      window.localStorage.setItem(key, value);
+      this._window.localStorage.setItem(key, value);
     }
   }
 
@@ -236,8 +238,8 @@ class Flux extends EventEmitter {
   getLocalData(key) {
     let value = '';
 
-    if(window && window.localStorage) {
-      value = JSON.parse(window.localStorage.getItem(key) || '""');
+    if(this._window && this._window.localStorage) {
+      value = JSON.parse(this._window.localStorage.getItem(key) || '""');
     }
 
     return Immutable.fromJS(value);
@@ -249,18 +251,20 @@ class Flux extends EventEmitter {
    * @param {string} key Key associated with the data to remove
    */
   delLocalData(key) {
-    if(window && window.localStorage) {
-      window.localStorage.removeItem(key);
+    if(this._window && this._window.localStorage) {
+      this._window.localStorage.removeItem(key);
     }
   }
 
   /**
    * Enables the console debugger
+   *
+   * @param {boolean} value Enable or disable the debugger. Default value: true.
    */
-  enableDebugger() {
-    this._debug = true;
+  enableDebugger(value = true) {
+    this._debug = value;
   }
 }
 
-const flux = new Flux(window.nlFlux);
+const flux = new Flux((window || {}).arkhamjs);
 export default flux;

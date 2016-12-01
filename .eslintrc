@@ -146,13 +146,13 @@
         "SwitchCase": 1
       }
     ],
-    "babel/generator-star-spacing": 1,
-    "babel/object-shorthand": 1,
-    "babel/arrow-parens": [
+    "generator-star-spacing": 1,
+    "object-shorthand": 1,
+    "arrow-parens": [
       2,
       "as-needed"
     ],
-    "babel/no-await-in-loop": 0,
+    "babel/no-await-in-loop": 1,
     "react/display-name": 0,
     "react/jsx-boolean-value": 2,
     "react/jsx-no-undef": 2,
@@ -165,7 +165,10 @@
     "react/no-unknown-property": 2,
     "react/prop-types": 2,
     "react/react-in-jsx-scope": 2,
-    "react/self-closing-comp": 2,
-    "react/wrap-multilines": 2
+    "react/self-closing-comp": ["error", {
+      "component": true,
+      "html": false
+    }],
+    "react/jsx-wrap-multilines": 2
   }
 }

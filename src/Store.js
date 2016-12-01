@@ -33,6 +33,10 @@ export default class Store {
    * @return {String}
    */
   onAction(type, data, state) {
+    switch(type) {
+      default:
+        return state;
+    }
   }
 
   /**
