@@ -1,11 +1,12 @@
 {
   "name": "arkhamjs",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "An ES6 Flux library for ReactJS",
   "license": "MIT",
   "main": "index.js",
   "keywords": [
     "nitrogenlabs",
+    "react",
     "flux",
     "arkhamjs"
   ],

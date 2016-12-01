@@ -41,13 +41,16 @@ class Flux extends EventEmitter {
       return;
     }
 
+    const list = Immutable.fromJS(actions);
+
     // Loop through actions
-    actions.map(a => {
-      if(typeof a.type !== 'string') {
+    return list.map(a => {
+      // Require a type
+      if(typeof a.get('type') !== 'string') {
         return;
       }
 
-      const {type, ...data} = a;
+      const {type, ...data} = a.toJS();
       const oldState = this._store;
 
       // When an action comes in, it must be completely handled by all stores
@@ -58,27 +61,26 @@ class Flux extends EventEmitter {
 
         // Save cache in session storage
         if(this._useCache) {
-          this.setSessionData('nlFlux', this._store);
+          this.setSessionData('ArkhamJS', this._store);
         }
 
         return storeClass.setState(this._store.get(name));
       });
 
       if(this._debug) {
-        const actionObj = Immutable.fromJS(a).toJS();
         const hasChanged = !this._store.equals(oldState);
         const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
         const updatedColor = hasChanged ? '#00d484' : '#959595';
 
         if(console.group) {
-          console.group(`%c FLUX ACTION: ${type}`, 'font-weight:700');
-          console.log('%c Action: ', 'color: #00C4FF', actionObj);
+          console.group(`%c FLUX DISPATCH: ${type}`, 'font-weight:700');
+          console.log('%c Action: ', 'color: #00C4FF', a.toJS());
           console.log('%c Last State: ', 'color: #959595', oldState.toJS());
           console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, this._store.toJS());
           console.groupEnd();
         } else {
-          console.log(`FLUX ACTION: ${type}`);
-          console.log(`Action: ${actionObj}`);
+          console.log(`FLUX DISPATCH: ${type}`);
+          console.log(`Action: ${a.toJS()}`);
           console.log('Last State: ', oldState.toJS());
           console.log(`${updatedLabel}: `, this._store.toJS());
         }

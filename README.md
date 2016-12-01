@@ -1,9 +1,15 @@
-ArkhamJS - Flux Framework
+ArkhamJS - Flux Framework for ReactJS
 =======================
 
 An ES6 Flux library that includes:
 - Flux
 - Store
+
+[![npm version](https://img.shields.io/npm/v/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
+[![npm downloads](https://img.shields.io/npm/dm/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
+[![Issues](http://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg)](https://github.com/nitrogenlabs/arkhamjs/issues)
+[![Gitter](https://img.shields.io/gitter/room/NitrgenLabs/arkhamjs.svg)](https://gitter.im/NitrogenLabs/arkhamjs)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 ### Installation
 
@@ -163,8 +169,6 @@ Get the store class object.
 #####Returns
 
 A store class object.
-
-* [`name`] \(*String*): Name of the store class. 
 
 #### `registerStore(Class)`
 
