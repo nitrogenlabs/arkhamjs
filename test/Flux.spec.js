@@ -18,7 +18,7 @@ describe('Flux', () => {
     onAction(type, data, state) {
       switch(type) {
         case 'TEST_EVENT':
-          return state.set('testAction', data.testVar);
+          return state.set('testAction', data.get('testVar'));
       }
     }
   }

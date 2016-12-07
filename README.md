@@ -49,7 +49,7 @@ class App extends Store {
   onAction(type, data, state) {
     switch(type) {
       case 'APP_TEST':
-        return state.set('test', data.demo);
+        return state.set('test', data.get('demo'));
       case 'APP_RESET':
         return Map(this.initialState());
       default:
@@ -77,7 +77,7 @@ export default AppActions;
 **Component:**
 ```js
 import React, {Component} from 'react';
-import {Flux} from '../flux';
+import {Flux} from 'arkhamjs';
 
 // Enable console debugger
 Flux.enableDebugger();
