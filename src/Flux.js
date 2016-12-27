@@ -45,7 +45,7 @@ class Flux extends EventEmitter {
     const list = Immutable.fromJS(actions);
 
     // Loop through actions
-    return list.map(a => {
+    list.forEach(a => {
       // Require a type
       if(typeof a.get('type') !== 'string') {
         return;
@@ -90,6 +90,8 @@ class Flux extends EventEmitter {
 
       this.emit(type, data);
     });
+
+    return list;
   }
 
   /**
