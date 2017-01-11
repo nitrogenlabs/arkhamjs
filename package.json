@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "1.1.15",
+  "version": "1.2.0",
   "description": "An ES6 Flux library for ReactJS",
   "license": "MIT",
   "main": "index.js",
@@ -25,25 +25,27 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel-core/register -r jsdom-global/register",
-    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
+    "prepublish": "NODE_ENV=production node_modules/babel-cli/bin/babel.js src --out-dir lib"
   },
   "dependencies": {
     "immutable": "^3.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.2",
+    "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-remove-comments": "^2.0.0",
+    "babel-preset-babili": "0.0.9",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
     "chai": "^3.5.0",
     "eslint-plugin-babel": "^4.0.0",
-    "eslint-plugin-react": "^6.7.1",
-    "jsdom": "^9.8.3",
-    "jsdom-global": "^2.1.0",
+    "eslint-plugin-react": "^6.9.0",
+    "jsdom": "^9.9.1",
+    "jsdom-global": "^2.1.1",
     "mocha": "^3.2.0",
     "mocha-eslint": "^3.0.1",
-    "react": "^15.4.1",
-    "sinon": "^1.17.6"
+    "react": "^15.4.2",
+    "sinon": "^1.17.7"
   }
 }

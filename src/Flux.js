@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import Immutable, {Map} from 'immutable';
 
 /**
- * Copyright (c) 2016, Nitrogen Labs, Inc.
+ * Copyright (c) 2017, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
@@ -20,12 +20,13 @@ class Flux extends EventEmitter {
     // Options
     options = Immutable.fromJS(options);
 
-    // Create a hash of all the stores - used for registration / de-registration
-    this._storeClasses = Map();
-    this._window = window || {};
-    this._store = this.getSessionData('arkhamjs') || Map();
+    // Properties
     this._debug = !!options.get('debug', false);
+    this._name = 'arkhamjs';
+    this._store = this.getSessionData(this._name) || Map();
+    this._storeClasses = Map();
     this._useCache = !!options.get('cache', true);
+    this._window = window || {};
   }
 
   off(event, listener) {
@@ -38,16 +39,12 @@ class Flux extends EventEmitter {
    * @param {...Objects} actions to dispatch to all the stores
    */
   dispatch(...actions) {
-    if(!Array.isArray(actions)) {
-      return;
-    }
-
     const list = Immutable.fromJS(actions);
 
     // Loop through actions
     list.forEach(a => {
       // Require a type
-      if(typeof a.get('type') !== 'string') {
+      if(!!a.get('type')) {
         return;
       }
 
@@ -56,17 +53,17 @@ class Flux extends EventEmitter {
       const oldState = this._store;
 
       // When an action comes in, it must be completely handled by all stores
-      this._storeClasses.map(storeClass => {
+      this._storeClasses.forEach(storeClass => {
         const name = storeClass.name;
         const state = this._store.get(name) || Immutable.fromJS(storeClass.initialState()) || Map();
         this._store = this._store.set(name, storeClass.onAction(type, data, state) || state);
 
         // Save cache in session storage
         if(this._useCache) {
-          this.setSessionData('arkhamjs', this._store);
+          this.setSessionData(this._name, this._store);
         }
 
-        return storeClass.setState(this._store.get(name));
+        return storeClass.state = this._store.get(name);
       });
 
       if(this._debug) {
@@ -103,18 +100,14 @@ class Flux extends EventEmitter {
    * @returns {Map} the state object
    */
   getStore(name = '', defaultValue) {
-    let store;
-
     if(Array.isArray(name)) {
-      store = this._store.getIn(name, defaultValue);
+      return this._store.getIn(name, defaultValue);
     }
     else if(name !== '') {
-      store = this._store.get(name, defaultValue);
+      return this._store.get(name, defaultValue);
     } else {
-      store = this._store || Map();
+      return this._store || Map();
     }
-
-    return store;
   }
 
   /**
@@ -124,7 +117,7 @@ class Flux extends EventEmitter {
    * @returns {Object} the class object
    */
   registerStore(StoreClass) {
-    const name = StoreClass.name.toLowerCase();
+    const name = StoreClass.name;
 
     if(!this._storeClasses.has(name)) {
       // Create store object
@@ -132,7 +125,7 @@ class Flux extends EventEmitter {
       this._storeClasses = this._storeClasses.set(name, store);
 
       // Get cached data
-      const data = this.getSessionData('arkhamjs');
+      const data = this.getSessionData(this._name);
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
@@ -142,7 +135,7 @@ class Flux extends EventEmitter {
 
       // Save cache in session storage
       if(this._useCache) {
-        this.setSessionData('arkhamjs', this._store);
+        this.setSessionData(this._name, this._store);
       }
     }
 
@@ -155,7 +148,6 @@ class Flux extends EventEmitter {
    * @param {string} name The name of the store
    */
   deregisterStore(name = '') {
-    name = name.toLowerCase();
     this._storeClasses = this._storeClasses.delete(name);
     this._store = this._store.delete(name);
   }
@@ -167,7 +159,6 @@ class Flux extends EventEmitter {
    * @returns {Store} the store object
    */
   getClass(name = '') {
-    name = name.toLowerCase();
     return this._storeClasses.get(name);
   }
 
