@@ -7,7 +7,11 @@ describe('Flux', () => {
   const val = 'hello_world';
   const key = 'test';
 
-  class Test extends Store {
+  class TestStore extends Store {
+    constructor() {
+      super('test');
+    }
+
     initialState() {
       return {
         item: 'default',
@@ -52,7 +56,7 @@ describe('Flux', () => {
     sessionSpy = sinon.spy(Flux, 'setSessionData');
 
     // Method
-    store = Flux.registerStore(Test);
+    store = Flux.registerStore(TestStore);
   });
 
   after(() => {
@@ -158,6 +162,10 @@ describe('Flux', () => {
     before(() => {
       // Method
       Flux.deregisterStore('test');
+    });
+
+    after(() => {
+      Flux.registerStore(TestStore);
     });
 
     it('should remove class', () => {

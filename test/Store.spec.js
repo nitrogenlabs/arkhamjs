@@ -20,12 +20,4 @@ describe('Store', () => {
       return expect(store.name).to.eq('store');
     });
   });
-
-  describe('#setState', () => {
-    it('should set a state', () => {
-      const state = Map({test: 'hello_world'});
-      store.setState(state);
-      return expect(store.state.get('test')).to.eq(state.get('test'));
-    });
-  });
 });

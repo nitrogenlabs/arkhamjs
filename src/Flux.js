@@ -44,7 +44,7 @@ class Flux extends EventEmitter {
     // Loop through actions
     list.forEach(a => {
       // Require a type
-      if(!!a.get('type')) {
+      if(!a.get('type')) {
         return;
       }
 
@@ -53,17 +53,11 @@ class Flux extends EventEmitter {
       const oldState = this._store;
 
       // When an action comes in, it must be completely handled by all stores
-      this._storeClasses.forEach(storeClass => {
-        const name = storeClass.name;
-        const state = this._store.get(name) || Immutable.fromJS(storeClass.initialState()) || Map();
-        this._store = this._store.set(name, storeClass.onAction(type, data, state) || state);
-
-        // Save cache in session storage
-        if(this._useCache) {
-          this.setSessionData(this._name, this._store);
-        }
-
-        return storeClass.state = this._store.get(name);
+      this._storeClasses.forEach(storeCls => {
+        const name = storeCls.name;
+        const state = this._store.get(name) || Immutable.fromJS(storeCls.initialState()) || Map();
+        this._store = this._store.set(name, storeCls.onAction(type, data, state) || state);
+        storeCls.state = this._store.get(name);
       });
 
       if(this._debug) {
@@ -83,6 +77,11 @@ class Flux extends EventEmitter {
           console.log('Last State: ', oldState.toJS());
           console.log(`${updatedLabel}: `, this._store.toJS());
         }
+      }
+
+      // Save cache in session storage
+      if(this._useCache) {
+        this.setSessionData(this._name, this._store);
       }
 
       this.emit(type, data);
@@ -117,19 +116,20 @@ class Flux extends EventEmitter {
    * @returns {Object} the class object
    */
   registerStore(StoreClass) {
-    const name = StoreClass.name;
+    // Create store object
+    const storeCls = new StoreClass();
+    const name = storeCls.name;
 
     if(!this._storeClasses.has(name)) {
-      // Create store object
-      const store = new StoreClass();
-      this._storeClasses = this._storeClasses.set(name, store);
+      // Save store object
+      this._storeClasses = this._storeClasses.set(name, storeCls);
 
       // Get cached data
       const data = this.getSessionData(this._name);
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
-      const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(store.initialState()) || Map();
+      const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(storeCls.initialState()) || Map();
       this._store = this._store.set(name, state);
 
 

@@ -14,7 +14,7 @@ export default class Store {
    */
   constructor(name) {
     this.state = Map();
-    this.name = (name || '').toLowerCase();
+    this.name = (name || 'store').toLowerCase();
   }
 
   /**
