@@ -148,7 +148,7 @@ describe('Flux', () => {
 
   describe('#enableDebugger', () => {
     it('should enable debugger', () => {
-      Flux.enableDebugger();
+      Flux.enableDebugger(true);
       return expect(Flux._debug).to.be.true;
     });
 

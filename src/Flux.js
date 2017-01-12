@@ -34,9 +34,9 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * Dispatches an action to all stores
+   * Dispatches an action to all stores.
    *
-   * @param {...Objects} actions to dispatch to all the stores
+   * @param {...Objects} actions to dispatch to all the stores.
    */
   dispatch(...actions) {
     const list = Immutable.fromJS(actions);
@@ -91,12 +91,12 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * Gets the current state object
+   * Gets the current state object.
    *
    * @param {string} [name] (optional) The name of the store for just that object, otherwise it will return all store
    *   objects.
    * @param {string} [defaultValue] (optional) A default value to return if null.
-   * @returns {Map} the state object
+   * @returns {Map} the state object.
    */
   getStore(name = '', defaultValue) {
     if(Array.isArray(name)) {
@@ -110,10 +110,10 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * Registers a new Store with Flux
+   * Registers a new Store.
    *
-   * @param {Class} StoreClass A unique name for the Store
-   * @returns {Object} the class object
+   * @param {Class} StoreClass A unique name for the Store.
+   * @returns {Object} the class object.
    */
   registerStore(StoreClass) {
     // Create store object
@@ -143,9 +143,9 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * De-registers a named store from Flux
+   * De-registers a named store.
    *
-   * @param {string} name The name of the store
+   * @param {string} name The name of the store.
    */
   deregisterStore(name = '') {
     this._storeClasses = this._storeClasses.delete(name);
@@ -153,109 +153,160 @@ class Flux extends EventEmitter {
   }
 
   /**
-   * Gets a store object that is registered with Flux
+   * Gets a store object that is registered.
    *
-   * @param {string} name The name of the store
-   * @returns {Store} the store object
+   * @param {string} name The name of the store.
+   * @returns {Store} the store object.
    */
   getClass(name = '') {
     return this._storeClasses.get(name);
   }
 
   /**
-   * Saves data to the sessionStore
+   * Saves data to sessionStorage.
    *
-   * @param {string} key Key to store data
+   * @param {string} key Key to store data.
    * @param {string|object|array|Immutable} value Data to store.
+   * @returns {Boolean} Whether data was successfully saved.
    */
   setSessionData(key, value) {
-    if(Immutable.Iterable.isIterable(value)) {
-      value = value.toJS();
-    }
-
     if(this._window && this._window.sessionStorage) {
-      value = JSON.stringify(value);
-      this._window.sessionStorage.setItem(key, value);
+      try {
+        if(Immutable.Iterable.isIterable(value)) {
+          value = value.toJS();
+        }
+
+        value = JSON.stringify(value);
+        this._window.sessionStorage.setItem(key, value);
+        return true;
+      }
+      catch(error) {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
   /**
-   * Gets data from
+   * Gets a key from sessionStorage.
    *
-   * @param {string} key The key for data
-   * @returns {Immutable} the data object associated with the key
+   * @param {string} key The key for data.
+   * @returns {Immutable} the data object associated with the key.
    */
   getSessionData(key) {
-    let value = '';
-
     if(this._window && this._window.sessionStorage) {
-      value = JSON.parse(this._window.sessionStorage.getItem(key) || '""');
+      try {
+        return Immutable.fromJS(JSON.parse(this._window.sessionStorage.getItem(key) || '""'));
+      }
+      catch(error) {
+        return null;
+      }
+    } else {
+      return null;
     }
-
-    return Immutable.fromJS(value);
   }
 
   /**
-   * Removes a key from sessionStorage
+   * Removes a key from sessionStorage.
    *
-   * @param {string} key Key associated with the data to remove
+   * @param {string} key Key associated with the data to remove.
+   * @returns {Boolean} Whether data was successfully removed.
    */
   delSessionData(key) {
     if(this._window && this._window.sessionStorage) {
-      this._window.sessionStorage.removeItem(key);
+      try {
+        this._window.sessionStorage.removeItem(key);
+        return true;
+      }
+      catch(error) {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
   /**
-   * Saves data to localStore
+   * Removes all app data from sessionStorage.
    *
-   * @param {string} key Key to store data
+   * @returns {Boolean} Whether app data was successfully removed.
+   */
+  clearAppData() {
+    this.delSessionData(this._name);
+  }
+
+  /**
+   * Saves data to localStorage.
+   *
+   * @param {string} key Key to store data.
    * @param {string|object|array|Immutable} value Data to store.
+   * @returns {Boolean} Whether data was successfully saved.
    */
   setLocalData(key, value) {
-    if(Immutable.Iterable.isIterable(value)) {
-      value = value.toJS();
-    }
-
     if(this._window && this._window.localStorage) {
-      value = JSON.stringify(value);
-      this._window.localStorage.setItem(key, value);
+      try {
+        if(Immutable.Iterable.isIterable(value)) {
+          value = value.toJS();
+        }
+
+        value = JSON.stringify(value);
+        this._window.localStorage.setItem(key, value);
+        return true;
+      }
+      catch(error) {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
   /**
-   * Gets a store that is registered with Flux
+   * Gets a key from localStorage.
    *
-   * @param {string} key The key for data
-   * @returns {Immutable} the data object associated with the key
+   * @param {string} key The key for data.
+   * @returns {Immutable} the data object associated with the key.
    */
   getLocalData(key) {
-    let value = '';
-
     if(this._window && this._window.localStorage) {
-      value = JSON.parse(this._window.localStorage.getItem(key) || '""');
+      try {
+        return Immutable.fromJS(JSON.parse(this._window.localStorage.getItem(key) || '""'));
+      }
+      catch(error) {
+        return null;
+      }
+    } else {
+      return null;
     }
-
-    return Immutable.fromJS(value);
   }
 
   /**
-   * Removes a key from localStorage
+   * Removes a key from localStorage.
    *
-   * @param {string} key Key associated with the data to remove
+   * @param {string} key Key associated with the data to remove.
+   * @returns {Boolean} Whether data was successfully removed.
    */
   delLocalData(key) {
     if(this._window && this._window.localStorage) {
-      this._window.localStorage.removeItem(key);
+      try {
+        this._window.localStorage.removeItem(key);
+        return true;
+      }
+      catch(error) {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
   /**
-   * Enables the console debugger
+   * Enables the console debugger.
    *
-   * @param {boolean} value Enable or disable the debugger. Default value: true.
+   * @param {boolean} value Enable or disable the debugger. Default value: false.
    */
-  enableDebugger(value = true) {
+  enableDebugger(value = false) {
     this._debug = value;
   }
 }
