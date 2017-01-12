@@ -112,15 +112,33 @@ class Flux extends EventEmitter {
   /**
    * Registers a new Store.
    *
-   * @param {Class} StoreClass A unique name for the Store.
-   * @returns {Object} the class object.
+   * @param {Class|Array} StoreClass Store class.
+   * @returns {Object|Array} the class object(s).
    */
   registerStore(StoreClass) {
+    if(Array.isArray(StoreClass)) {
+      return StoreClass.map(cls => this._register(cls));
+    } else {
+      return this._register(StoreClass);
+    }
+  }
+
+  _register(StoreClass) {
+    if(!StoreClass) {
+      throw Error('Class is undefined. Cannot register with Flux.');
+    }
+
+    const clsType = StoreClass.constructor.toString().substr(0, 5);
+
+    if(clsType !== 'class' && clsType !== 'funct') {
+      throw Error(`${StoreClass} is not a class. Cannot register with Flux.`);
+    }
+
     // Create store object
     const storeCls = new StoreClass();
     const name = storeCls.name;
 
-    if(!this._storeClasses.has(name)) {
+    if(!this._storeClasses.get(name)) {
       // Save store object
       this._storeClasses = this._storeClasses.set(name, storeCls);
 
@@ -131,7 +149,6 @@ class Flux extends EventEmitter {
       // Get default values
       const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(storeCls.initialState()) || Map();
       this._store = this._store.set(name, state);
-
 
       // Save cache in session storage
       if(this._useCache) {
@@ -145,9 +162,19 @@ class Flux extends EventEmitter {
   /**
    * De-registers a named store.
    *
-   * @param {string} name The name of the store.
+   * @param {String|Array} name The name of the store or an array of store names.
    */
-  deregisterStore(name = '') {
+  deregisterStore(name) {
+    if(Array.isArray(name)) {
+      name.forEach(n => {
+        this._deregister(n);
+      });
+    } else {
+      this._deregister(name);
+    }
+  }
+
+  _deregister(name = '') {
     this._storeClasses = this._storeClasses.delete(name);
     this._store = this._store.delete(name);
   }
@@ -197,7 +224,13 @@ class Flux extends EventEmitter {
   getSessionData(key) {
     if(this._window && this._window.sessionStorage) {
       try {
-        return Immutable.fromJS(JSON.parse(this._window.sessionStorage.getItem(key) || '""'));
+        const item = this._window.sessionStorage.getItem(key);
+
+        if(item) {
+          return Immutable.fromJS(JSON.parse(item));
+        }
+
+        return null;
       }
       catch(error) {
         return null;
@@ -271,7 +304,13 @@ class Flux extends EventEmitter {
   getLocalData(key) {
     if(this._window && this._window.localStorage) {
       try {
-        return Immutable.fromJS(JSON.parse(this._window.localStorage.getItem(key) || '""'));
+        const item = this._window.localStorage.getItem(key);
+
+        if(item) {
+          return Immutable.fromJS(JSON.parse(item));
+        }
+
+        return null;
       }
       catch(error) {
         return null;

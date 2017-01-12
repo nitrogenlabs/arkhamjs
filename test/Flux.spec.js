@@ -199,7 +199,7 @@ describe('Flux', () => {
       // Method
       Flux.delSessionData(key);
       const testVal = Flux.getSessionData(key);
-      return expect(testVal).to.be.eq('');
+      return expect(testVal).to.be.null;
     });
   });
 
@@ -224,7 +224,7 @@ describe('Flux', () => {
       // Method
       Flux.delLocalData(key);
       const testVal = Flux.getLocalData(key);
-      return expect(testVal).to.be.eq('');
+      return expect(testVal).to.be.null;
     });
   });
 });
