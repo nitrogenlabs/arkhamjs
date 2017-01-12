@@ -28,10 +28,10 @@ export default class Store {
   /**
    * Action listener. It should return an altered state depending on the event dispatched.
    *
-   * @param {String} type Dispatched event
-   * @param {Object} data Data payload associated with the called action
-   * @param {Immutable} state The current state
-   * @return {String}
+   * @param {String} type Dispatched event.
+   * @param {Object} data Data payload associated with the called action.
+   * @param {Immutable} state The current state.
+   * @return {Immutable} The final state of the store as an immutable object.
    */
   onAction(type, data, state) {
     switch(type) {
