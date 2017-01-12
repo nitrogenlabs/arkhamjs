@@ -1,14 +1,15 @@
 {
   "name": "arkhamjs",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "An ES6 Flux library for ReactJS",
   "license": "MIT",
   "main": "index.js",
   "keywords": [
-    "nitrogenlabs",
-    "react",
+    "arkhamjs",
     "flux",
-    "arkhamjs"
+    "immutable",
+    "nitrogenlabs",
+    "react"
   ],
   "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
   "repository": {
