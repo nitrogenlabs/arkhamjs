@@ -1,4 +1,4 @@
-![ArkhamJS](http://arkhamjs.com.s3.amazonaws.com/img/logos/logo-txt.png "ArkhamJS")
+![ArkhamJS](http://arkhamjs.com.s3.amazonaws.com/img/logos/gh-logo-txt.png "ArkhamJS")
 
 #### Flux Framework for ReactJS
 
