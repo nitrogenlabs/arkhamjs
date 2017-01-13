@@ -1,4 +1,4 @@
-![ArkhamJS](http://arkhamjs.com.s3.amazonaws.com/img/logos/gh-logo-txt.png "ArkhamJS")
+![ArkhamJS](https://nitrogenlabs.com/logos/gh-arkhamjs.png "ArkhamJS")
 
 #### Flux Framework for ReactJS
 
@@ -154,7 +154,7 @@ potentially have changed. You may then call getStore() to read the current state
 * [`eventType`] \(*String*): Event to subscribe for store updates.
 * [`listener`] \(*Function*): The callback to be invoked any time an action has been dispatched.
 
-#### `off()`
+#### `off(eventType, data)`
 Removes an event listener.
 * [`eventType`] \(*String*): Event to unsubscribe.
 * [`listener`] \(*Function*): The callback associated with the subscribed event.
