@@ -53,7 +53,7 @@ A complete example can be found in the [arkhamjs-skeleton](https://github.com/ni
 import {Flux, Store} from 'arkhamjs';
 import {Map} from 'immutable';
 
-class App extends Store {
+export default class AppStore extends Store {
   constructor() {
     super('app');
   }
@@ -75,8 +75,6 @@ class App extends Store {
     }
   }
 }
-
-export default Flux.registerStore(App);
 ```
 
 **Action:**
@@ -96,6 +94,7 @@ export default AppActions;
 ```js
 import React, {Component} from 'react';
 import {Flux} from 'arkhamjs';
+import AppStore from 'stores/AppStore';
 
 // Enable console debugger
 Flux.enableDebugger();
@@ -109,6 +108,9 @@ export default class AppView extends Component {
       myTest: ''
     };
 
+    // Register stores
+    Flux.registerStore([AppStore]);
+    
     // Bind methods
     this.onAppTest = this.onAppTest.bind(this);
   }
