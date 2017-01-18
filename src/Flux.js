@@ -65,8 +65,8 @@ class Flux extends EventEmitter {
         const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
         const updatedColor = hasChanged ? '#00d484' : '#959595';
 
-        if(console.group) {
-          console.group(`%c FLUX DISPATCH: ${type}`, 'font-weight:700');
+        if(console.groupCollapsed) {
+          console.groupCollapsed(`FLUX DISPATCH: ${type}`);
           console.log('%c Action: ', 'color: #00C4FF', a.toJS());
           console.log('%c Last State: ', 'color: #959595', oldState.toJS());
           console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, this._store.toJS());
