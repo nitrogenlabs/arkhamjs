@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 
 /**
  * Copyright (c) 2017, Nitrogen Labs, Inc.
@@ -20,9 +20,19 @@ export default class Store {
   /**
    * Initial state.
    *
+   * @return {Object} The initial state of the store as a JSON object.
    */
   initialState() {
-    return Map();
+    return {};
+  }
+
+  /**
+   * Get the initial state as an immutable object.
+   *
+   * @return {Immutable} The initial state of the store as an immutable object.
+   */
+  getInitialState() {
+    return Immutable.fromJS(this.initialState());
   }
 
   /**

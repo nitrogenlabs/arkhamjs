@@ -146,7 +146,7 @@ export default class AppView extends Component {
 export default AppActions;
 ```
 
-## API
+## Flux API
 
 ### Events
 
@@ -161,10 +161,11 @@ Removes an event listener.
 * [`eventType`] \(*String*): Event to unsubscribe.
 * [`listener`] \(*Function*): The callback associated with the subscribed event.
 
-#### `dispatch(action)`
+#### `dispatch(action, silent)`
 Dispatches an Action to all stores
 * [`action`] \(*Object*): An action object. The only required property is *type* which will indicate what is called in
 the stores, all other properties will be sent to the store within the *data* object.
+* [`silent`] \(*Boolean*): Silence event emitter for this dispatch. Default: false.
 
 
 ### Stores
@@ -176,7 +177,16 @@ Get the state tree. If only a particular store is needed, it can be specified.
 object (ie. Map, List, etc.).
 
 ##### Returns
-An Immutable object or a string.
+The app store object as an immutable object.
+
+#### `setStore(name, value)`
+Used for unit testing. Set a store value. If only a particular store or property needs to be set, it can be specified.
+* [`name`] \(*String*/*Array*): A store name. May also use an array to get a nested property value.
+* [`value`] \(*Any*): The value to set. This may be a string, number, boolean or immutable 
+object (ie. Map, List, etc.).
+
+##### Returns
+The updated store as an immutable object.
 
 #### `getClass(name)`
 Get the store class object.
@@ -263,3 +273,14 @@ A boolean indicating if data was successfully removed from localStorage.
 Turn on the console debugger to display each action call and store changes. By default the framework has the debugger 
 disabled.
 * [`toggle`] \(*Boolean*): Enable or disable debugger. Default: true.
+
+
+## Store API
+
+### State
+
+#### `getInitialState()`
+Used for unit testing. Gets the initial state of the store.
+
+##### Returns
+The initial state of the store as an immutable object.

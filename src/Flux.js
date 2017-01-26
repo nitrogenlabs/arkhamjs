@@ -36,65 +36,65 @@ class Flux extends EventEmitter {
   /**
    * Dispatches an action to all stores.
    *
-   * @param {...Objects} actions to dispatch to all the stores.
+   * @param {object} action to dispatch to all the stores.
+   * @param {boolean} silent To silence any events.
    */
-  dispatch(...actions) {
-    const list = Immutable.fromJS(actions);
+  dispatch(action, silent = false) {
+    action = Immutable.fromJS(action);
+    const type = action.get('type');
+    const data = action.filter((v, k) => k !== 'type');
 
-    // Loop through actions
-    list.forEach(a => {
-      // Require a type
-      if(!a.get('type')) {
-        return;
-      }
+    // Require a type
+    if(!type) {
+      return;
+    }
 
-      let {type, ...data} = a.toJS();
-      data = Immutable.fromJS(data);
-      const oldState = this._store;
+    const oldState = this._store;
 
-      // When an action comes in, it must be completely handled by all stores
-      this._storeClasses.forEach(storeCls => {
-        const name = storeCls.name;
-        const state = this._store.get(name) || Immutable.fromJS(storeCls.initialState()) || Map();
-        this._store = this._store.set(name, storeCls.onAction(type, data, state) || state);
-        storeCls.state = this._store.get(name);
-      });
-
-      if(this._debug) {
-        const hasChanged = !this._store.equals(oldState);
-        const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
-        const updatedColor = hasChanged ? '#00d484' : '#959595';
-
-        if(console.groupCollapsed) {
-          console.groupCollapsed(`FLUX DISPATCH: ${type}`);
-          console.log('%c Action: ', 'color: #00C4FF', a.toJS());
-          console.log('%c Last State: ', 'color: #959595', oldState.toJS());
-          console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, this._store.toJS());
-          console.groupEnd();
-        } else {
-          console.log(`FLUX DISPATCH: ${type}`);
-          console.log(`Action: ${a.toJS()}`);
-          console.log('Last State: ', oldState.toJS());
-          console.log(`${updatedLabel}: `, this._store.toJS());
-        }
-      }
-
-      // Save cache in session storage
-      if(this._useCache) {
-        this.setSessionData(this._name, this._store);
-      }
-
-      this.emit(type, data);
+    // When an action comes in, it must be completely handled by all stores
+    this._storeClasses.forEach(storeCls => {
+      const name = storeCls.name;
+      const state = this._store.get(name) || storeCls.getInitialState() || Map();
+      this._store = this._store.set(name, storeCls.onAction(type, data, state) || state);
+      storeCls.state = this._store.get(name);
     });
 
-    return list;
+    if(this._debug) {
+      const hasChanged = !this._store.equals(oldState);
+      const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
+      const updatedColor = hasChanged ? '#00d484' : '#959595';
+
+      if(console.groupCollapsed) {
+        console.groupCollapsed(`FLUX DISPATCH: ${type}`);
+        console.log('%c Action: ', 'color: #00C4FF', action.toJS());
+        console.log('%c Last State: ', 'color: #959595', oldState.toJS());
+        console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, this._store.toJS());
+        console.groupEnd();
+      } else {
+        console.log(`FLUX DISPATCH: ${type}`);
+        console.log(`Action: ${action.toJS()}`);
+        console.log('Last State: ', oldState.toJS());
+        console.log(`${updatedLabel}: `, this._store.toJS());
+      }
+    }
+
+    // Save cache in session storage
+    if(this._useCache) {
+      this.setSessionData(this._name, this._store);
+    }
+
+    if(!silent) {
+      this.emit(type, data);
+    }
+
+    return action;
   }
 
   /**
    * Gets the current state object.
    *
-   * @param {string} [name] (optional) The name of the store for just that object, otherwise it will return all store
-   *   objects.
+   * @param {string|array} [name] (optional) The name of the store for an object, otherwise it will return all store
+   *   objects. You can also use an array to specify a property within the object (uses the immutable, getIn).
    * @param {string} [defaultValue] (optional) A default value to return if null.
    * @returns {Map} the state object.
    */
@@ -104,6 +104,25 @@ class Flux extends EventEmitter {
     }
     else if(name !== '') {
       return this._store.get(name, defaultValue);
+    } else {
+      return this._store || Map();
+    }
+  }
+
+  /**
+   * Sets the current state object.
+   *
+   * @param {string|array} [name] The name of the store to set. You can also use an array to specify a property
+   * within the object (uses the immutable, setIn).
+   * @param {any} [value] The value to set.
+   * @returns {Immutable} the object that was set.
+   */
+  setStore(name = '', value) {
+    if(Array.isArray(name)) {
+      return this._store = this._store.setIn(name, value);
+    }
+    else if(name !== '') {
+      return this._store = this._store.set(name, value);
     } else {
       return this._store || Map();
     }
@@ -147,7 +166,7 @@ class Flux extends EventEmitter {
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
-      const state = this._store.get(name) || cache.get(name) || Immutable.fromJS(storeCls.initialState()) || Map();
+      const state = this._store.get(name) || cache.get(name) || storeCls.getInitialState() || Map();
       this._store = this._store.set(name, state);
 
       // Save cache in session storage

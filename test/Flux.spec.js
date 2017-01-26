@@ -15,6 +15,7 @@ describe('Flux', () => {
     initialState() {
       return {
         item: 'default',
+        testUpdate: 'default',
         testAction: 'default'
       };
     }
@@ -116,6 +117,28 @@ describe('Flux', () => {
     it('should get a specific item within a store', () => {
       const item = Flux.getStore(['test', 'item']);
       return expect(item).to.eq('default');
+    });
+  });
+
+  describe('#setStore', () => {
+    let oldItem, changedItem, newItem;
+
+    before(() => {
+      oldItem = Flux.getStore(['test', 'testUpdate']);
+      changedItem = Flux.setStore(['test', 'testUpdate'], 'test');
+      newItem = Flux.getStore(['test', 'testUpdate']);
+    });
+
+    it('should have the original value', () => {
+      return expect(oldItem).to.eq('default');
+    });
+
+    it('should return the updated object', () => {
+      return expect(changedItem.getIn(['test', 'testUpdate'])).to.eq('test');
+    });
+
+    it('should update the property within the store', () => {
+      return expect(newItem).to.eq('test');
     });
   });
 
