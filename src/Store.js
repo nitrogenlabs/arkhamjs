@@ -7,7 +7,7 @@ import Immutable, {Map} from 'immutable';
 
 export default class Store {
   /**
-   * A Flux-like Store Interface
+   * A Flux store interface
    *
    * @constructor
    * @this {Store}
@@ -32,7 +32,7 @@ export default class Store {
    * @return {Immutable} The initial state of the store as an immutable object.
    */
   getInitialState() {
-    return Immutable.fromJS(this.initialState());
+    return Immutable.fromJS(this.initialState() || {});
   }
 
   /**
@@ -44,9 +44,6 @@ export default class Store {
    * @return {Immutable} The final state of the store as an immutable object.
    */
   onAction(type, data, state) {
-    switch(type) {
-      default:
-        return state;
-    }
+    return state;
   }
 }
