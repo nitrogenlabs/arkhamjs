@@ -15,6 +15,11 @@ export default class Store {
   constructor(name) {
     this.state = Map();
     this.name = (name || 'store').toLowerCase();
+
+    // Methods
+    this.getInitialState = this.getInitialState.bind(this);
+    this.initialState = this.initialState.bind(this);
+    this.onAction = this.onAction.bind(this);
   }
 
   /**
