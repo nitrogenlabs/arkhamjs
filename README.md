@@ -19,6 +19,17 @@ Your single store id stored in sessionStorage by default. While this can be turn
 #### Debugger
 The most important factor in choosing a framework is how easy it is to build with it. And with building comes debugging. A detailed debugger is included with the framework. When turned on, it will display any actions that come through the framework. Making the previous and new state visible to the developer. Great way to make your data transparent! Supported browsers: Chrome, Firefox, and Safari.
 
+#### Skeleton
+For a complete example of the setup, feel free to start your project with [arkhamjs-skeleton](https://github.com/nitrogenlabs/arkhamjs-skeleton).
+It includes a full setup of a bare bones React app using Webpack 2 and Babel 6. Also includes Karma unit testing and coverage reports.
+
+#### Documentation
+For some further reading, you can check out [our article on Medium](https://medium.com/@nitrog7/arkhamjs-react-framework-8f0ecd28cfbc#.5bjpa2sfd) for some additional details on the framework.
+
+#### React Native
+Looking into developing for mobile? There is a React Native version of ArkhamJS, [ArkhamJS Native](https://github.com/nitrogenlabs/arkhamjs-native).
+The biggest difference here is in the way storage is managed.
+
 [![npm version](https://img.shields.io/npm/v/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
 [![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
@@ -46,7 +57,7 @@ var Store = require('arkhamjs').Store;
 
 ### How to use
 
-A complete example can be found in the [arkhamjs-skeleton](https://github.com/nitrog7/arkhamjs-skeleton). Below is an example of an action and a store.
+A complete example can be found in the [arkhamjs-skeleton](https://github.com/nitrogenlabs/arkhamjs-skeleton). Below is an example of an action and a store.
 
 **Store:**
 ```js
