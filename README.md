@@ -107,9 +107,6 @@ import React, {Component} from 'react';
 import {Flux} from 'arkhamjs';
 import AppStore from 'stores/AppStore';
 
-// Enable console debugger
-Flux.enableDebugger();
-
 export default class AppView extends Component {
   constructor(props) {
     super(props);
@@ -118,6 +115,18 @@ export default class AppView extends Component {
     this.state = {
       myTest: ''
     };
+    
+    // Initialize Flux with custom configuration (optional)
+    Flux.config({
+      // Enable caching in session storage
+      cache: true,
+      
+      // Enable debugger
+      debugLevel: Flux.DEBUG_DISPATCH,
+      
+      // Name of your app
+      name: 'MyApp'
+    });
 
     // Register stores
     Flux.registerStore([AppStore]);
@@ -158,6 +167,29 @@ export default AppActions;
 ```
 
 ## Flux API
+
+### Configuration
+
+#### `config(options)`
+Set configuration options.
+
+#### Arguments
+* [`options`] \(*Object*): Configuration options.
+  * debugLevel \(*Number*) - Enable the debugger. You can specify to show console.logs and/or Flux dispatches. You can
+  use a numeric value or one of the pre-defined constants below:
+    * DEBUG_DISABLED (0) - Disable debugger.
+    * DEBUG_LOGS (1) - Only allow console logs.
+    * DEBUG_DISPATCH (2) - Display both, console logs and dispatcher action details.
+  * debugLogFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  the first parameter and the data as the 1-n parameters. Executed when Flux.debugLog() is run.
+  * debugInfoFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  the first parameter and the data as the 1-n parameters. Executed when Flux.debugError() is run.
+  * debugErrorFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  the first parameter and the data as the 1-n parameters. Executed when Flux.debugInfo() is run.
+  * name \(*String*) - Name of your app. Should not contain spaces. Is used as the session storage property for your 
+  cache. *Default: arkhamjs*
+  * useCache \(*Boolean*) - Enable caching to session storage. *Default: true*
+
 
 ### Events
 
@@ -279,11 +311,25 @@ A boolean indicating if data was successfully removed from localStorage.
 
 
 ### Debug
-
 #### `enableDebugger(toggle)`
 Turn on the console debugger to display each action call and store changes. By default the framework has the debugger 
 disabled.
 * [`toggle`] \(*Boolean*): Enable or disable debugger. Default: true.
+
+#### `debugLog(obj1 [, obj2, ..., objN])`
+Logs data in the console. Only logs when in debug mode.  Will also call the debugLogFnc method set in the config.
+* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+appended together in the order listed and output.
+
+#### `debugInfo(obj1 [, obj2, ..., objN])`
+Logs informational messages to the console. Will also call the debugInfoFnc method set in the config.
+* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+appended together in the order listed and output.
+
+#### `debugError(obj1 [, obj2, ..., objN])`
+Logs errors in the console. Will also call the debugErrorFnc method set in the config.
+* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+appended together in the order listed and output.
 
 
 ## Store API

@@ -13,22 +13,14 @@ export default class Store {
    * @this {Store}
    */
   constructor(name) {
-    this.state = Map();
-    this.name = (name || 'store').toLowerCase();
-
     // Methods
     this.getInitialState = this.getInitialState.bind(this);
     this.initialState = this.initialState.bind(this);
     this.onAction = this.onAction.bind(this);
-  }
 
-  /**
-   * Initial state.
-   *
-   * @return {Object} The initial state of the store as a JSON object.
-   */
-  initialState() {
-    return {};
+    // Vars
+    this.state = Map();
+    this.name = (name || 'store').toLowerCase();
   }
 
   /**
@@ -38,6 +30,15 @@ export default class Store {
    */
   getInitialState() {
     return Immutable.fromJS(this.initialState() || {});
+  }
+
+  /**
+   * Initial state.
+   *
+   * @return {Object} The initial state of the store as a JSON object.
+   */
+  initialState() {
+    return {};
   }
 
   /**

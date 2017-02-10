@@ -6,6 +6,11 @@ describe('Flux', () => {
   let store, localSetSpy, sessionSetSpy, sessionSpy;
   const val = 'hello_world';
   const key = 'test';
+  const cfg = {
+    debugLevel: Flux.DEBUG_DISPATCH,
+    name: 'arkhamjs',
+    useCache: true
+  };
 
   class TestStore extends Store {
     constructor() {
@@ -49,7 +54,9 @@ describe('Flux', () => {
     // Vars
     Flux._window.sessionStorage = storageMock();
     Flux._window.localStorage = storageMock();
-    Flux._useCache = true;
+
+    // Configure
+    Flux.config(cfg);
 
     // Spy
     localSetSpy = sinon.spy(Flux._window.localStorage, 'setItem');
@@ -66,14 +73,154 @@ describe('Flux', () => {
     sessionSpy.restore();
   });
 
-  describe('#off', () => {
-    it('should remove a listener', () => {
-      const spy = sinon.spy();
-      Flux.on('test', spy);
-      Flux.off('test', spy);
-      Flux.dispatch({type: 'test'});
+  describe('#clearAppData', () => {
+    before(() => {
+      // Spy
+      sessionSpy.reset();
 
-      return expect(spy.called).to.be.false;
+      // Set test data
+      Flux.setStore(['test', 'item'], 'clear');
+
+      // Method
+      Flux.clearAppData();
+    });
+
+    it('should re-initialize session data', () => {
+      return expect(sessionSpy.called).to.be.true;
+    });
+
+    it('should reset the store data', () => {
+      return expect(Flux.getStore(['test', 'item'])).to.eq('default');
+    });
+  });
+
+  describe('#config', () => {
+    // Vars
+    const opts = {
+      debugLevel: 0,
+      name,
+      useCache: true
+    };
+
+    before(() => {
+      // Method
+      Flux.config(opts);
+    });
+
+    after(() => {
+      Flux.config(cfg);
+    });
+
+    it('should remove session data', () => {
+      return expect(Flux._debugLevel).to.eq(opts.debugLevel);
+    });
+
+    it('should remove session data', () => {
+      return expect(Flux._name).to.eq(opts.name);
+    });
+
+    it('should remove session data', () => {
+      return expect(Flux._useCache).to.eq(opts.useCache);
+    });
+  });
+
+  describe('#debugError', () => {
+    let consoleSpy;
+    const msg = 'test';
+
+    before(() => {
+      // Spy
+      consoleSpy = sinon.spy(console, 'error');
+
+      // Method
+      Flux.debugError(msg);
+    });
+
+    after(() => {
+      consoleSpy.restore();
+    });
+
+    it('should send data to console.error', () => {
+      return expect(consoleSpy.args[0][0]).to.eq(msg);
+    });
+  });
+
+  describe('#debugInfo', () => {
+    let consoleSpy;
+    const msg = 'test';
+
+    before(() => {
+      // Spy
+      consoleSpy = sinon.spy(console, 'info');
+
+      // Method
+      Flux.debugInfo(msg);
+    });
+
+    after(() => {
+      consoleSpy.restore();
+    });
+
+    it('should send data to console.info', () => {
+      return expect(consoleSpy.args[0][0]).to.eq(msg);
+    });
+  });
+
+  describe('#debugLog', () => {
+    let consoleSpy;
+    const msg = 'test';
+
+    before(() => {
+      // Spy
+      consoleSpy = sinon.spy(console, 'log');
+
+      // Method
+      Flux.debugLog(msg);
+    });
+
+    after(() => {
+      consoleSpy.restore();
+    });
+
+    it('should send data to console.log', () => {
+      return expect(consoleSpy.args[0][0]).to.eq(msg);
+    });
+  });
+
+  describe('#delLocalData', () => {
+    it('should remove local data', () => {
+      // Method
+      Flux.delLocalData(key);
+      const testVal = Flux.getLocalData(key);
+      return expect(testVal).to.be.null;
+    });
+  });
+
+  describe('#delSessionData', () => {
+    it('should remove session data', () => {
+      // Method
+      Flux.delSessionData(key);
+      const testVal = Flux.getSessionData(key);
+      return expect(testVal).to.be.null;
+    });
+  });
+
+  describe('#deregisterStore', () => {
+    before(() => {
+      // Method
+      Flux.deregisterStore('test');
+    });
+
+    after(() => {
+      Flux.registerStore(TestStore);
+    });
+
+    it('should remove class', () => {
+      return expect(Flux._storeClasses.has('test')).to.be.false;
+    });
+
+    it('should remove store data', () => {
+      return expect(Flux._store.has('test')).to.be.false;
     });
   });
 
@@ -103,6 +250,50 @@ describe('Flux', () => {
     });
   });
 
+  describe('#enableDebugger', () => {
+    it('should disable debugger', () => {
+      Flux.enableDebugger(Flux.DEBUG_DISABLED);
+      return expect(Flux._debugLevel).to.be.eq(0);
+    });
+
+    it('should enable debugger for logs', () => {
+      Flux.enableDebugger(Flux.DEBUG_LOGS);
+      return expect(Flux._debugLevel).to.be.eq(1);
+    });
+
+    it('should enable debugger for dispatch actions', () => {
+      Flux.enableDebugger(Flux.DEBUG_DISPATCH);
+      return expect(Flux._debugLevel).to.be.eq(2);
+    });
+  });
+
+  describe('#getClass', () => {
+    it('should get a class', () => {
+      const cls = Flux.getClass('test');
+      return expect(cls.name).to.eq('test');
+    });
+  });
+
+  describe('#getLocalData', () => {
+    it('should get local data', () => {
+      // Set data
+      Flux.setLocalData(key, val);
+
+      // Method
+      const testVal = Flux.getLocalData(key);
+      return expect(testVal).to.eq(val);
+    });
+  });
+
+  describe('#getSessionData', () => {
+    it('should get session data', () => {
+      // Method
+      Flux.setSessionData(key, val);
+      const testVal = Flux.getSessionData(key);
+      return expect(testVal).to.eq(val);
+    });
+  });
+
   describe('#getStore', () => {
     it('should get a global store', () => {
       const item = Flux.getStore();
@@ -117,6 +308,45 @@ describe('Flux', () => {
     it('should get a specific item within a store', () => {
       const item = Flux.getStore(['test', 'item']);
       return expect(item).to.eq('default');
+    });
+  });
+
+  describe('#off', () => {
+    it('should remove a listener', () => {
+      const spy = sinon.spy();
+      Flux.on('test', spy);
+      Flux.off('test', spy);
+      Flux.dispatch({type: 'test'});
+
+      return expect(spy.called).to.be.false;
+    });
+  });
+
+  describe('#registerStore', () => {
+    it('should save the class', () => {
+      const cls = Flux._storeClasses.get('test');
+      return expect(cls.name).to.eq('test');
+    });
+
+    it('should set the initial value', () => {
+      const item = Flux._store.getIn(['test', 'item']);
+      return expect(item).to.eq('default');
+    });
+
+    it('should save store in cache', () => {
+      return expect(sessionSpy.called).to.be.true;
+    });
+
+    it('should return the class', () => {
+      return expect(store.name).to.eq('test');
+    });
+  });
+
+  describe('#setSessionData', () => {
+    it('should set session data', () => {
+      // Method
+      Flux.setSessionData(key, val);
+      return expect(sessionSetSpy.called).to.be.true;
     });
   });
 
@@ -142,112 +372,11 @@ describe('Flux', () => {
     });
   });
 
-  describe('#registerStore', () => {
-    it('should save the class', () => {
-      const cls = Flux._storeClasses.get('test');
-      return expect(cls.name).to.eq('test');
-    });
-
-    it('should set the initial value', () => {
-      const item = Flux._store.getIn(['test', 'item']);
-      return expect(item).to.eq('default');
-    });
-
-    it('should save store in cache', () => {
-      return expect(sessionSpy.called).to.be.true;
-    });
-
-    it('should return the class', () => {
-      return expect(store.name).to.eq('test');
-    });
-  });
-
-  describe('#getClass', () => {
-    it('should get a class', () => {
-      const cls = Flux.getClass('test');
-      return expect(cls.name).to.eq('test');
-    });
-  });
-
-  describe('#enableDebugger', () => {
-    it('should enable debugger', () => {
-      Flux.enableDebugger();
-      return expect(Flux._debug).to.be.true;
-    });
-
-    it('should disable debugger', () => {
-      Flux.enableDebugger(false);
-      return expect(Flux._debug).to.be.false;
-    });
-  });
-
-  describe('#deregisterStore', () => {
-    before(() => {
-      // Method
-      Flux.deregisterStore('test');
-    });
-
-    after(() => {
-      Flux.registerStore(TestStore);
-    });
-
-    it('should remove class', () => {
-      return expect(Flux._storeClasses.has('test')).to.be.false;
-    });
-
-    it('should remove store data', () => {
-      return expect(Flux._store.has('test')).to.be.false;
-    });
-  });
-
-  describe('#setSessionData', () => {
-    it('should set session data', () => {
-      // Method
-      Flux.setSessionData(key, val);
-      return expect(sessionSetSpy.called).to.be.true;
-    });
-  });
-
-  describe('#getSessionData', () => {
-    it('should get session data', () => {
-      // Method
-      Flux.setSessionData(key, val);
-      const testVal = Flux.getSessionData(key);
-      return expect(testVal).to.eq(val);
-    });
-  });
-
-  describe('#delSessionData', () => {
-    it('should remove session data', () => {
-      // Method
-      Flux.delSessionData(key);
-      const testVal = Flux.getSessionData(key);
-      return expect(testVal).to.be.null;
-    });
-  });
-
   describe('#setLocalData', () => {
     it('should set local data', () => {
       // Method
       Flux.setLocalData(key, val);
       return expect(localSetSpy.called).to.be.true;
-    });
-  });
-
-  describe('#getLocalData', () => {
-    it('should get local data', () => {
-      // Method
-      const testVal = Flux.getLocalData(key);
-      return expect(testVal).to.eq(val);
-    });
-  });
-
-  describe('#delLocalData', () => {
-    it('should remove local data', () => {
-      // Method
-      Flux.delLocalData(key);
-      const testVal = Flux.getLocalData(key);
-      return expect(testVal).to.be.null;
     });
   });
 });

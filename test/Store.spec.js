@@ -15,17 +15,17 @@ describe('Store', () => {
     });
   });
 
-  describe('#initialState', () => {
-    it('should return an object', () => {
-      const state = store.initialState();
-      return expect(Map.isMap(state)).to.be.false;
-    });
-  });
-
   describe('#getInitialState', () => {
     it('should return an immutable map', () => {
       const state = store.getInitialState();
       return expect(Map.isMap(state)).to.be.true;
+    });
+  });
+
+  describe('#initialState', () => {
+    it('should return an object', () => {
+      const state = store.initialState();
+      return expect(Map.isMap(state)).to.be.false;
     });
   });
 
