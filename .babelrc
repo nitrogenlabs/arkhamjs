@@ -1,9 +1,9 @@
 {
-  "presets": ["es2015", "stage-0"],
+  "presets": ["react", "es2015", "stage-0"],
   "env": {
     "production": {
-      "presets": ["babili"],
-      "plugins": ["remove-comments"]
+      "comments": false,
+      "presets": ["babili"]
     }
   }
 }

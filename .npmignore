@@ -1,5 +1,9 @@
+/.idea
 /build
-/src
+/docs
 /node_modules
+/src
 /test
 .babelrc
+.travis.yml
+esdoc.json

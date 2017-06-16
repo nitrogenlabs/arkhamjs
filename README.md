@@ -2,10 +2,10 @@
 
 #### Flux Framework for ReactJS
 
-ArkhamJS is a very lightweight framework that can accommodate a project of any size. From small start-up ideas to large enterprise projects. ReactJS is an amazing library but unfortunately, it is not a framework. Although the creators of ReactJS recommend using React in a Flux architecture, there is no official framework. The result is a wide variety of great third-party frameworks. Our goal is to create a simple framework with flexibility. And thus came ArkhamJS.
+ArkhamJS is a lightweight framework that can accommodate a project of any size. From small start-up ideas to large enterprise projects. ReactJS is an amazing library but unfortunately, it is not a framework. Although the creators of ReactJS recommend using React in a Flux architecture, there is no official framework. The result is a wide variety of great third-party frameworks. Our goal is to create a simple framework with flexibility. And thus came ArkhamJS.
 
 #### Lightweight
-The framework is very small, coming in at about 7kb. The bulk of your app should lay within your code, not the framework. While larger frameworks come with lots of "magic", they become very limited when new features arise within your project. ReactJS is very powerful in itself. ArkhamJS simply complements it.
+The framework is small. The bulk of your app should lay within your code, not the framework. While larger frameworks come with lots of "magic", they become very limited when new features arise within your project. ReactJS is very powerful in itself. ArkhamJS simply complements it.
 
 #### Single Store
 All data is stored within a single, immutable store. The data can be accessed through all your views and components. Data is organized into multiple stores within the single store.
@@ -41,7 +41,7 @@ The biggest difference here is in the way storage is managed.
 
 Using [npm](https://www.npmjs.com/):
 
-    $ npm install arkhamjs
+    $ npm install --save arkhamjs
 
 ###App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
@@ -62,7 +62,7 @@ A complete example can be found in the [arkhamjs-skeleton](https://github.com/ni
 **Store:**
 ```js
 import {Flux, Store} from 'arkhamjs';
-import {Map} from 'immutable';
+import Immutable from 'immutable';
 
 export default class AppStore extends Store {
   constructor() {
@@ -80,7 +80,7 @@ export default class AppStore extends Store {
       case 'APP_TEST':
         return state.set('test', data.get('demo'));
       case 'APP_RESET':
-        return Map(this.initialState());
+        return Immutable.fromJS(this.initialState());
       default:
         return state;
     }
@@ -103,11 +103,10 @@ export default AppActions;
 
 **Component:**
 ```js
-import React, {Component} from 'react';
-import {Flux} from 'arkhamjs';
+import {Arkham, Flux, React} from 'arkhamjs';
 import AppStore from 'stores/AppStore';
 
-export default class AppView extends Component {
+export default class AppView extends React.Component {
   constructor(props) {
     super(props);
     
@@ -117,7 +116,7 @@ export default class AppView extends Component {
     };
     
     // Initialize Flux with custom configuration (optional)
-    Flux.config({
+    this._config = {
       // Enable caching in session storage
       cache: true,
       
@@ -126,10 +125,10 @@ export default class AppView extends Component {
       
       // Name of your app
       name: 'MyApp'
-    });
+    };
 
     // Register stores
-    Flux.registerStore([AppStore]);
+    this._stores = [AppStore];
     
     // Bind methods
     this.onAppTest = this.onAppTest.bind(this);
@@ -159,7 +158,11 @@ export default class AppView extends Component {
   }
   
   render() {
-    return <div>{this.state.myTest}</div>
+    return (
+      <Arkham config={this._config} stores={this._stores}>
+        {this.state.myTest}
+      </Arkham>
+    );
   }
 };
 

@@ -1,11 +1,15 @@
-import EventEmitter from 'events';
-import Immutable, {Map} from 'immutable';
-
 /**
  * Copyright (c) 2017, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
+import EventEmitter from 'events';
+import Immutable, {Map} from 'immutable';
+
+/**
+ * Flux
+ * @type {EventEmitter}
+ */
 class Flux extends EventEmitter {
   /**
    * Create a new instance of Flux.  Note that the Flux object
@@ -83,7 +87,7 @@ class Flux extends EventEmitter {
       const cache = this._useCache && Map.isMap(data) ? data : Map();
 
       // Get default values
-      const state = this._store.get(name) || cache.get(name) || storeCls.getInitialState() || Map();
+      const state = cache.get(name) || this._store.get(name) || storeCls.getInitialState() || Map();
       this._store = this._store.set(name, state);
 
       // Save cache in session storage
@@ -115,20 +119,23 @@ class Flux extends EventEmitter {
    * @param {object} options Configuration options.
    */
   config(options) {
-    this._options = Immutable.fromJS(options || {});
+    this._options = options || {};
 
     // Name
-    this._name = this._options.get('name', 'arkhamjs');
+    this._name = this._options.name || 'arkhamjs';
 
     // Cache
-    this._useCache = this._options.get('useCache', true);
+    this._useCache = this._options.useCache ? true : false;
 
     if(this._useCache) {
       this._store = this.getSessionData(this._name) || Map();
     }
+    
+    // Output immutable objects
+    this._useImmutable = this._options.useImmutable ? true : false;
 
     // Debug
-    this._debugLevel = this._options.get('debugLevel', this.DEBUG_DISABLED);
+    this._debugLevel = this._options.debugLevel || this.DEBUG_DISABLED;
   }
 
   /**
@@ -142,7 +149,7 @@ class Flux extends EventEmitter {
       console.error(...obj);
     }
 
-    const fnc = this._options.get('debugErrorFnc');
+    const fnc = this._options.debugErrorFnc;
 
     if(fnc) {
       fnc(this._debugLevel, ...obj);
@@ -160,7 +167,7 @@ class Flux extends EventEmitter {
       console.info(...obj);
     }
 
-    const fnc = this._options.get('debugInfoFnc');
+    const fnc = this._options.debugInfoFnc;
 
     if(fnc) {
       fnc(this._debugLevel, ...obj);
@@ -178,7 +185,7 @@ class Flux extends EventEmitter {
       console.log(...obj);
     }
 
-    const fnc = this._options.get('debugLogFnc');
+    const fnc = this._options.debugLogFnc;
 
     if(fnc) {
       fnc(this._debugLevel, ...obj);
@@ -289,12 +296,20 @@ class Flux extends EventEmitter {
     if(this._useCache) {
       this.setSessionData(this._name, this._store);
     }
-
-    if(!silent) {
-      this.emit(type, data);
+    
+    if(this._useImmutable) {
+      if(!silent) {
+        this.emit(type, data);
+      }
+      
+      return action;
+    } else {
+      if(!silent) {
+        this.emit(type, data.toJS());
+      }
+      
+      return action.toJS();
     }
-
-    return action;
   }
 
   /**
@@ -378,13 +393,26 @@ class Flux extends EventEmitter {
    * @returns {Map} the state object.
    */
   getStore(name = '', defaultValue) {
+    let store;
+    
+    // Make the defaultValue immutable if not already
+    if(!Immutable.Iterable.isIterable(defaultValue)) {
+      defaultValue = Immutable.fromJS(defaultValue);
+    }
+    
     if(Array.isArray(name)) {
-      return this._store.getIn(name, defaultValue);
+      store = this._store.getIn(name, defaultValue);
     }
     else if(name !== '') {
-      return this._store.get(name, defaultValue);
+      store = this._store.get(name, defaultValue);
     } else {
-      return this._store || Map();
+      store = this._store || Map();
+    }
+  
+    if(this._useImmutable) {
+      return store;
+    } else {
+      return store.toJS();
     }
   }
 

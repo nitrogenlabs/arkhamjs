@@ -1,10 +1,14 @@
-import Immutable, {Map} from 'immutable';
-
 /**
  * Copyright (c) 2017, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
+import Immutable, {Map} from 'immutable';
+
+/**
+ * Store
+ * @type {class}
+ */
 export default class Store {
   /**
    * A Flux store interface

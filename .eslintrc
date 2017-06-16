@@ -1,48 +1,25 @@
 {
   "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "jest/globals": true,
+    "node": true
+  },
   "plugins": [
     "babel",
+    "jest",
     "react"
   ],
-  "globals": {
-    "describe": false,
-    "it": false,
-    "xit": false,
-    "before": false,
-    "beforeEach": false,
-    "after": false,
-    "afterEach": false
-  },
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "binaryLiterals": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "forOf": true,
-    "generators": true,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralDuplicateProperties": true,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "octalLiterals": true,
-    "regexUFlag": true,
-    "regexYFlag": true,
-    "restParams": true,
-    "spread": true,
-    "superInFunctions": true,
-    "templateStrings": true,
-    "unicodeCodePointEscapes": true,
-    "globalReturn": true,
-    "jsx": true,
-    "experimentalObjectRestSpread": true
-  },
-  "env": {
-    "es6": true,
-    "browser": true,
-    "node": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "globalReturn": true,
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
   },
   "rules": {
     "array-bracket-spacing": 0,
@@ -60,15 +37,7 @@
       120,
       4
     ],
-    "new-cap": [
-      2,
-      {
-        "newIsCap": true,
-        "capIsNew": true,
-        "properties": false,
-        "capIsNewExceptions": ["List", "Map", "Set"]
-      }
-    ],
+    "new-cap": 0,
     "no-duplicate-imports": 2,
     "no-eq-null": 2,
     "no-mixed-spaces-and-tabs": 2,
@@ -152,13 +121,14 @@
       2,
       "as-needed"
     ],
-    "babel/no-await-in-loop": 1,
+    "no-await-in-loop": 1,
     "react/display-name": 0,
     "react/jsx-boolean-value": 2,
     "react/jsx-no-undef": 2,
     "react/jsx-sort-props": 0,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
+    "react/jsx-wrap-multilines": 2,
     "react/no-did-mount-set-state": 2,
     "react/no-did-update-set-state": 2,
     "react/no-multi-comp": 0,
@@ -169,6 +139,9 @@
       "component": true,
       "html": false
     }],
-    "react/jsx-wrap-multilines": 2
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/valid-expect": "error"
   }
 }

@@ -1,5 +1,3 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
 import {Flux, Store} from '../src';
 
 describe('Flux', () => {
@@ -9,7 +7,8 @@ describe('Flux', () => {
   const cfg = {
     debugLevel: Flux.DEBUG_DISPATCH,
     name: 'arkhamjs',
-    useCache: true
+    useCache: true,
+    useImmutable: true
   };
 
   class TestStore extends Store {
@@ -33,7 +32,7 @@ describe('Flux', () => {
     }
   }
 
-  before(() => {
+  beforeAll(() => {
     // Mock storage
     const storageMock = () => {
       let storage = {};
@@ -59,25 +58,28 @@ describe('Flux', () => {
     Flux.config(cfg);
 
     // Spy
-    localSetSpy = sinon.spy(Flux._window.localStorage, 'setItem');
-    sessionSetSpy = sinon.spy(Flux._window.sessionStorage, 'setItem');
-    sessionSpy = sinon.spy(Flux, 'setSessionData');
+    localSetSpy = jest.spyOn(Flux._window.localStorage, 'setItem');
+    sessionSetSpy = jest.spyOn(Flux._window.sessionStorage, 'setItem');
+    sessionSpy = jest.spyOn(Flux, 'setSessionData');
 
     // Method
     store = Flux.registerStore(TestStore);
   });
-
-  after(() => {
-    localSetSpy.restore();
-    sessionSetSpy.restore();
-    sessionSpy.restore();
+  
+  afterEach(() => {
+    localSetSpy.mockClear();
+    sessionSetSpy.mockClear();
+    sessionSpy.mockClear();
+  });
+  
+  afterAll(() => {
+    localSetSpy.mockRestore();
+    sessionSetSpy.mockRestore();
+    sessionSpy.mockRestore();
   });
 
   describe('#clearAppData', () => {
-    before(() => {
-      // Spy
-      sessionSpy.reset();
-
+    beforeAll(() => {
       // Set test data
       Flux.setStore(['test', 'item'], 'clear');
 
@@ -86,11 +88,11 @@ describe('Flux', () => {
     });
 
     it('should re-initialize session data', () => {
-      return expect(sessionSpy.called).to.be.true;
+      expect(sessionSpy.mock.calls.length).toBe(2);
     });
 
     it('should reset the store data', () => {
-      return expect(Flux.getStore(['test', 'item'])).to.eq('default');
+      expect(Flux.getStore(['test', 'item'])).toBe('default');
     });
   });
 
@@ -99,28 +101,33 @@ describe('Flux', () => {
     const opts = {
       debugLevel: 0,
       name,
-      useCache: true
+      useCache: true,
+      useImmutable: true
     };
 
-    before(() => {
+    beforeAll(() => {
       // Method
       Flux.config(opts);
     });
 
-    after(() => {
+    afterAll(() => {
       Flux.config(cfg);
     });
 
-    it('should remove session data', () => {
-      return expect(Flux._debugLevel).to.eq(opts.debugLevel);
+    it('should set debugLevel', () => {
+      expect(Flux._debugLevel).toBe(opts.debugLevel);
     });
 
-    it('should remove session data', () => {
-      return expect(Flux._name).to.eq(opts.name);
+    it('should set app name', () => {
+      expect(Flux._name).toBe(opts.name);
     });
-
-    it('should remove session data', () => {
-      return expect(Flux._useCache).to.eq(opts.useCache);
+  
+    it('should set useCache', () => {
+      expect(Flux._useCache).toBe(opts.useCache);
+    });
+  
+    it('should set useImmutable', () => {
+      expect(Flux._useImmutable).toBe(opts.useImmutable);
     });
   });
 
@@ -128,20 +135,20 @@ describe('Flux', () => {
     let consoleSpy;
     const msg = 'test';
 
-    before(() => {
+    beforeAll(() => {
       // Spy
-      consoleSpy = sinon.spy(console, 'error');
+      consoleSpy = jest.spyOn(console, 'error');
 
       // Method
       Flux.debugError(msg);
     });
 
-    after(() => {
-      consoleSpy.restore();
+    afterAll(() => {
+      consoleSpy.mockRestore();
     });
 
     it('should send data to console.error', () => {
-      return expect(consoleSpy.args[0][0]).to.eq(msg);
+      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
     });
   });
 
@@ -149,20 +156,20 @@ describe('Flux', () => {
     let consoleSpy;
     const msg = 'test';
 
-    before(() => {
+    beforeAll(() => {
       // Spy
-      consoleSpy = sinon.spy(console, 'info');
+      consoleSpy = jest.spyOn(console, 'info');
 
       // Method
       Flux.debugInfo(msg);
     });
 
-    after(() => {
-      consoleSpy.restore();
+    afterAll(() => {
+      consoleSpy.mockRestore();
     });
 
     it('should send data to console.info', () => {
-      return expect(consoleSpy.args[0][0]).to.eq(msg);
+      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
     });
   });
 
@@ -170,20 +177,20 @@ describe('Flux', () => {
     let consoleSpy;
     const msg = 'test';
 
-    before(() => {
+    beforeAll(() => {
       // Spy
-      consoleSpy = sinon.spy(console, 'log');
+      consoleSpy = jest.spyOn(console, 'log');
 
       // Method
       Flux.debugLog(msg);
     });
 
-    after(() => {
-      consoleSpy.restore();
+    afterAll(() => {
+      consoleSpy.mockRestore();
     });
 
     it('should send data to console.log', () => {
-      return expect(consoleSpy.args[0][0]).to.eq(msg);
+      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
     });
   });
 
@@ -192,7 +199,7 @@ describe('Flux', () => {
       // Method
       Flux.delLocalData(key);
       const testVal = Flux.getLocalData(key);
-      return expect(testVal).to.be.null;
+      expect(testVal).toBe(null);
     });
   });
 
@@ -201,76 +208,90 @@ describe('Flux', () => {
       // Method
       Flux.delSessionData(key);
       const testVal = Flux.getSessionData(key);
-      return expect(testVal).to.be.null;
+      expect(testVal).toBe(null);
     });
   });
 
   describe('#deregisterStore', () => {
-    before(() => {
+    beforeAll(() => {
       // Method
       Flux.deregisterStore('test');
     });
 
-    after(() => {
+    afterAll(() => {
       Flux.registerStore(TestStore);
     });
 
     it('should remove class', () => {
-      return expect(Flux._storeClasses.has('test')).to.be.false;
+      expect(Flux._storeClasses.has('test')).toBe(false);
     });
 
     it('should remove store data', () => {
-      return expect(Flux._store.has('test')).to.be.false;
+      expect(Flux._store.has('test')).toBe(false);
     });
   });
 
   describe('#dispatch', () => {
-    let eventSpy;
+    let action, eventSpy;
 
-    before(() => {
+    beforeAll(() => {
       // Spy
-      eventSpy = sinon.spy();
+      eventSpy = jest.fn();
       Flux.on('TEST_EVENT', eventSpy);
-
+  
       // Method
       Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
     });
 
-    after(() => {
+    afterAll(() => {
       Flux.off('TEST_EVENT', eventSpy);
     });
-
-    it('should alter the store data', () => {
+  
+    it('should return a JSON action', () => {
+      Flux._useImmutable = false;
+      action = Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
+      expect(action.type).toBe('TEST_EVENT');
+      expect(action.testVar).toBe('test');
+    });
+  
+    it('should return an immutable action', () => {
+      Flux._useImmutable = true;
+      action = Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
+      expect(action.get('type')).toBe('TEST_EVENT');
+      expect(action.get('testVar')).toBe('test');
+    });
+  
+    it('should alter the store data returning an immutable object', () => {
       const item = Flux.getStore(['test', 'testAction']);
-      return expect(item).to.eq('test');
+      expect(item).toBe('test');
     });
 
     it('should dispatch an event', () => {
-      return expect(eventSpy.called).to.be.true;
+      expect(eventSpy.mock.calls.length).toBe(3);
     });
   });
 
   describe('#enableDebugger', () => {
     it('should disable debugger', () => {
       Flux.enableDebugger(Flux.DEBUG_DISABLED);
-      return expect(Flux._debugLevel).to.be.eq(0);
+      expect(Flux._debugLevel).toBe(0);
     });
 
     it('should enable debugger for logs', () => {
       Flux.enableDebugger(Flux.DEBUG_LOGS);
-      return expect(Flux._debugLevel).to.be.eq(1);
+      expect(Flux._debugLevel).toBe(1);
     });
 
     it('should enable debugger for dispatch actions', () => {
       Flux.enableDebugger(Flux.DEBUG_DISPATCH);
-      return expect(Flux._debugLevel).to.be.eq(2);
+      expect(Flux._debugLevel).toBe(2);
     });
   });
 
   describe('#getClass', () => {
     it('should get a class', () => {
       const cls = Flux.getClass('test');
-      return expect(cls.name).to.eq('test');
+      expect(cls.name).toBe('test');
     });
   });
 
@@ -281,7 +302,7 @@ describe('Flux', () => {
 
       // Method
       const testVal = Flux.getLocalData(key);
-      return expect(testVal).to.eq(val);
+      expect(testVal).toBe(val);
     });
   });
 
@@ -290,55 +311,58 @@ describe('Flux', () => {
       // Method
       Flux.setSessionData(key, val);
       const testVal = Flux.getSessionData(key);
-      return expect(testVal).to.eq(val);
+      expect(testVal).toBe(val);
     });
   });
 
   describe('#getStore', () => {
     it('should get a global store', () => {
       const item = Flux.getStore();
-      return expect(item.getIn(['test', 'item'])).to.eq('default');
+      expect(item.getIn(['test', 'item'])).toBe('default');
     });
-
-    it('should get a specific store', () => {
+  
+    it('should get a specific store returning a JSON object', () => {
+      Flux._useImmutable = false;
       const item = Flux.getStore('test');
-      return expect(item.get('item')).to.eq('default');
+      expect(item.item).toBe('default');
     });
-
+  
+    it('should get a specific store returning an immutable object', () => {
+      Flux._useImmutable = true;
+      const item = Flux.getStore('test');
+      expect(item.get('item')).toBe('default');
+    });
+    
     it('should get a specific item within a store', () => {
       const item = Flux.getStore(['test', 'item']);
-      return expect(item).to.eq('default');
+      expect(item).toBe('default');
     });
   });
 
   describe('#off', () => {
     it('should remove a listener', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       Flux.on('test', spy);
       Flux.off('test', spy);
       Flux.dispatch({type: 'test'});
-
-      return expect(spy.called).to.be.false;
+  
+      expect(spy.mock.calls.length).toBe(0);
     });
   });
 
   describe('#registerStore', () => {
     it('should save the class', () => {
       const cls = Flux._storeClasses.get('test');
-      return expect(cls.name).to.eq('test');
+      expect(cls.name).toBe('test');
     });
 
     it('should set the initial value', () => {
       const item = Flux._store.getIn(['test', 'item']);
-      return expect(item).to.eq('default');
-    });
-
-    it('should save store in cache', () => {
-      return expect(sessionSpy.called).to.be.true;
+      expect(item).toBe('default');
     });
 
     it('should return the class', () => {
-      return expect(store.name).to.eq('test');
+      expect(store.name).toBe('test');
     });
   });
 
@@ -346,29 +370,29 @@ describe('Flux', () => {
     it('should set session data', () => {
       // Method
       Flux.setSessionData(key, val);
-      return expect(sessionSetSpy.called).to.be.true;
+      expect(sessionSetSpy.mock.calls.length).toBe(1);
     });
   });
 
   describe('#setStore', () => {
     let oldItem, changedItem, newItem;
 
-    before(() => {
+    beforeAll(() => {
       oldItem = Flux.getStore(['test', 'testUpdate']);
       changedItem = Flux.setStore(['test', 'testUpdate'], 'test');
       newItem = Flux.getStore(['test', 'testUpdate']);
     });
 
     it('should have the original value', () => {
-      return expect(oldItem).to.eq('default');
+      expect(oldItem).toBe('default');
     });
 
     it('should return the updated object', () => {
-      return expect(changedItem.getIn(['test', 'testUpdate'])).to.eq('test');
+      expect(changedItem.getIn(['test', 'testUpdate'])).toBe('test');
     });
 
     it('should update the property within the store', () => {
-      return expect(newItem).to.eq('test');
+      expect(newItem).toBe('test');
     });
   });
 
@@ -376,7 +400,7 @@ describe('Flux', () => {
     it('should set local data', () => {
       // Method
       Flux.setLocalData(key, val);
-      return expect(localSetSpy.called).to.be.true;
+      expect(localSetSpy.mock.calls.length).toBe(1);
     });
   });
 });
