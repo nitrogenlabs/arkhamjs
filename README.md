@@ -192,6 +192,7 @@ Set configuration options.
   * name \(*String*) - Name of your app. Should not contain spaces. Is used as the session storage property for your 
   cache. *Default: arkhamjs*
   * useCache \(*Boolean*) - Enable caching to session storage. *Default: true*
+  * useImmutable \(*Boolean*) - Enable immutable return values. If set to false, will return JSON objects. *Default: true*
 
 
 ### Events
