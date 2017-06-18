@@ -261,7 +261,7 @@ describe('Flux', () => {
       expect(action.get('testVar')).toBe('test');
     });
   
-    it('should alter the store data returning an immutable object', () => {
+    it('should alter the store data', () => {
       const item = Flux.getStore(['test', 'testAction']);
       expect(item).toBe('test');
     });

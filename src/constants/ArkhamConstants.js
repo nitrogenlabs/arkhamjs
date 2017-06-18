@@ -3,5 +3,6 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 export default {
-  UPDATE_TITLE: 'ARKHAM_UPDATE_TITLE'
+  UPDATE_TITLE: 'ARKHAM_UPDATE_TITLE',
+  UPDATE_VIEW: 'ARKHAM_UPDATE_VIEW'
 };

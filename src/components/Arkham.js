@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import {BrowserRouter, HashRouter, MemoryRouter, Router, StaticRouter} from 'react-router-dom';
 import Flux from '../Flux';
 import ArkhamConstants from '../constants/ArkhamConstants';
-import Immutable from 'immutable';
 
 /**
  * Arkham
@@ -40,7 +39,7 @@ export default class Arkham extends Component {
     this.onUpdateView = this.onUpdateView.bind(this);
     
     // Initialize Flux with custom configuration
-    this._config = Immutable.fromJS(props.config).toJS();
+    this._config = props.config;
     Flux.config(this._config);
     
     // Register stores
@@ -81,7 +80,9 @@ export default class Arkham extends Component {
     if(this._scrollToTop) {
       window.scrollTo(0, 0);
     }
-    
+    // Dispatch event to indicate view has changed
+    Flux.dispatch(ArkhamConstants.UPDATE_VIEW);
+
     // Check custom user confirmation
     if(this.props.config.getUserConfirmation) {
       return this.props.config.getUserConfirmation(message, callback);

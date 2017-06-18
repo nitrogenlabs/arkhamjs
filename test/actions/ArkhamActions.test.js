@@ -1,4 +1,4 @@
-import {ArkhamActions} from '../../src';
+import {ArkhamActions, Flux} from '../../src';
 
 describe('ArkhamActions', () => {
   describe('#goto', () => {
@@ -11,6 +11,7 @@ describe('ArkhamActions', () => {
   
   describe('#updateTitle', () => {
     it('should update browser title', () => {
+      Flux._useImmutable = false;
       const name = 'Test';
       const action = ArkhamActions.updateTitle(name);
       expect(action.title).toBe(name);

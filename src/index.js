@@ -8,3 +8,6 @@ export {default as ArkhamActions} from './actions/ArkhamActions';
 export {default as Arkham} from './components/Arkham';
 export {default as View} from './components/View';
 export {default as ViewContainer} from './components/ViewContainer';
+
+// Constants
+export {default as ArkhamConstants} from './constants/ArkhamConstants';

@@ -125,14 +125,14 @@ class Flux extends EventEmitter {
     this._name = this._options.name || 'arkhamjs';
 
     // Cache
-    this._useCache = this._options.useCache ? true : false;
+    this._useCache = this._options.useCache !== false;
 
     if(this._useCache) {
       this._store = this.getSessionData(this._name) || Map();
     }
     
     // Output immutable objects
-    this._useImmutable = this._options.useImmutable ? true : false;
+    this._useImmutable = this._options.useImmutable !== false;
 
     // Debug
     this._debugLevel = this._options.debugLevel || this.DEBUG_DISABLED;
@@ -397,7 +397,7 @@ class Flux extends EventEmitter {
     
     // Make the defaultValue immutable if not already
     if(!Immutable.Iterable.isIterable(defaultValue)) {
-      defaultValue = Immutable.fromJS(defaultValue);
+      defaultValue = defaultValue ? Immutable.fromJS(defaultValue) : null;
     }
     
     if(Array.isArray(name)) {
@@ -412,7 +412,7 @@ class Flux extends EventEmitter {
     if(this._useImmutable) {
       return store;
     } else {
-      return store.toJS();
+      return Immutable.Iterable.isIterable(store) ? store.toJS() : store;
     }
   }
 

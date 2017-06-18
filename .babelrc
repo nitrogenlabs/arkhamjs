@@ -1,9 +1,14 @@
 {
-  "presets": ["react", "es2015", "stage-0"],
   "env": {
     "production": {
       "comments": false,
       "presets": ["babili"]
     }
-  }
+  },
+  "presets": [
+    "es2015",
+    "react",
+    "stage-0"
+  ],
+  "retainLines": true
 }
