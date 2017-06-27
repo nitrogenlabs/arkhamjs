@@ -337,6 +337,11 @@ describe('Flux', () => {
       const item = Flux.getStore(['test', 'item']);
       expect(item).toBe('default');
     });
+  
+    it('should return default value from a null item', () => {
+      const item = Flux.getStore(['test', 'notDefault'], '');
+      expect(item).toBe('');
+    });
   });
 
   describe('#off', () => {
