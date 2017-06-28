@@ -14,7 +14,7 @@ import ArkhamConstants from '../constants/ArkhamConstants';
  */
 export default class Arkham extends Component {
   static propTypes = {
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     config: PropTypes.object,
     routes: PropTypes.array,
