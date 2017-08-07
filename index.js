@@ -13,10 +13,12 @@ exports.FluxDebugLevel = _interopRequireDefault(require('./dist/Flux'))['FluxDeb
 exports.FluxOptions = _interopRequireDefault(require('./dist/Flux'))['FluxOptions'];
 
 exports.Store = _interopRequireDefault(require('./dist/Store'))['Store'];
-exports.Store = _interopRequireDefault(require('./dist/Store'))['Store'];
 
 // Actions
 exports.ArkhamActions = _interopRequireDefault(require('./dist/actions/ArkhamActions'))['ArkhamActions'];
+
+// Constants
+exports.AppConstants = _interopRequireDefault(require('./dist/actions/ArkhamActions'))['AppConstants'];
 
 // Components
 exports.Arkham = _interopRequireDefault(require('./dist/components/Arkham'))['Arkham'];
