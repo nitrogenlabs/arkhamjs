@@ -4,7 +4,7 @@
  */
 import * as PropTypes from 'prop-types';
 import {Component} from 'react';
-import ArkhamActions from '../actions/ArkhamActions';
+import {ArkhamActions} from '../actions/ArkhamActions';
 
 export interface ViewProps {
   readonly history: object;
@@ -16,7 +16,7 @@ export interface ViewProps {
  * View
  * @type {Component}
  */
-export default class View extends Component<ViewProps, {}> {
+export class View extends Component<ViewProps, {}> {
   static propTypes = {
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,

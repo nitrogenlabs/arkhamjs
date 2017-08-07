@@ -1,14 +1,12 @@
 import {set} from 'lodash';
-import {Flux, Store} from '../src';
-import {ArkhamConstants} from '../src/constants/ArkhamConstants';
-import {FluxOptions} from '../src/Flux';
+import {Flux, FluxDebugLevel, FluxOptions, Store} from '../src';
 
 describe('Flux', () => {
   let store, localSetSpy, sessionSetSpy, sessionSpy;
   const val: string = 'hello_world';
   const key: string = 'test';
   const cfg: FluxOptions = {
-    debugLevel: ArkhamConstants.DEBUG_DISPATCH,
+    debugLevel: FluxDebugLevel.DISPATCH,
     name: 'arkhamjs',
     useCache: true
   };
@@ -264,17 +262,17 @@ describe('Flux', () => {
   
   describe('#enableDebugger', () => {
     it('should disable debugger', () => {
-      Flux.enableDebugger(ArkhamConstants.DEBUG_DISABLED);
+      Flux.enableDebugger(FluxDebugLevel.DISABLED);
       expect(Flux['options'].debugLevel).toBe(0);
     });
     
     it('should enable debugger for logs', () => {
-      Flux.enableDebugger(ArkhamConstants.DEBUG_LOGS);
+      Flux.enableDebugger(FluxDebugLevel.LOGS);
       expect(Flux['options'].debugLevel).toBe(1);
     });
     
     it('should enable debugger for dispatch actions', () => {
-      Flux.enableDebugger(ArkhamConstants.DEBUG_DISPATCH);
+      Flux.enableDebugger(FluxDebugLevel.DISPATCH);
       expect(Flux['options'].debugLevel).toBe(2);
     });
   });

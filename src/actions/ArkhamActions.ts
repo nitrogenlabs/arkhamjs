@@ -2,24 +2,31 @@
  * Copyright (c) 2017, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import * as History from 'history';
-import {ArkhamConstants} from '../constants/ArkhamConstants';
-import Flux from '../Flux';
+import {createBrowserHistory, History} from 'history';
+import {Flux, FluxAction} from '../Flux';
+
+export interface ArkhamActionsProps {
+  readonly UPDATE_TITLE: string;
+  readonly UPDATE_VIEW: string;
+  goto: (path: string) => History;
+  updateTitle: (title: string) => FluxAction;
+}
 
 /**
  * ArkhamActions
  * @type {object}
  */
-const ArkhamActions = {
-  goto: (path: string) => {
-    const history = History.createBrowserHistory();
+export const ArkhamActions: ArkhamActionsProps = {
+  UPDATE_TITLE: 'ARKHAM_UPDATE_TITLE',
+  UPDATE_VIEW: 'ARKHAM_UPDATE_VIEW',
+  
+  goto: (path: string): History => {
+    const history = createBrowserHistory();
     history.push(path);
     return history;
   },
   
-  updateTitle: (title: string) => {
-    return Flux.dispatch({type: ArkhamConstants.UPDATE_TITLE, title});
+  updateTitle: (title: string): FluxAction => {
+    return Flux.dispatch({type: ArkhamActions.UPDATE_TITLE, title});
   }
 };
-
-export default ArkhamActions;

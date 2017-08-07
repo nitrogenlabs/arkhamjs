@@ -12,7 +12,7 @@
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
     "outDir": "dist",
-    "pretty": true,
+    "pretty": false,
     "removeComments": true,
     "rootDir": "src",
     "sourceMap": true,
@@ -22,8 +22,10 @@
     "./src/**/*"
   ],
   "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "./dist",
+    "./docs",
+    "./node_modules",
+    "./test"
   ]
 }

@@ -5,9 +5,9 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {BrowserRouter, HashRouter, MemoryRouter, Router, StaticRouter} from 'react-router-dom';
-import {ArkhamConstants} from '../constants/ArkhamConstants';
-import Flux, {FluxOptions} from '../Flux';
-import Store from '../Store';
+import {ArkhamActions} from '../actions/ArkhamActions';
+import {Flux, FluxOptions} from '../Flux';
+import {Store} from '../Store';
 
 export interface ArkhamProps {
   readonly children?: JSX.Element;
@@ -21,7 +21,7 @@ export interface ArkhamProps {
  * Arkham
  * @type {Component}
  */
-export default class Arkham extends React.Component<ArkhamProps, {}> {
+export class Arkham extends React.Component<ArkhamProps, {}> {
   private config: FluxOptions;
   
   static propTypes = {
@@ -65,12 +65,12 @@ export default class Arkham extends React.Component<ArkhamProps, {}> {
   
   componentWillMount(): void {
     // Add listeners
-    Flux.on(ArkhamConstants.UPDATE_TITLE, this.onUpdateTitle);
+    Flux.on(ArkhamActions.UPDATE_TITLE, this.onUpdateTitle);
   }
   
   componentWillUnmount(): void {
     // Add listeners
-    Flux.on(ArkhamConstants.UPDATE_TITLE, this.onUpdateTitle);
+    Flux.on(ArkhamActions.UPDATE_TITLE, this.onUpdateTitle);
   }
   
   getChildContext(): object {
@@ -87,7 +87,7 @@ export default class Arkham extends React.Component<ArkhamProps, {}> {
       window.scrollTo(0, 0);
     }
     // Dispatch event to indicate view has changed
-    Flux.dispatch({type: ArkhamConstants.UPDATE_VIEW});
+    Flux.dispatch({type: ArkhamActions.UPDATE_VIEW});
     
     // Check custom user confirmation
     

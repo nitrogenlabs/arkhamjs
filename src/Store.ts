@@ -7,7 +7,7 @@
  * Store
  * @type {Class}
  */
-export default class Store {
+export class Store {
   state: object;
   name: string;
   

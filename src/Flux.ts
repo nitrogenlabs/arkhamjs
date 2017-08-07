@@ -6,12 +6,9 @@
 import {EventEmitter} from 'events';
 import {LocationDescriptor} from 'history';
 import {cloneDeep, get, isEqual, set} from 'lodash';
-import {ArkhamConstants} from './constants/ArkhamConstants';
 import {Store} from './Store';
 
-export type FluxDebugLevel = ArkhamConstants.DEBUG_DISABLED
-  | ArkhamConstants.DEBUG_LOGS
-  | ArkhamConstants.DEBUG_DISPATCH;
+export enum FluxDebugLevel {DISABLED, LOGS, DISPATCH}
 
 export interface FluxOptions {
   readonly basename?: string;
@@ -40,15 +37,21 @@ export interface FluxAction {
   readonly [key: string]: any;
 }
 
+export interface FluxConfig {
+  readonly arkhamjs: FluxOptions;
+  readonly [key: string]: any;
+}
+
 /**
  * Flux
  * @type {EventEmitter}
  */
-export class Flux extends EventEmitter {
+export class FluxFramework extends EventEmitter {
+  // Properties
   private store: object;
   private storeClasses: object;
   private defaultOptions: FluxOptions = {
-    debugLevel: ArkhamConstants.DEBUG_DISABLED,
+    debugLevel: FluxDebugLevel.DISABLED,
     forceRefresh: 'pushState' in window.history,
     name: 'arkhamjs',
     routerType: 'browser',
@@ -244,13 +247,13 @@ export class Flux extends EventEmitter {
    * @param {object} action to dispatch to all the stores.
    * @param {boolean} silent To silence any events.
    */
-  dispatch(action: FluxAction, silent: boolean = false): object {
+  dispatch(action: FluxAction, silent: boolean = false): FluxAction {
     action = cloneDeep(action);
     const {type, ...data} = action;
     
     // Require a type
     if(!type) {
-      return {};
+      return action;
     }
     
     const oldState = cloneDeep(this.store);
@@ -266,7 +269,7 @@ export class Flux extends EventEmitter {
         storeCls.state = this.store[storeName];
       });
     
-    if(debugLevel > ArkhamConstants.DEBUG_LOGS) {
+    if(debugLevel > FluxDebugLevel.LOGS) {
       const hasChanged = !isEqual(this.store, oldState);
       const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
       const updatedColor = hasChanged ? '#00d484' : '#959595';
@@ -301,11 +304,11 @@ export class Flux extends EventEmitter {
    * Enables the console debugger.
    *
    * @param {number} level Enable or disable the debugger. Uses the constants:
-   *   ArkhamConstants.DEBUG_DISABLED (0) - Disable.
-   *   ArkhamConstants.DEBUG_LOGS (1) - Enable console logs.
-   *   ArkhamConstants.DEBUG_DISPATCH (2) - Enable console logs and dispatch action data (default).
+   *   FluxDebugLevel.DISABLED (0) - Disable.
+   *   FluxDebugLevel.LOGS (1) - Enable console logs.
+   *   FluxDebugLevel.DISPATCH (2) - Enable console logs and dispatch action data (default).
    */
-  enableDebugger(level: number = ArkhamConstants.DEBUG_DISPATCH): void {
+  enableDebugger(level: number = FluxDebugLevel.DISPATCH): void {
     this.options = {...this.options, debugLevel: level};
   }
   
@@ -514,10 +517,9 @@ export class Flux extends EventEmitter {
   }
 }
 
-const fluxConfig = {
+const fluxConfig: FluxConfig = {
   ...window,
   arkhamjs: {}
 };
 
-const flux: Flux = new Flux(fluxConfig.arkhamjs);
-export default flux;
+export const Flux: FluxFramework = new FluxFramework(fluxConfig.arkhamjs);

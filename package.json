@@ -26,11 +26,12 @@
     "npm": ">4.2.0"
   },
   "scripts": {
+    "compile": "tsc",
     "docs": "typedoc --target ES5 --module commonjs --out docs/ src/ --exclude src/index.ts --excludeExternals --hideGenerator",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest": "npm run lint",
     "test": "jest",
-    "prepublish": "NODE_ENV=production tsc"
+    "prepublishOnly": "NODE_ENV=production npm run compile && npm test"
   },
   "dependencies": {
     "history": "^4.6.3",

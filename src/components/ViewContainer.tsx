@@ -26,7 +26,7 @@ export interface RouteProps {
  * ViewContainer
  * @type {Component}
  */
-export default class ViewContainer extends React.Component<ViewContainerProps, {}> {
+export class ViewContainer extends React.Component<ViewContainerProps, {}> {
   static propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,

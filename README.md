@@ -61,6 +61,7 @@ A complete example can be found in the [arkhamjs-skeleton](https://github.com/ni
 **Store:**
 ```typescript
 import {Flux, Store} from 'arkhamjs';
+import {AppActions} from '../actions/AppActions';
 
 export class AppStore extends Store {
   constructor() {
@@ -75,10 +76,10 @@ export class AppStore extends Store {
 
   onAction(type: string, data: object, state: object): object {
     switch(type) {
-      case 'APP_TEST':
+      case AppActions.TEST:
         state.test = data.demo;
         return state;
-      case 'APP_RESET':
+      case AppActions.RESET:
         return this.initialState();
       default:
         return state;
@@ -89,20 +90,32 @@ export class AppStore extends Store {
 
 **Action:**
 ```typescript
-import {Flux} from 'arkhamjs';
+import {Flux, FluxAction} from 'arkhamjs';
 
-export const AppActions = {
-  test: (str: string) => {
-    Flux.dispatch({type: 'APP_TEST', demo: str});
+export interface AppActionsProps {
+  readonly RESET: string;
+  readonly TEST: string;
+  test: (str: string) => FluxAction;
+}
+
+export const AppActions: AppActionsProps = {
+  // Constants
+  RESET: 'APP_RESET',
+  TEST: 'APP_TEST',
+  
+  // Methods
+  test: (str: string): FluxAction => {
+    return Flux.dispatch({type: AppActions.TEST, demo: str});
   }
 };
 ```
 
 **Component:**
 ```typescript jsx
-import {Arkham, ArkhamConstants, Flux, FluxOptions, Store} from 'arkhamjs';
+import {Arkham, ArkhamConstants, Flux, FluxDebugLevel, FluxOptions, Store} from 'arkhamjs';
 import * as React from 'react';
-import {AppStore} from 'stores/AppStore';
+import {AppActions} from '../actions/AppActions';
+import {AppStore} from '../stores/AppStore';
 
 export class AppView extends React.Component {
   private fluxOptions: FluxOptions;
@@ -122,7 +135,7 @@ export class AppView extends React.Component {
       cache: true,
       
       // Enable debugger
-      debugLevel: ArkhamConstants.DEBUG_DISPATCH,
+      debugLevel: FluxDebugLevel.DISPATCH,
       
       // Name of your app
       name: 'MyApp'
@@ -137,14 +150,14 @@ export class AppView extends React.Component {
   
   componentWillMount() {
     // Add listeners
-    Flux.on('APP_TEST', this.onAppTest);
+    Flux.on(AppActions.TEST, this.onAppTest);
     
     // Initialize
     AppActions.test('Hello World');
   }
 
   componentWillUnmount() {
-    Flux.off('APP_TEST', this.onAppTest);
+    Flux.off(AppActions.TEST, this.onAppTest);
   }
   
   onAppTest() {
@@ -179,9 +192,9 @@ Set configuration options.
 * [`options`] \(*object*): Configuration options.
   * debugLevel \(*number*) - Enable the debugger. You can specify to show console.logs and/or Flux dispatches. You can
   use a numeric value or one of the pre-defined constants below:
-    * DEBUG_DISABLED (0) - Disable debugger.
-    * DEBUG_LOGS (1) - Only allow console logs.
-    * DEBUG_DISPATCH (2) - Display both, console logs and dispatcher action details.
+    * FluxDebugLevel.DISABLED (0) - Disable debugger.
+    * FluxDebugLevel.LOGS (1) - Only allow console logs.
+    * FluxDebugLevel.DISPATCH (2) - Display both, console logs and dispatcher action details.
   * debugLogFnc \(*function*) - (optional) Passes the debug data to the specified function with the debugLevel as
   the first parameter and the data as the 1-n parameters. Executed when Flux.debugLog() is run.
   * debugInfoFnc \(*function*) - (optional) Passes the debug data to the specified function with the debugLevel as
