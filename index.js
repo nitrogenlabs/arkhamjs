@@ -18,7 +18,7 @@ exports.Store = _interopRequireDefault(require('./dist/Store'))['Store'];
 exports.ArkhamActions = _interopRequireDefault(require('./dist/actions/ArkhamActions'))['ArkhamActions'];
 
 // Constants
-exports.AppConstants = _interopRequireDefault(require('./dist/actions/ArkhamActions'))['AppConstants'];
+exports.ArkhamConstants = _interopRequireDefault(require('./dist/actions/ArkhamActions'))['ArkhamConstants'];
 
 // Components
 exports.Arkham = _interopRequireDefault(require('./dist/components/Arkham'))['Arkham'];
