@@ -9,7 +9,7 @@ import {cloneDeep, get, isEqual, set} from 'lodash';
 import {DEBUG_DISABLED, DEBUG_DISPATCH, DEBUG_LOGS} from './constants/ArkhamConstants';
 import {Store} from './Store';
 
-type FluxDebugLevel = DEBUG_DISABLED | DEBUG_LOGS | DEBUG_DISPATCH;
+export type FluxDebugLevel = DEBUG_DISABLED | DEBUG_LOGS | DEBUG_DISPATCH;
 
 export interface FluxOptions {
   readonly basename?: string;
