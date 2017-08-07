@@ -93,8 +93,8 @@ export class AppStore extends Store {
 import {Flux, FluxAction} from 'arkhamjs';
 
 export class AppConstants {
-  static RESET: string = 'APP_RESET';
-  static TEST: string = 'APP_TEST';
+  static readonly RESET: string = 'APP_RESET';
+  static readonly TEST: string = 'APP_TEST';
 }
 
 export class AppActions {

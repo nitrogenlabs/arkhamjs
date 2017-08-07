@@ -6,8 +6,8 @@ import {createBrowserHistory, History} from 'history';
 import {Flux, FluxAction} from '../Flux';
 
 export class ArkhamConstants {
-  static UPDATE_TITLE: string = 'ARKHAM_UPDATE_TITLE';
-  static UPDATE_VIEW: string = 'ARKHAM_UPDATE_VIEW';
+  static readonly UPDATE_TITLE: string = 'ARKHAM_UPDATE_TITLE';
+  static readonly UPDATE_VIEW: string = 'ARKHAM_UPDATE_VIEW';
 }
 
 /**
