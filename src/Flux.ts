@@ -6,22 +6,23 @@
 import {EventEmitter} from 'events';
 import {LocationDescriptor} from 'history';
 import {cloneDeep, get, isEqual, set} from 'lodash';
-import Store from './Store';
+import {DEBUG_DISABLED, DEBUG_DISPATCH, DEBUG_LOGS} from './constants/ArkhamConstants';
+import {Store} from './Store';
 
-export enum FluxDebugLevel {DEBUG_DISABLED, DEBUG_LOGS, DEBUG_DISPATCH}
+type FluxDebugLevel = DEBUG_DISABLED | DEBUG_LOGS | DEBUG_DISPATCH;
 
 export interface FluxOptions {
   readonly basename?: string;
   readonly context?: object;
-  debugLevel?: FluxDebugLevel;
+  readonly debugLevel?: FluxDebugLevel;
   readonly debugErrorFnc?: (debugLevel: number, ...args) => void;
   readonly debugInfoFnc?: (debugLevel: number, ...args) => void;
   readonly debugLogFnc?: (debugLevel: number, ...args) => void;
   readonly forceRefresh?: boolean;
   readonly getUserConfirmation?: () => void;
-  hashType?: 'slash' | 'noslash' | 'hashbang';
+  readonly hashType?: 'slash' | 'noslash' | 'hashbang';
   readonly history?: object;
-  initialEntries?: LocationDescriptor[];
+  readonly initialEntries?: LocationDescriptor[];
   readonly initialIndex?: number;
   readonly keyLength?: number;
   readonly location?: string | object;
@@ -45,7 +46,7 @@ export class Flux extends EventEmitter {
   private store: object;
   private storeClasses: object;
   private defaultOptions: FluxOptions = {
-    debugLevel: FluxDebugLevel.DEBUG_DISABLED,
+    debugLevel: DEBUG_DISABLED,
     forceRefresh: 'pushState' in window.history,
     name: 'arkhamjs',
     routerType: 'browser',
@@ -263,7 +264,7 @@ export class Flux extends EventEmitter {
         storeCls.state = this.store[storeName];
       });
     
-    if(debugLevel > FluxDebugLevel.DEBUG_LOGS) {
+    if(debugLevel > DEBUG_LOGS) {
       const hasChanged = !isEqual(this.store, oldState);
       const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
       const updatedColor = hasChanged ? '#00d484' : '#959595';
@@ -302,8 +303,8 @@ export class Flux extends EventEmitter {
    *   DEBUG_LOGS (1) - Enable console logs.
    *   DEBUG_DISPATCH (2) - Enable console logs and dispatch action data (default).
    */
-  enableDebugger(level: number = FluxDebugLevel.DEBUG_DISPATCH): void {
-    this.options.debugLevel = level;
+  enableDebugger(level: number = DEBUG_DISPATCH): void {
+    this.options = {...this.options, debugLevel: level};
   }
   
   /**

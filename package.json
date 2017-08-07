@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Typescript Flux library for ReactJS",
   "license": "MIT",
   "main": "indxe.js",
@@ -22,8 +22,8 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "engines": {
-    "node": ">6.0.0",
-    "npm": ">3.3.6"
+    "node": ">7.10.0",
+    "npm": ">4.2.0"
   },
   "scripts": {
     "docs": "typedoc --target ES5 --module commonjs --out docs/ src/ --exclude src/index.ts --excludeExternals --hideGenerator",
