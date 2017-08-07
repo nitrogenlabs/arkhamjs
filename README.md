@@ -47,7 +47,7 @@ Using [npm](https://www.npmjs.com/):
 
     $ npm install --save arkhamjs
 
-###App Usage
+### App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
 ```js
@@ -61,7 +61,7 @@ A complete example can be found in the [arkhamjs-skeleton](https://github.com/ni
 **Store:**
 ```typescript
 import {Flux, Store} from 'arkhamjs';
-import {AppActions} from '../actions/AppActions';
+import {AppConstants} from '../actions/AppActions';
 
 export class AppStore extends Store {
   constructor() {
@@ -76,10 +76,10 @@ export class AppStore extends Store {
 
   onAction(type: string, data: object, state: object): object {
     switch(type) {
-      case AppActions.TEST:
+      case AppConstants.TEST:
         state.test = data.demo;
         return state;
-      case AppActions.RESET:
+      case AppConstants.RESET:
         return this.initialState();
       default:
         return state;
@@ -92,29 +92,23 @@ export class AppStore extends Store {
 ```typescript
 import {Flux, FluxAction} from 'arkhamjs';
 
-export interface AppActionsProps {
-  readonly RESET: string;
-  readonly TEST: string;
-  test: (str: string) => FluxAction;
+export class AppConstants {
+  static RESET: string = 'APP_RESET';
+  static TEST: string = 'APP_TEST';
 }
 
-export const AppActions: AppActionsProps = {
-  // Constants
-  RESET: 'APP_RESET',
-  TEST: 'APP_TEST',
-  
-  // Methods
-  test: (str: string): FluxAction => {
-    return Flux.dispatch({type: AppActions.TEST, demo: str});
+export class AppActions {
+  static test(str: string): FluxAction {
+    return Flux.dispatch({type: AppConstants.TEST, demo: str});
   }
-};
+}
 ```
 
 **Component:**
 ```typescript jsx
 import {Arkham, ArkhamConstants, Flux, FluxDebugLevel, FluxOptions, Store} from 'arkhamjs';
 import * as React from 'react';
-import {AppActions} from '../actions/AppActions';
+import {AppActions, AppConstants} from '../actions/AppActions';
 import {AppStore} from '../stores/AppStore';
 
 export class AppView extends React.Component {
@@ -150,14 +144,14 @@ export class AppView extends React.Component {
   
   componentWillMount() {
     // Add listeners
-    Flux.on(AppActions.TEST, this.onAppTest);
+    Flux.on(AppConstants.TEST, this.onAppTest);
     
     // Initialize
     AppActions.test('Hello World');
   }
 
   componentWillUnmount() {
-    Flux.off(AppActions.TEST, this.onAppTest);
+    Flux.off(AppConstants.TEST, this.onAppTest);
   }
   
   onAppTest() {

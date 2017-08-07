@@ -31,7 +31,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest": "npm run lint",
     "test": "jest",
-    "prepublishOnly": "NODE_ENV=production npm run compile && npm test"
+    "prepublishOnly": "NODE_ENV=production npm test && npm run compile"
   },
   "dependencies": {
     "history": "^4.6.3",

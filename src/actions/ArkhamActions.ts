@@ -5,28 +5,23 @@
 import {createBrowserHistory, History} from 'history';
 import {Flux, FluxAction} from '../Flux';
 
-export interface ArkhamActionsProps {
-  readonly UPDATE_TITLE: string;
-  readonly UPDATE_VIEW: string;
-  goto: (path: string) => History;
-  updateTitle: (title: string) => FluxAction;
+export class ArkhamConstants {
+  static UPDATE_TITLE: string = 'ARKHAM_UPDATE_TITLE';
+  static UPDATE_VIEW: string = 'ARKHAM_UPDATE_VIEW';
 }
 
 /**
  * ArkhamActions
  * @type {object}
  */
-export const ArkhamActions: ArkhamActionsProps = {
-  UPDATE_TITLE: 'ARKHAM_UPDATE_TITLE',
-  UPDATE_VIEW: 'ARKHAM_UPDATE_VIEW',
-  
-  goto: (path: string): History => {
+export class ArkhamActions {
+  static goto(path: string): History {
     const history = createBrowserHistory();
     history.push(path);
     return history;
-  },
-  
-  updateTitle: (title: string): FluxAction => {
-    return Flux.dispatch({type: ArkhamActions.UPDATE_TITLE, title});
   }
-};
+  
+  static updateTitle(title: string): FluxAction {
+    return Flux.dispatch({type: ArkhamConstants.UPDATE_TITLE, title});
+  }
+}
