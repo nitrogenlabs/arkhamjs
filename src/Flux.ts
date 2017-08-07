@@ -32,7 +32,7 @@ export interface FluxOptions {
   readonly useCache?: boolean;
 }
 
-interface FluxAction {
+export interface FluxAction {
   readonly type: string;
   readonly [key: string]: any;
 }
