@@ -6,10 +6,12 @@
 import {EventEmitter} from 'events';
 import {LocationDescriptor} from 'history';
 import {cloneDeep, get, isEqual, set} from 'lodash';
-import {DEBUG_DISABLED, DEBUG_DISPATCH, DEBUG_LOGS} from './constants/ArkhamConstants';
+import {ArkhamConstants} from './constants/ArkhamConstants';
 import {Store} from './Store';
 
-export type FluxDebugLevel = DEBUG_DISABLED | DEBUG_LOGS | DEBUG_DISPATCH;
+export type FluxDebugLevel = ArkhamConstants.DEBUG_DISABLED
+  | ArkhamConstants.DEBUG_LOGS
+  | ArkhamConstants.DEBUG_DISPATCH;
 
 export interface FluxOptions {
   readonly basename?: string;
@@ -46,7 +48,7 @@ export class Flux extends EventEmitter {
   private store: object;
   private storeClasses: object;
   private defaultOptions: FluxOptions = {
-    debugLevel: DEBUG_DISABLED,
+    debugLevel: ArkhamConstants.DEBUG_DISABLED,
     forceRefresh: 'pushState' in window.history,
     name: 'arkhamjs',
     routerType: 'browser',
@@ -264,7 +266,7 @@ export class Flux extends EventEmitter {
         storeCls.state = this.store[storeName];
       });
     
-    if(debugLevel > DEBUG_LOGS) {
+    if(debugLevel > ArkhamConstants.DEBUG_LOGS) {
       const hasChanged = !isEqual(this.store, oldState);
       const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
       const updatedColor = hasChanged ? '#00d484' : '#959595';
@@ -299,11 +301,11 @@ export class Flux extends EventEmitter {
    * Enables the console debugger.
    *
    * @param {number} level Enable or disable the debugger. Uses the constants:
-   *   DEBUG_DISABLED (0) - Disable.
-   *   DEBUG_LOGS (1) - Enable console logs.
-   *   DEBUG_DISPATCH (2) - Enable console logs and dispatch action data (default).
+   *   ArkhamConstants.DEBUG_DISABLED (0) - Disable.
+   *   ArkhamConstants.DEBUG_LOGS (1) - Enable console logs.
+   *   ArkhamConstants.DEBUG_DISPATCH (2) - Enable console logs and dispatch action data (default).
    */
-  enableDebugger(level: number = DEBUG_DISPATCH): void {
+  enableDebugger(level: number = ArkhamConstants.DEBUG_DISPATCH): void {
     this.options = {...this.options, debugLevel: level};
   }
   
