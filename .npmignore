@@ -1,9 +1,10 @@
 /.idea
-/build
+/dist
 /docs
 /node_modules
 /src
 /test
-.babelrc
 .travis.yml
-esdoc.json
+package-lock.json
+tslint.json
+~.bash_profile

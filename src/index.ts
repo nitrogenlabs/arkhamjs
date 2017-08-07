@@ -10,4 +10,4 @@ export {default as View} from './components/View';
 export {default as ViewContainer} from './components/ViewContainer';
 
 // Constants
-export {default as ArkhamConstants} from './constants/ArkhamConstants';
+export {ArkhamConstants} from './constants/ArkhamConstants';

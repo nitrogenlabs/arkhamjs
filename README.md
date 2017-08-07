@@ -7,14 +7,17 @@ ArkhamJS is a lightweight framework that can accommodate a project of any size. 
 #### Lightweight
 The framework is small. The bulk of your app should lay within your code, not the framework. While larger frameworks come with lots of "magic", they become very limited when new features arise within your project. ReactJS is very powerful in itself. ArkhamJS simply complements it.
 
+#### Typescript
+Compatible with typescript. Definitions are included to support your Typescript project.
+
 #### Single Store
-All data is stored within a single, immutable store. The data can be accessed through all your views and components. Data is organized into multiple stores within the single store.
+All data is stored within a single store. The data can be accessed through all your views and components. Data is organized into multiple stores within the single store.
 
 #### Immutability
-To prevent object referencing, we use immutable objects, using ImmutableJS. When a state changes in a ReactJS component, the state's property is not the only item that is changed, the item it references is also updated. To prevent passing around an object between different scopes, immutable objects give your data a one way update path.
+To prevent object referencing, we use immutable objects. When a state changes in a ReactJS component, the state's property is not the only item that is changed, the item it references is also updated. To prevent passing around an object between different scopes, immutable objects give your data a one way update path.
 
 #### Cache
-Your single store id stored in sessionStorage by default. While this can be turned off in your options, it can be very useful when saving state.
+Your single store id stored in SessionStorage by default. While this can be turned off in your options, it can be very useful when saving state.
 
 #### Debugger
 The most important factor in choosing a framework is how easy it is to build with it. And with building comes debugging. A detailed debugger is included with the framework. When turned on, it will display any actions that come through the framework. Making the previous and new state visible to the developer. Great way to make your data transparent! Supported browsers: Chrome, Firefox, and Safari.
@@ -55,27 +58,27 @@ import {Flux, Store} from 'arkhamjs';
 A complete example can be found in the [arkhamjs-skeleton](https://github.com/nitrogenlabs/arkhamjs-skeleton). Below is an example of an action and a store.
 
 **Store:**
-```js
+```typescript
 import {Flux, Store} from 'arkhamjs';
-import Immutable from 'immutable';
 
-export default class AppStore extends Store {
+export class AppStore extends Store {
   constructor() {
     super('app');
   }
   
-  initialState() {
+  initialState(): object {
     return {
       test: 'default'
     };
   }
 
-  onAction(type, data, state) {
+  onAction(type: string, data: object, state: object): object {
     switch(type) {
       case 'APP_TEST':
-        return state.set('test', data.get('demo'));
+        state.test = data.demo;
+        return state;
       case 'APP_RESET':
-        return Immutable.fromJS(this.initialState());
+        return this.initialState();
       default:
         return state;
     }
@@ -84,24 +87,26 @@ export default class AppStore extends Store {
 ```
 
 **Action:**
-```js
+```typescript
 import {Flux} from 'arkhamjs';
 
-const AppActions = {
-  test: (str) => {
+export const AppActions = {
+  test: (str: string) => {
     Flux.dispatch({type: 'APP_TEST', demo: str});
   }
 };
-
-export default AppActions;
 ```
 
 **Component:**
-```js
-import {Arkham, Flux, React} from 'arkhamjs';
-import AppStore from 'stores/AppStore';
+```typescript jsx
+import {Arkham, ArkhamConstants, Flux, FluxOptions, Store} from 'arkhamjs';
+import * as React from 'react';
+import {AppStore} from 'stores/AppStore';
 
-export default class AppView extends React.Component {
+export class AppView extends React.Component {
+  private fluxOptions: FluxOptions;
+  private stores: Store[];
+  
   constructor(props) {
     super(props);
     
@@ -111,22 +116,19 @@ export default class AppView extends React.Component {
     };
     
     // Initialize Flux with custom configuration (optional)
-    this._config = {
+    this.fluxOptions = {
       // Enable caching in session storage
       cache: true,
       
       // Enable debugger
-      debugLevel: Flux.DEBUG_DISPATCH,
+      debugLevel: ArkhamConstants.DEBUG_DISPATCH,
       
       // Name of your app
-      name: 'MyApp',
-      
-      // Return JSON objects instead of immutable objects
-      useImmutable: false
+      name: 'MyApp'
     };
 
     // Register stores
-    this._stores = [AppStore];
+    this.stores = [AppStore];
     
     // Bind methods
     this.onAppTest = this.onAppTest.bind(this);
@@ -157,14 +159,12 @@ export default class AppView extends React.Component {
   
   render() {
     return (
-      <Arkham config={this._config} stores={this._stores}>
+      <Arkham config={this.fluxOptions} stores={this.stores}>
         {this.state.myTest}
       </Arkham>
     );
   }
-};
-
-export default AppActions;
+}
 ```
 
 ## Flux API
@@ -175,106 +175,99 @@ export default AppActions;
 Set configuration options.
 
 #### Arguments
-* [`options`] \(*Object*): Configuration options.
-  * debugLevel \(*Number*) - Enable the debugger. You can specify to show console.logs and/or Flux dispatches. You can
+* [`options`] \(*object*): Configuration options.
+  * debugLevel \(*number*) - Enable the debugger. You can specify to show console.logs and/or Flux dispatches. You can
   use a numeric value or one of the pre-defined constants below:
     * DEBUG_DISABLED (0) - Disable debugger.
     * DEBUG_LOGS (1) - Only allow console logs.
     * DEBUG_DISPATCH (2) - Display both, console logs and dispatcher action details.
-  * debugLogFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  * debugLogFnc \(*function*) - (optional) Passes the debug data to the specified function with the debugLevel as
   the first parameter and the data as the 1-n parameters. Executed when Flux.debugLog() is run.
-  * debugInfoFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  * debugInfoFnc \(*function*) - (optional) Passes the debug data to the specified function with the debugLevel as
   the first parameter and the data as the 1-n parameters. Executed when Flux.debugError() is run.
-  * debugErrorFnc \(*Function*) - (optional) Passes the debug data to the specified function with the debugLevel as
+  * debugErrorFnc \(*function*) - (optional) Passes the debug data to the specified function with the debugLevel as
   the first parameter and the data as the 1-n parameters. Executed when Flux.debugInfo() is run.
-  * name \(*String*) - Name of your app. Should not contain spaces. Is used as the session storage property for your 
+  * name \(*string*) - Name of your app. Should not contain spaces. Is used as the session storage property for your 
   cache. *Default: arkhamjs*
-  * useCache \(*Boolean*) - Enable caching to session storage. *Default: true*
-  * useImmutable \(*Boolean*) - Enable immutable return values. If set to false, will return JSON objects. *Default: true*
-
+  * useCache \(*boolean*) - Enable caching to session storage. *Default: true*
 
 ### Events
 
 #### `on(eventType, data)`
 Adds an event listener. It is called any time an action is dispatched to Flux, and some part of the state tree may 
 potentially have changed. You may then call getStore() to read the current state tree inside the callback.
-* [`eventType`] \(*String*): Event to subscribe for store updates.
-* [`listener`] \(*Function*): The callback to be invoked any time an action has been dispatched.
+* [`eventType`] \(*string*): Event to subscribe for store updates.
+* [`listener`] \(*function*): The callback to be invoked any time an action has been dispatched.
 
 #### `off(eventType, data)`
 Removes an event listener.
-* [`eventType`] \(*String*): Event to unsubscribe.
-* [`listener`] \(*Function*): The callback associated with the subscribed event.
+* [`eventType`] \(*string*): Event to unsubscribe.
+* [`listener`] \(*function*): The callback associated with the subscribed event.
 
 #### `dispatch(action, silent)`
 Dispatches an Action to all stores
-* [`action`] \(*Object*): An action object. The only required property is *type* which will indicate what is called in
+* [`action`] \(*object*): An action object. The only required property is *type* which will indicate what is called in
 the stores, all other properties will be sent to the store within the *data* object.
-* [`silent`] \(*Boolean*): Silence event emitter for this dispatch. Default: false.
+* [`silent`] \(*boolean*): Silence event emitter for this dispatch. Default: false.
 
 
 ### Stores
 
 #### `getStore(name, default)`
 Get the state tree. If only a particular store is needed, it can be specified.
-* [`name`] \(*String*|*Array*): (optional) A store name. May also use an array to get a nested property value.
-* [`default`] \(*String*|*Object*|*Immutable*): (optional) The default value, if undefined. This may be a string, JSON
- object or immutable object (ie. Map, List, etc.).
+* [`name`] \(*string*|*array*): (optional) A store name. May also use an array to get a nested property value.
+* [`default`] \(*any*): (optional) The default value, if undefined. This may be a string, number, array or object.
 
 ##### Returns
 The app store object.
 
 #### `setStore(name, value)`
 Used for unit testing. Set a store value. If only a particular store or property needs to be set, it can be specified.
-* [`name`] \(*String*|*Array*): A store name. May also use an array to get a nested property value.
-* [`value`] \(*Any*): The value to set. This may be a string, number, boolean, array, object, or immutable 
-object (ie. Map, List, etc.).
+* [`name`] \(*string*|*array*): A store name. May also use an array to get a nested property value.
+* [`value`] \(*any*): The value to set. This may be a string, number, boolean, array, or object.
 
 ##### Returns
 The updated store and returns the stored object.
 
 #### `getClass(name)`
 Get the store class object.
-* [`name`] \(*String*): The name of the store class object to retrieve.
+* [`name`] \(*string*): The name of the store class object to retrieve.
 
 ##### Returns
 A store class object.
 
 #### `registerStore(Class|Array)`
-Registers the store with Flux. If registering multiple stores, you may use an array of classes to
-register them at once.
-* [`Class`] \(*Class*|*Array*): The store class(s) to add to Flux.
+Registers stores with Flux. You may use an array of classes to register multiple.
+* [`Class`] \(*array*): The store class(s) to add to Flux.
 
 ##### Returns
 A new object from the class. If using an array, the return result will be the array of class objects.
 
 #### `deregisterStore(name)`
-Deregisters a store from Flux. If deregistering multiple stores, you may use an array of names to
-deregister them at once.
-* [`name`] \(*String*|*Array*): Name of store(s) to remove from Flux.
+Deregisters stores from Flux. You may use an array of names to deregister multiple.
+* [`name`] \(*array*): Name of store(s) to remove from Flux.
 
 
 ### SessionStorage
 
 #### `getSessionData(key)`
 Get an object from sessionStorage.
-* [`key`] \(*String*): Key of object to retrieve.
+* [`key`] \(*string*): Key of object to retrieve.
 
 ##### Returns
-An Immutable object or a string.
+A value from session storage.
 
 #### `setSessionData(key, value)`
 Save an object to sessionStorage.
-* [`key`] \(*String*): Key to reference object.
-* [`value`] \(*String|Object|Immutable*): A string or object to save. Immutable objects will be converted to JSON. All 
-objects will converted to a string before saving.
+* [`key`] \(*string*): Key to reference object.
+* [`value`] \(*any*): A value to save to SessionStorage. All objects will converted to a string before saving.
 
 ##### Returns
 A boolean indicating if data was successfully saved to sessionStorage.
 
 #### `delSessionData(key)`
 Remove an object from sessionStorage.
-* [`key`] \(*String*): Key of object to delete.
+* [`key`] \(*string*): Key of object to delete.
 
 ##### Returns
 A boolean indicating if data was successfully removed from sessionStorage.
@@ -290,47 +283,46 @@ A boolean indicating if app data was successfully removed from sessionStorage.
 
 #### `getLocalData(key)`
 Get an object from localStorage.
-* [`key`] \(*String*): Key of object to retrieve.
+* [`key`] \(*string*): Key of object to retrieve.
 
 ##### Returns
-An object or a string.
+A value from local storage.
 
 #### `setLocalData(key, value)`
 Save an object to localStorage.
-* [`key`] \(*String*): Key to reference object.
-* [`value`] \(*String|Object|Immutable*): A string or object to save. Immutable objects will be converted to JSON. All 
-objects will converted to a string before saving.
+* [`key`] \(*string*): Key to reference object.
+* [`value`] \(*any*): A value to save to LocalStorage. All objects will converted to a string before saving.
 
 ##### Returns
 A boolean indicating if data was successfully saved in localStorage.
 
 #### `delLocalData(key)`
 Remove an object from localStorage.
-* [`key`] \(*String*): Key of the object to remove.
+* [`key`] \(*string*): Key of the object to remove.
 
 ##### Returns
-A boolean indicating if data was successfully removed from localStorage.
+A boolean indicating if data was successfully removed from LocalStorage.
 
 
 ### Debug
 #### `enableDebugger(toggle)`
 Turn on the console debugger to display each action call and store changes. By default the framework has the debugger 
 disabled.
-* [`toggle`] \(*Boolean*): Enable or disable debugger. Default: true.
+* [`toggle`] \(*boolean*): Enable or disable debugger. Default: true.
 
 #### `debugLog(obj1 [, obj2, ..., objN])`
 Logs data in the console. Only logs when in debug mode.  Will also call the debugLogFnc method set in the config.
-* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+* [`obj`] \(*any*): A list of JavaScript objects to output. The string representations of each of these objects are 
 appended together in the order listed and output.
 
 #### `debugInfo(obj1 [, obj2, ..., objN])`
 Logs informational messages to the console. Will also call the debugInfoFnc method set in the config.
-* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+* [`obj`] \(*any*): A list of JavaScript objects to output. The string representations of each of these objects are 
 appended together in the order listed and output.
 
 #### `debugError(obj1 [, obj2, ..., objN])`
 Logs errors in the console. Will also call the debugErrorFnc method set in the config.
-* [`obj`] \(*Any*): A list of JavaScript objects to output. The string representations of each of these objects are 
+* [`obj`] \(*any*): A list of JavaScript objects to output. The string representations of each of these objects are 
 appended together in the order listed and output.
 
 
@@ -342,4 +334,4 @@ appended together in the order listed and output.
 Used for unit testing. Gets the initial state of the store.
 
 ##### Returns
-The initial state of the store as an immutable object.
+The initial state of the store as an object.

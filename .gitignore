@@ -7,3 +7,5 @@
 /tmp
 .DS_STORE
 *.log
+package-lock.json
+~.bash_profile
