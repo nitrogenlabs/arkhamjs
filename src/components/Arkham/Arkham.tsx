@@ -5,9 +5,9 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {BrowserRouter, HashRouter, MemoryRouter, Router, StaticRouter} from 'react-router-dom';
-import {ArkhamConstants} from '../actions/ArkhamActions';
-import {Flux, FluxOptions} from '../Flux';
-import {Store} from '../Store';
+import {ArkhamConstants} from '../../actions/ArkhamActions/ArkhamActions';
+import {Flux, FluxOptions} from '../../Flux/Flux';
+import {Store} from '../../Store/Store';
 
 export interface ArkhamProps {
   readonly children?: JSX.Element;
@@ -24,7 +24,7 @@ export interface ArkhamProps {
 export class Arkham extends React.Component<ArkhamProps, {}> {
   private config: FluxOptions;
   
-  static propTypes = {
+  static propTypes: object = {
     children: PropTypes.node,
     className: PropTypes.string,
     config: PropTypes.object,
@@ -32,13 +32,13 @@ export class Arkham extends React.Component<ArkhamProps, {}> {
     stores: PropTypes.array
   };
   
-  static defaultProps: Partial<ArkhamProps> = {
+  static defaultProps: object = {
     config: {},
     routes: [],
     stores: []
   };
   
-  static childContextTypes = {
+  static childContextTypes: object = {
     config: PropTypes.object
   };
   
@@ -56,11 +56,12 @@ export class Arkham extends React.Component<ArkhamProps, {}> {
       scrollToTop: true,
       title: 'ArkhamJS'
     };
-    this.config = {...defaultConfig, ...this.props.config};
+    const {config, stores} = this.props;
+    this.config = {...defaultConfig, ...config};
     Flux.config(this.config);
     
     // Register stores
-    Flux.registerStore(this.props.stores);
+    Flux.registerStores(stores);
   }
   
   componentWillMount(): void {
@@ -97,7 +98,7 @@ export class Arkham extends React.Component<ArkhamProps, {}> {
   }
   
   onUpdateTitle(data): string {
-    const siteTitle = data.get('title', '');
+    const {title: siteTitle = ''} = data;
     const {title} = this.config;
     
     if(siteTitle === '') {

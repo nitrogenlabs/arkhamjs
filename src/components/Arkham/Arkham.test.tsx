@@ -1,6 +1,6 @@
 import {shallow} from 'enzyme';
 import * as React from 'react';
-import {Arkham} from '../../src';
+import {Arkham} from '../../components/Arkham/Arkham';
 
 describe('Arkham', () => {
   let rendered;

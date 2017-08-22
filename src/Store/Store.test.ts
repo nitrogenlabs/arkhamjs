@@ -1,5 +1,5 @@
 import {isObject} from 'lodash';
-import {Store} from '../src';
+import {Store} from './Store';
 
 describe('Store', () => {
   let store;
@@ -11,13 +11,6 @@ describe('Store', () => {
   describe('initial state', () => {
     it('should return an object', () => {
       expect(isObject(store.state)).toBe(true);
-    });
-  });
-  
-  describe('#getInitialState', () => {
-    it('should return an object', () => {
-      const state = store.getInitialState();
-      expect(isObject(state)).toBe(true);
     });
   });
   

@@ -6,7 +6,7 @@
 import {EventEmitter} from 'events';
 import {LocationDescriptor} from 'history';
 import {cloneDeep, get, isEqual, set} from 'lodash';
-import {Store} from './Store';
+import {Store} from '../Store/Store';
 
 export enum FluxDebugLevel {DISABLED, LOGS, DISPATCH}
 
@@ -37,19 +37,14 @@ export interface FluxAction {
   readonly [key: string]: any;
 }
 
-export interface FluxConfig {
-  readonly arkhamjs: FluxOptions;
-  readonly [key: string]: any;
-}
-
 /**
- * Flux
+ * FluxFramework
  * @type {EventEmitter}
  */
 export class FluxFramework extends EventEmitter {
   // Properties
-  private store: object;
-  private storeClasses: object;
+  private store: object = {};
+  private storeClasses: object = {};
   private defaultOptions: FluxOptions = {
     debugLevel: FluxDebugLevel.DISABLED,
     forceRefresh: 'pushState' in window.history,
@@ -67,14 +62,12 @@ export class FluxFramework extends EventEmitter {
    * is a Singleton pattern, so only one should ever exist.
    *
    * @constructor
-   * @this {Flux}
+   * @this {FluxFramework}
    */
-  constructor(options: FluxOptions) {
+  constructor() {
     super();
     
     // Methods
-    this.deregister = this.deregister.bind(this);
-    this.register = this.register.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
     this.config = this.config.bind(this);
     this.debugError = this.debugError.bind(this);
@@ -82,26 +75,27 @@ export class FluxFramework extends EventEmitter {
     this.debugLog = this.debugLog.bind(this);
     this.delLocalData = this.delLocalData.bind(this);
     this.delSessionData = this.delSessionData.bind(this);
-    this.deregisterStore = this.deregisterStore.bind(this);
+    this.deregister = this.deregister.bind(this);
+    this.deregisterStores = this.deregisterStores.bind(this);
     this.dispatch = this.dispatch.bind(this);
     this.enableDebugger = this.enableDebugger.bind(this);
     this.getClass = this.getClass.bind(this);
     this.getLocalData = this.getLocalData.bind(this);
+    this.getOptions = this.getOptions.bind(this);
     this.getSessionData = this.getSessionData.bind(this);
     this.getStore = this.getStore.bind(this);
     this.off = this.off.bind(this);
-    this.registerStore = this.registerStore.bind(this);
+    this.register = this.register.bind(this);
+    this.registerStores = this.registerStores.bind(this);
     this.setLocalData = this.setLocalData.bind(this);
     this.setSessionData = this.setSessionData.bind(this);
     this.setStore = this.setStore.bind(this);
     
     // Properties
-    this.store = {};
-    this.storeClasses = {};
     this.window = window || {};
     
     // Configuration
-    this.config(options);
+    this.config(this.defaultOptions);
   }
   
   /**
@@ -115,7 +109,7 @@ export class FluxFramework extends EventEmitter {
       .keys(this.storeClasses)
       .forEach((storeName: string) => {
         const storeCls: Store = this.storeClasses[storeName];
-        this.store[storeCls.name] = storeCls.getInitialState();
+        this.store[storeCls.name] = storeCls.initialState();
       });
     
     return this.setSessionData(this.options.name, this.store);
@@ -233,12 +227,12 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * De-registers a named store.
+   * De-registers named stores.
    *
-   * @param {array} stores The names of the stores to remove from the framework..
+   * @param {array} storeNames An array of store names to remove from the framework.
    */
-  deregisterStore(stores: string[]): void {
-    stores.forEach((s: string) => this.deregister(s));
+  deregisterStores(storeNames: string[]): void {
+    storeNames.forEach((name: string) => this.deregister(name));
   }
   
   /**
@@ -264,7 +258,7 @@ export class FluxFramework extends EventEmitter {
       .keys(this.storeClasses)
       .forEach((storeName: string) => {
         const storeCls: Store = this.storeClasses[storeName];
-        const state = this.store[storeName] || storeCls.getInitialState() || {};
+        const state = this.store[storeName] || storeCls.initialState() || {};
         this.store[storeName] = cloneDeep(storeCls.onAction(type, data, state)) || cloneDeep(state);
         storeCls.state = this.store[storeName];
       });
@@ -273,18 +267,19 @@ export class FluxFramework extends EventEmitter {
       const hasChanged = !isEqual(this.store, oldState);
       const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
       const updatedColor = hasChanged ? '#00d484' : '#959595';
+      const updatedStore = cloneDeep(this.store);
       
       if(console.groupCollapsed) {
         console.groupCollapsed(`FLUX DISPATCH: ${type}`);
         console.log('%c Action: ', 'color: #00C4FF', action);
         console.log('%c Last State: ', 'color: #959595', oldState);
-        console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, cloneDeep(this.store));
+        console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, updatedStore);
         console.groupEnd();
       } else {
         console.log(`FLUX DISPATCH: ${type}`);
         console.log(`Action: ${action}`);
         console.log('Last State: ', oldState);
-        console.log(`${updatedLabel}: `, cloneDeep(this.store));
+        console.log(`${updatedLabel}: `, updatedStore);
       }
     }
     
@@ -313,7 +308,7 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * Gets a store object that is registered.
+   * Get a store object that is registered.
    *
    * @param {string} name The name of the store.
    * @returns {Store} the store object.
@@ -323,7 +318,16 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * Gets a key from localStorage.
+   * Get the current Flux options.
+   *
+   * @returns {FluxOptions} the Flux options object.
+   */
+  getOptions(): FluxOptions {
+    return this.options;
+  }
+  
+  /**
+   * Get a key value from localStorage.
    *
    * @param {string} key The key for data.
    * @returns {any} the data object associated with the key.
@@ -349,7 +353,7 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * Gets a key from sessionStorage.
+   * Get a key value from sessionStorage.
    *
    * @param {string} key The key for data.
    * @returns {any} the data object associated with the key.
@@ -375,14 +379,14 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * Gets the current state object.
+   * Get the current state object.
    *
    * @param {string|array} [name] (optional) The name of the store for an object, otherwise it will return all store
-   *   objects. You can also use an array to specify a property within the object (uses the immutable, getIn).
+   *   objects. You can also use an array to specify a property path within the object.
    * @param {any} [defaultValue] (optional) A default value to return if null.
-   * @returns {object} the state object or a property within.
+   * @returns {any} the state object or a property value within.
    */
-  getStore(name: string | string[] = '', defaultValue?): any {
+  getStore(name?: string | string[] = '', defaultValue?): any {
     let storeValue;
     
     if(name === '') {
@@ -400,17 +404,17 @@ export class FluxFramework extends EventEmitter {
    * @param {string} [eventType] Event to unsubscribe.
    * @param {function} [listener] The callback associated with the subscribed event.
    */
-  off(eventType: string, listener): void {
+  off(eventType: string, listener: () => void): void {
     this.removeListener(eventType, listener);
   }
   
   /**
-   * Registers a new Store.
+   * Registers new Stores.
    *
    * @param {array} stores Store class.
    * @returns {array} the class object(s).
    */
-  registerStore(stores: Store[]): object[] {
+  registerStores(stores: any[]): object[] {
     return stores.map((store: Store) => this.register(store));
   }
   
@@ -461,8 +465,8 @@ export class FluxFramework extends EventEmitter {
   /**
    * Sets the current state object.
    *
-   * @param {string|array} [name] The name of the store to set. You can also use an array to specify a property
-   * within the object (uses the immutable, setIn).
+   * @param {string|array} [name] The name of the store to set. You can also use an array to specify a property path
+   * within the object.
    * @param {any} [value] The value to set.
    */
   setStore(name: string | string[] = '', value): void {
@@ -502,7 +506,7 @@ export class FluxFramework extends EventEmitter {
       const cache = useCache && sessionCache || {};
       
       // Get default values
-      const state = cache[storeName] || this.store[storeName] || storeCls.getInitialState() || [];
+      const state = cache[storeName] || this.store[storeName] || storeCls.initialState() || [];
       const store = cloneDeep(this.store);
       store[storeName] = cloneDeep(state);
       this.store = store;
@@ -517,9 +521,4 @@ export class FluxFramework extends EventEmitter {
   }
 }
 
-const fluxConfig: FluxConfig = {
-  ...window,
-  arkhamjs: {}
-};
-
-export const Flux: FluxFramework = new FluxFramework(fluxConfig.arkhamjs);
+export const Flux: FluxFramework = new FluxFramework();

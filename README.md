@@ -74,7 +74,7 @@ export class AppStore extends Store {
     };
   }
 
-  onAction(type: string, data: object, state: object): object {
+  onAction(type: string, data, state): object {
     switch(type) {
       case AppConstants.TEST:
         state.test = data.demo;
@@ -244,15 +244,15 @@ Get the store class object.
 ##### Returns
 A store class object.
 
-#### `registerStore(Class|Array)`
-Registers stores with Flux. You may use an array of classes to register multiple.
+#### `registerStores(array)`
+Registers stores with Flux. Use an array of classes to register multiple.
 * [`Class`] \(*array*): The store class(s) to add to Flux.
 
 ##### Returns
-A new object from the class. If using an array, the return result will be the array of class objects.
+An array of store class objects.
 
 #### `deregisterStore(name)`
-Deregisters stores from Flux. You may use an array of names to deregister multiple.
+Deregisters stores from Flux. Use an array of names to deregister multiple stores.
 * [`name`] \(*array*): Name of store(s) to remove from Flux.
 
 

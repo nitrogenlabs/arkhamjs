@@ -1,10 +1,9 @@
-/.idea
-/dist
-/docs
-/node_modules
-/src
-/test
+.idea
+docs
+node_modules
 .travis.yml
 package-lock.json
 tslint.json
 ~.bash_profile
+*.test.ts
+*.test.tsx

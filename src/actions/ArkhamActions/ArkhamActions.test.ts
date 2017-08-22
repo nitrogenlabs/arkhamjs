@@ -1,4 +1,5 @@
-import {ArkhamActions, Flux} from '../../src';
+import {Flux} from '../../Flux/Flux';
+import {ArkhamActions} from './ArkhamActions';
 
 describe('ArkhamActions', () => {
   describe('#goto', () => {

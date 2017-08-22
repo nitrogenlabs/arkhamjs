@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "A Typescript Flux library for ReactJS",
   "license": "MIT",
   "main": "indxe.js",
@@ -51,7 +51,6 @@
     "@types/react": "^16.0.0",
     "@types/react-dom": "^15.5.2",
     "@types/react-router-dom": "^4.0.7",
-    "awesome-typescript-loader": "^3.2.2",
     "enzyme": "^2.9.1",
     "jest": "^20.0.4",
     "react-addons-test-utils": "^15.6.0",
@@ -66,15 +65,22 @@
     "typescript": "^2.4.2"
   },
   "jest": {
-    "testURL": "http://localhost",
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "test/.*\\.test\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js"
-    ]
+    ],
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*test.ts?(x)"
+    ],
+    "verbose": false
   }
 }

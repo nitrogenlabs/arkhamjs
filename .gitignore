@@ -1,11 +1,9 @@
-/.idea
-/coverage
-/dev
-/dist
-/docs
-/node_modules
-/tmp
+.idea
+coverage
+dist
+docs
+node_modules
+tmp
 .DS_STORE
 *.log
-package-lock.json
 ~.bash_profile

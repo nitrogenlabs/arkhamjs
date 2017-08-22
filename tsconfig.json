@@ -3,7 +3,7 @@
     "allowJs": false,
     "declaration": true,
     "jsx": "react",
-    "lib": ["es6", "dom"],
+    "lib": ["es6", "dom", "es2015.promise"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
@@ -22,7 +22,7 @@
     "./src/**/*"
   ],
   "exclude": [
-    "**/*.spec.ts",
+    "**/*.test.*",
     "./dist",
     "./docs",
     "./node_modules",

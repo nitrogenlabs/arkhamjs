@@ -1,6 +1,6 @@
 import {shallow} from 'enzyme';
 import * as React from 'react';
-import {ViewContainer} from '../../src';
+import {ViewContainer} from './ViewContainer';
 
 describe('ViewContainer', () => {
   let rendered;

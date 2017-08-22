@@ -1,5 +1,6 @@
 import {set} from 'lodash';
-import {Flux, FluxDebugLevel, FluxOptions, Store} from '../src';
+import {Store} from '../Store/Store';
+import {Flux, FluxDebugLevel, FluxOptions} from './Flux';
 
 describe('Flux', () => {
   let store, localSetSpy, sessionSetSpy, sessionSpy;
@@ -65,7 +66,7 @@ describe('Flux', () => {
     sessionSpy = jest.spyOn(Flux, 'setSessionData');
     
     // Method
-    store = Flux.registerStore([TestStore]);
+    store = Flux.registerStores([TestStore]);
   });
   
   afterEach(() => {
@@ -209,14 +210,14 @@ describe('Flux', () => {
     });
   });
   
-  describe('#deregisterStore', () => {
+  describe('#deregisterStores', () => {
     beforeAll(() => {
       // Method
-      Flux.deregisterStore(['test']);
+      Flux.deregisterStores(['test']);
     });
     
     afterAll(() => {
-      Flux.registerStore([TestStore]);
+      Flux.registerStores([TestStore]);
     });
     
     it('should remove class', () => {
@@ -263,22 +264,25 @@ describe('Flux', () => {
   describe('#enableDebugger', () => {
     it('should disable debugger', () => {
       Flux.enableDebugger(FluxDebugLevel.DISABLED);
-      expect(Flux['options'].debugLevel).toBe(0);
+      const options: FluxOptions = Flux.getOptions();
+      expect(options.debugLevel).toBe(0);
     });
     
     it('should enable debugger for logs', () => {
       Flux.enableDebugger(FluxDebugLevel.LOGS);
-      expect(Flux['options'].debugLevel).toBe(1);
+      const options: FluxOptions = Flux.getOptions();
+      expect(options.debugLevel).toBe(1);
     });
     
     it('should enable debugger for dispatch actions', () => {
       Flux.enableDebugger(FluxDebugLevel.DISPATCH);
-      expect(Flux['options'].debugLevel).toBe(2);
+      const options: FluxOptions = Flux.getOptions();
+      expect(options.debugLevel).toBe(2);
     });
   });
   
   describe('#getClass', () => {
-    it('should get a class', () => {
+    it('should get a store class', () => {
       const storeCls: Store = Flux.getClass('test');
       expect(storeCls.name).toBe('test');
     });
@@ -338,8 +342,8 @@ describe('Flux', () => {
     });
   });
   
-  describe('#registerStore', () => {
-    it('should save the class', () => {
+  describe('#registerStores', () => {
+    it('should save the store class', () => {
       const storeCls: Store = Flux['storeClasses'].test;
       expect(storeCls.name).toBe('test');
     });

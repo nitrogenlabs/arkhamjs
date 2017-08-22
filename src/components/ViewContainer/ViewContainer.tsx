@@ -5,7 +5,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import {Route, RouteComponentProps} from 'react-router-dom';
+import {Route, RouteProps} from 'react-router-dom';
 
 export interface ViewContainerProps {
   readonly children?: React.ReactNode;
@@ -15,19 +15,12 @@ export interface ViewContainerProps {
   readonly routes?: RouteProps[];
 }
 
-export interface RouteProps {
-  readonly component: React.ComponentType<RouteComponentProps<any>>;
-  readonly exact: boolean;
-  readonly key: string;
-  readonly path: string;
-}
-
 /**
  * ViewContainer
  * @type {Component}
  */
 export class ViewContainer extends React.Component<ViewContainerProps, {}> {
-  static propTypes = {
+  static propTypes: object = {
     children: PropTypes.element,
     className: PropTypes.string,
     duration: PropTypes.number,
@@ -35,7 +28,7 @@ export class ViewContainer extends React.Component<ViewContainerProps, {}> {
     routes: PropTypes.array
   };
   
-  static defaultProps = {
+  static defaultProps: object = {
     duration: 300,
     name: 'view-animation',
     routes: []
@@ -46,12 +39,12 @@ export class ViewContainer extends React.Component<ViewContainerProps, {}> {
     
     return routes
       .map((route: RouteProps) => {
-        const {key, path, exact, component} = route;
+        const {path, exact, component} = route;
         
         if(route.component) {
           return (
             <Route
-              key={key}
+              key={path}
               path={path}
               exact={exact}
               component={component}/>

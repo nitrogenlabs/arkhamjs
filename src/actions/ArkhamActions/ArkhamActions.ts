@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {createBrowserHistory, History} from 'history';
-import {Flux, FluxAction} from '../Flux';
+import {Flux, FluxAction} from '../../Flux/Flux';
 
 export class ArkhamConstants {
   static readonly UPDATE_TITLE: string = 'ARKHAM_UPDATE_TITLE';
@@ -15,6 +15,14 @@ export class ArkhamConstants {
  * @type {object}
  */
 export class ArkhamActions {
+  static goBack() {
+    return Flux.dispatch({type: ArkhamConstants.GO_BACK});
+  }
+  
+  static goReplace(url: string, params) {
+    return Flux.dispatch({type: ArkhamConstants.GO_REPLACE, url, params});
+  }
+  
   static goto(path: string): History {
     const history = createBrowserHistory();
     history.push(path);

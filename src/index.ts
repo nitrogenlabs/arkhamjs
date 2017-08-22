@@ -1,10 +1,13 @@
-export {Flux, FluxAction, FluxOptions, FluxDebugLevel} from './Flux';
-export {Store} from './Store';
+// Framework
+export {Flux, FluxAction, FluxOptions, FluxDebugLevel} from './Flux/Flux';
+
+// Store
+export {Store} from './Store/Store';
 
 // Actions
-export {ArkhamActions, ArkhamConstants} from './actions/ArkhamActions';
+export {ArkhamActions, ArkhamConstants} from './actions/ArkhamActions/ArkhamActions';
 
 // Components
-export {Arkham} from './components/Arkham';
-export {View} from './components/View';
-export {ViewContainer} from './components/ViewContainer';
+export {Arkham} from './components/Arkham/Arkham';
+export {MatchProps, View, ViewProps} from './components/View/View';
+export {ViewContainer} from './components/ViewContainer/ViewContainer';
