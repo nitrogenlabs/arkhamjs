@@ -1,21 +1,35 @@
-import {Flux} from '../../Flux/Flux';
+import {ArkhamConstants} from '../../constants/ArkhamConstants';
 import {ArkhamActions} from './ArkhamActions';
 
 describe('ArkhamActions', () => {
+  describe('#goBack', () => {
+    it('should push path into history', () => {
+      const {type} = ArkhamActions.goBack();
+      expect(type).toBe(ArkhamConstants.GO_BACK);
+    });
+  });
+
+  describe('#goReplace', () => {
+    it('should push path into history', () => {
+      const path = '/test';
+      const {history} = ArkhamActions.goReplace(path);
+      expect(history.location.pathname).toBe(path);
+    });
+  });
+
   describe('#goto', () => {
     it('should push path into history', () => {
       const path = '/test';
-      const route = ArkhamActions.goto(path);
-      expect(route.location.pathname).toBe(path);
+      const {history} = ArkhamActions.goto(path);
+      expect(history.location.pathname).toBe(path);
     });
   });
   
   describe('#updateTitle', () => {
     it('should update browser title', () => {
-      Flux._useImmutable = false;
       const name = 'Test';
-      const action = ArkhamActions.updateTitle(name);
-      expect(action.title).toBe(name);
+      const {title} = ArkhamActions.updateTitle(name);
+      expect(title).toBe(name);
     });
   });
 });

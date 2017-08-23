@@ -2,34 +2,34 @@
  * Copyright (c) 2017, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {createBrowserHistory, History} from 'history';
+import {createBrowserHistory} from 'history';
+import {ArkhamConstants} from '../../constants/ArkhamConstants';
 import {Flux, FluxAction} from '../../Flux/Flux';
-
-export class ArkhamConstants {
-  static readonly UPDATE_TITLE: string = 'ARKHAM_UPDATE_TITLE';
-  static readonly UPDATE_VIEW: string = 'ARKHAM_UPDATE_VIEW';
-}
 
 /**
  * ArkhamActions
  * @type {object}
  */
 export class ArkhamActions {
-  static goBack() {
-    return Flux.dispatch({type: ArkhamConstants.GO_BACK});
-  }
-  
-  static goReplace(url: string, params) {
-    return Flux.dispatch({type: ArkhamConstants.GO_REPLACE, url, params});
-  }
-  
-  static goto(path: string): History {
+  static goBack(): FluxAction {
     const history = createBrowserHistory();
-    history.push(path);
-    return history;
+    history.goBack();
+    return Flux.dispatch({type: ArkhamConstants.GO_BACK, history});
+  }
+  
+  static goReplace(path: string, params?): FluxAction {
+    const history = createBrowserHistory();
+    history.replace(path, params);
+    return Flux.dispatch({type: ArkhamConstants.GO_REPLACE, history, path, params});
+  }
+  
+  static goto(path: string, params?): FluxAction {
+    const history = createBrowserHistory();
+    history.push(path, params);
+    return Flux.dispatch({type: ArkhamConstants.GO_REPLACE, history, path, params});
   }
   
   static updateTitle(title: string): FluxAction {
-    return Flux.dispatch({type: ArkhamConstants.UPDATE_TITLE, title});
+    return Flux.dispatch({type: ArkhamConstants.UPDATE_TITLE, history, title});
   }
 }

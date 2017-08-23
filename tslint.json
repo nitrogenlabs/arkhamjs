@@ -58,7 +58,7 @@
     ],
     "max-classes-per-file": [
       true,
-      2
+      1
     ],
     "max-line-length": [
       true,

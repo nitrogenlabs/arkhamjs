@@ -1,5 +1,6 @@
-import {shallow} from 'enzyme';
+import {createBrowserHistory, History, Location} from 'history';
 import * as React from 'react';
+import * as renderer from 'react-test-renderer';
 import {View} from './View';
 
 describe('View', () => {
@@ -7,13 +8,13 @@ describe('View', () => {
 
   beforeAll(() => {
     // Render
-    const history = {};
-    const location = {};
+    const history: History = createBrowserHistory();
+    const location: Location = {hash: '', key: '', pathname: '', search: '', state: ''};
     const match = {};
-    rendered = shallow(<View history={history} location={location} match={match}/>);
+    rendered = renderer.create(<View history={history} location={location} match={match}/>);
   });
 
   it('should render', () => {
-    return expect(rendered.exists()).toBe(true);
+    expect(rendered).toBeDefined();
   });
 });

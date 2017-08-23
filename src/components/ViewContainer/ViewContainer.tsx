@@ -33,6 +33,10 @@ export class ViewContainer extends React.Component<ViewContainerProps, {}> {
     name: 'view-animation',
     routes: []
   };
+
+  constructor(props: ViewContainerProps) {
+    super(props);
+  }
   
   renderRoutes(): JSX.Element[] {
     const {routes} = this.props;

@@ -5,7 +5,10 @@ export {Flux, FluxAction, FluxOptions, FluxDebugLevel} from './Flux/Flux';
 export {Store} from './Store/Store';
 
 // Actions
-export {ArkhamActions, ArkhamConstants} from './actions/ArkhamActions/ArkhamActions';
+export {ArkhamActions} from './actions/ArkhamActions/ArkhamActions';
+
+// Constants
+export {ArkhamConstants} from './constants/ArkhamConstants';
 
 // Components
 export {Arkham} from './components/Arkham/Arkham';

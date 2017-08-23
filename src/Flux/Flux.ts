@@ -386,7 +386,7 @@ export class FluxFramework extends EventEmitter {
    * @param {any} [defaultValue] (optional) A default value to return if null.
    * @returns {any} the state object or a property value within.
    */
-  getStore(name?: string | string[] = '', defaultValue?): any {
+  getStore(name: string | string[] = '', defaultValue?): any {
     let storeValue;
     
     if(name === '') {

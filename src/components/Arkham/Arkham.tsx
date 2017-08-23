@@ -5,7 +5,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {BrowserRouter, HashRouter, MemoryRouter, Router, StaticRouter} from 'react-router-dom';
-import {ArkhamConstants} from '../../actions/ArkhamActions/ArkhamActions';
+import {ArkhamConstants} from '../../constants/ArkhamConstants';
 import {Flux, FluxOptions} from '../../Flux/Flux';
 import {Store} from '../../Store/Store';
 

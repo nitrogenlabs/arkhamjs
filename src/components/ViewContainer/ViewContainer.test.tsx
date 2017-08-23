@@ -1,5 +1,5 @@
-import {shallow} from 'enzyme';
 import * as React from 'react';
+import * as renderer from 'react-test-renderer';
 import {ViewContainer} from './ViewContainer';
 
 describe('ViewContainer', () => {
@@ -7,10 +7,10 @@ describe('ViewContainer', () => {
 
   beforeAll(() => {
     // Render
-    rendered = shallow(<ViewContainer/>);
+    rendered = renderer.create(<ViewContainer/>);
   });
 
   it('should render', () => {
-    return expect(rendered.exists()).toBe(true);
+    expect(rendered).toBeDefined();
   });
 });

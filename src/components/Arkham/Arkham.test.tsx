@@ -1,16 +1,16 @@
-import {shallow} from 'enzyme';
 import * as React from 'react';
-import {Arkham} from '../../components/Arkham/Arkham';
+import * as renderer from 'react-test-renderer';
+import {Arkham} from './Arkham';
 
 describe('Arkham', () => {
   let rendered;
 
   beforeAll(() => {
     // Render
-    rendered = shallow(<Arkham/>);
+    rendered = renderer.create(<Arkham/>);
   });
 
   it('should render', () => {
-    return expect(rendered.exists()).toBe(true);
+    expect(rendered).toBeDefined();
   });
 });
