@@ -15,11 +15,15 @@ export interface ViewContainerProps {
   readonly routes?: RouteProps[];
 }
 
+
+export interface ViewContainerState {
+}
+
 /**
  * ViewContainer
  * @type {Component}
  */
-export class ViewContainer extends React.Component<ViewContainerProps, {}> {
+export class ViewContainer<P extends ViewContainerProps, S extends ViewContainerState> extends React.Component<P, S> {
   static propTypes: object = {
     children: PropTypes.element,
     className: PropTypes.string,
@@ -33,8 +37,8 @@ export class ViewContainer extends React.Component<ViewContainerProps, {}> {
     name: 'view-animation',
     routes: []
   };
-
-  constructor(props: ViewContainerProps) {
+  
+  constructor(props) {
     super(props);
   }
   

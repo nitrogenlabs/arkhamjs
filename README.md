@@ -44,13 +44,20 @@ The biggest difference here is in the way storage is managed.
 ### Installation
 
 Using [npm](https://www.npmjs.com/):
+```bash
+$ yarn add arkhamjs
+```
 
-    $ npm install --save arkhamjs
+or
+
+```bash
+$ npm install --save arkhamjs
+```
 
 ### App Usage
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
-```js
+```typescript
 import {Flux, Store} from 'arkhamjs';
 ```
 

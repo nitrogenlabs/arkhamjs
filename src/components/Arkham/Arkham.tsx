@@ -42,7 +42,7 @@ export class Arkham extends React.Component<ArkhamProps, {}> {
     config: PropTypes.object
   };
   
-  constructor(props: ArkhamProps) {
+  constructor(props) {
     super(props);
     
     // Methods

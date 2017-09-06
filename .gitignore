@@ -7,3 +7,4 @@ tmp
 .DS_STORE
 *.log
 ~.bash_profile
+yarn.lock

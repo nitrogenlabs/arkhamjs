@@ -19,11 +19,14 @@ export interface ViewProps {
   readonly match?: MatchProps;
 }
 
+export interface ViewState {
+}
+
 /**
  * View
  * @type {Component}
  */
-export class View extends React.Component<ViewProps, object> {
+export class View<P extends ViewProps, S extends ViewState> extends React.Component<P, S> {
   static propTypes: object = {
     history: PropTypes.object,
     location: PropTypes.object,
@@ -40,7 +43,7 @@ export class View extends React.Component<ViewProps, object> {
     config: PropTypes.object
   };
 
-  constructor(props: ViewProps) {
+  constructor(props) {
     super(props);
   }
   

@@ -3,6 +3,7 @@ docs
 node_modules
 .travis.yml
 package-lock.json
+yarn.lock
 tslint.json
 ~.bash_profile
 *.test.ts
