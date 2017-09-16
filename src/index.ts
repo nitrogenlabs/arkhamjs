@@ -12,5 +12,11 @@ export {ArkhamConstants} from './constants/ArkhamConstants';
 
 // Components
 export {Arkham} from './components/Arkham/Arkham';
-export {MatchProps, View, ViewProps} from './components/View/View';
+export {View} from './components/View/View';
+export {MatchProps, ViewBase, ViewProps, ViewState} from './components/View/ViewBase';
 export {ViewContainer} from './components/ViewContainer/ViewContainer';
+export {
+  ViewContainerBase,
+  ViewContainerProps,
+  ViewContainerState
+} from './components/ViewContainer/ViewContainerBase';

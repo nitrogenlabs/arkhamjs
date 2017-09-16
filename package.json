@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A Typescript Flux library for ReactJS",
   "license": "MIT",
   "main": "indxe.js",
