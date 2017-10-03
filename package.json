@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A Typescript Flux library for ReactJS",
   "license": "MIT",
   "main": "indxe.js",
@@ -21,46 +21,42 @@
   "bugs": {
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
-  "engines": {
-    "node": ">7.10.0",
-    "npm": ">4.2.0"
-  },
   "scripts": {
     "compile": "tsc",
     "docs": "typedoc --target ES5 --module commonjs --out docs/ src/ --exclude src/index.ts --excludeExternals --hideGenerator",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest": "npm run lint",
     "test": "jest",
-    "prepublishOnly": "NODE_ENV=production npm test && npm run compile"
+    "prepublishOnly": "npm test && npm run compile"
   },
   "dependencies": {
     "history": "^4.7.2",
     "lodash": "^4.17.4",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.0",
-    "react-dom": "^15.6.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "@types/history": "^4.6.0",
-    "@types/jest": "^20.0.8",
-    "@types/node": "^8.0.26",
-    "@types/prop-types": "^15.5.1",
-    "@types/react": "^16.0.5",
-    "@types/react-dom": "^15.5.4",
-    "@types/react-router-dom": "^4.0.7",
-    "jest": "^21.0.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-scripts-ts": "^2.6.0",
-    "react-test-renderer": "^15.6.1",
+    "@types/jest": "^21.1.2",
+    "@types/node": "^8.0.32",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.8",
+    "@types/react-dom": "^16.0.0",
+    "@types/react-router-dom": "^4.0.8",
+    "jest": "^21.2.1",
+    "react-addons-test-utils": "^15.6.2",
+    "react-scripts-ts": "^2.7.0",
+    "react-test-renderer": "^16.0.0",
     "regenerator-runtime": "^0.11.0",
-    "ts-jest": "^21.0.0",
+    "ts-jest": "^21.0.1",
     "tslint": "^5.7.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-react": "^3.2.0",
     "typedoc": "^0.8.0",
-    "typescript": "^2.5.2"
+    "typescript": "^2.5.3"
   },
   "jest": {
     "moduleFileExtensions": [
