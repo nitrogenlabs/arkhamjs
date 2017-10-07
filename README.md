@@ -45,13 +45,11 @@ The biggest difference here is in the way storage is managed.
 
 Using [npm](https://www.npmjs.com/):
 ```bash
-$ yarn add arkhamjs
-```
-
-or
-
-```bash
 $ npm install --save arkhamjs
+```
+or
+```bash
+$ yarn add arkhamjs
 ```
 
 ### App Usage
