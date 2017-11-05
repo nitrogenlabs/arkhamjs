@@ -83,6 +83,7 @@
     ],
     "no-empty-interface": false,
     "no-eval": false,
+    "no-implicit-dependencies": false,
     "no-invalid-this": true,
     "no-shadowed-variable": true,
     "no-string-literal": false,
