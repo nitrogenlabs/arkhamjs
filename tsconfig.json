@@ -3,7 +3,11 @@
     "allowJs": false,
     "declaration": true,
     "jsx": "react",
-    "lib": ["es6", "dom", "es2015.promise"],
+    "lib": [
+      "es6",
+      "dom",
+      "es2015.promise"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
@@ -12,10 +16,13 @@
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
     "outDir": "dist",
+    "preserveConstEnums": true,
     "pretty": false,
     "removeComments": true,
     "rootDir": "src",
+    "skipLibCheck": true,
     "sourceMap": true,
+    "strictNullChecks": false,
     "target": "es5"
   },
   "exclude": [
@@ -26,5 +33,10 @@
   ],
   "include": [
     "./src/**/*"
+  ],
+  "types": [
+    "./src/lib/types",
+    "react",
+    "jest"
   ]
 }
