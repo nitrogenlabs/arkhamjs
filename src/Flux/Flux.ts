@@ -414,8 +414,8 @@ export class FluxFramework extends EventEmitter {
    * @param {array} stores Store class.
    * @returns {array} the class object(s).
    */
-  registerStores(stores: any[]): object[] {
-    return stores.map((store: Store) => this.register(store));
+  registerStores(stores: any[] = []): object[] {
+    return (stores || []).map((store: Store) => this.register(store));
   }
   
   /**
