@@ -1,4 +1,9 @@
-import {createBrowserHistory, History, Location} from 'history';
+/**
+ * Copyright (c) 2017, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
+
+ import {createBrowserHistory, History, Location} from 'history';
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import {View} from './View';

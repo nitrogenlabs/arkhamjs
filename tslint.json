@@ -106,6 +106,10 @@
       "jsx-double"
     ],
     "radix": true,
+    "space-before-function-paren": [
+      true,
+      "never"
+    ],
     "switch-default": true,
     "trailing-comma": [
       true,
