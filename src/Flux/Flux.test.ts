@@ -1,4 +1,9 @@
-import {set} from 'lodash';
+/**
+ * Copyright (c) 2017, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
+
+ import {set} from 'lodash';
 import {Store} from '../Store/Store';
 import {Flux, FluxDebugLevel, FluxOptions} from './Flux';
 
@@ -25,7 +30,7 @@ describe('Flux', () => {
       };
     }
     
-    onAction(type: string, data: object, state: object): object {
+    onAction(type: string, data, state): object {
       switch(type) {
         case 'TEST_EVENT':
           return set(state, 'testAction', data.testVar);
@@ -91,11 +96,11 @@ describe('Flux', () => {
     });
     
     it('should re-initialize session data', () => {
-      expect(sessionSpy.mock.calls.length).toBe(2);
+      expect(sessionSpy.mock.calls.length).toEqual(2);
     });
     
     it('should reset the store data', () => {
-      expect(Flux.getStore(['test', 'item'])).toBe('default');
+      expect(Flux.getStore(['test', 'item'])).toEqual('default');
     });
   });
   
@@ -117,15 +122,15 @@ describe('Flux', () => {
     });
     
     it('should set debugLevel', () => {
-      expect(Flux['options'].debugLevel).toBe(opts.debugLevel);
+      expect(Flux['options'].debugLevel).toEqual(opts.debugLevel);
     });
     
     it('should set app name', () => {
-      expect(Flux['options'].name).toBe(opts.name);
+      expect(Flux['options'].name).toEqual(opts.name);
     });
     
     it('should set useCache', () => {
-      expect(Flux['options'].useCache).toBe(opts.useCache);
+      expect(Flux['options'].useCache).toEqual(opts.useCache);
     });
   });
   
@@ -146,7 +151,7 @@ describe('Flux', () => {
     });
     
     it('should send data to console.error', () => {
-      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
+      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
     });
   });
   
@@ -167,7 +172,7 @@ describe('Flux', () => {
     });
     
     it('should send data to console.info', () => {
-      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
+      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
     });
   });
   
@@ -188,7 +193,7 @@ describe('Flux', () => {
     });
     
     it('should send data to console.log', () => {
-      expect(consoleSpy.mock.calls[0][0]).toBe(msg);
+      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
     });
   });
   
@@ -196,8 +201,8 @@ describe('Flux', () => {
     it('should remove local data', () => {
       // Method
       Flux.delLocalData(key);
-      const testVal: string = Flux.getLocalData(key);
-      expect(testVal).toBe(null);
+      const testVal: Promise<string> = Flux.getLocalData(key);
+      expect(testVal).resolves.toEqual(null);
     });
   });
   
@@ -205,8 +210,8 @@ describe('Flux', () => {
     it('should remove session data', () => {
       // Method
       Flux.delSessionData(key);
-      const testVal: string = Flux.getSessionData(key);
-      expect(testVal).toBe(null);
+      const testVal: Promise<string> = Flux.getSessionData(key);
+      expect(testVal).resolves.toEqual(null);
     });
   });
   
@@ -221,16 +226,17 @@ describe('Flux', () => {
     });
     
     it('should remove class', () => {
-      expect(!!Flux['storeClasses'].test).toBe(false);
+      expect(!!Flux['storeClasses'].test).toEqual(false);
     });
     
     it('should remove store data', () => {
-      expect(!!Flux['store'].test).toBe(false);
+      expect(!!Flux['store'].test).toEqual(false);
     });
   });
   
   describe('#dispatch', () => {
-    let action, eventSpy;
+    let action: Promise<any>;
+    let eventSpy;
     
     beforeAll(() => {
       // Spy
@@ -247,17 +253,16 @@ describe('Flux', () => {
     
     it('should return an action', () => {
       action = Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
-      expect(action.type).toBe('TEST_EVENT');
-      expect(action.testVar).toBe('test');
+      expect(action).resolves.toEqual({type: 'TEST_EVENT', testVar: 'test'});
     });
     
     it('should alter the store data', () => {
       const item: string = Flux.getStore(['test', 'testAction']);
-      expect(item).toBe('test');
+      expect(item).toEqual('test');
     });
     
     it('should dispatch an event', () => {
-      expect(eventSpy.mock.calls.length).toBe(2);
+      expect(eventSpy.mock.calls.length).toEqual(2);
     });
   });
   
@@ -265,26 +270,26 @@ describe('Flux', () => {
     it('should disable debugger', () => {
       Flux.enableDebugger(FluxDebugLevel.DISABLED);
       const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toBe(0);
+      expect(options.debugLevel).toEqual(0);
     });
     
     it('should enable debugger for logs', () => {
       Flux.enableDebugger(FluxDebugLevel.LOGS);
       const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toBe(1);
+      expect(options.debugLevel).toEqual(1);
     });
     
     it('should enable debugger for dispatch actions', () => {
       Flux.enableDebugger(FluxDebugLevel.DISPATCH);
       const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toBe(2);
+      expect(options.debugLevel).toEqual(2);
     });
   });
   
   describe('#getClass', () => {
     it('should get a store class', () => {
       const storeCls: Store = Flux.getClass('test');
-      expect(storeCls.name).toBe('test');
+      expect(storeCls.name).toEqual('test');
     });
   });
   
@@ -294,8 +299,8 @@ describe('Flux', () => {
       Flux.setLocalData(key, val);
       
       // Method
-      const testVal: string = Flux.getLocalData(key);
-      expect(testVal).toBe(val);
+      const testVal: Promise<string> = Flux.getLocalData(key);
+      expect(testVal).resolves.toEqual(val);
     });
   });
   
@@ -303,31 +308,44 @@ describe('Flux', () => {
     it('should get session data', () => {
       // Method
       Flux.setSessionData(key, val);
-      const testVal: string = Flux.getSessionData(key);
-      expect(testVal).toBe(val);
+      const testVal: Promise<string> = Flux.getSessionData(key);
+      expect(testVal).resolves.toEqual(val);
     });
   });
   
   describe('#getStore', () => {
+    beforeAll(() => {
+      Flux.setStore('test', {item: 'default'});
+    });
+
     it('should get a global store', () => {
-      const value: object = Flux.getStore();
-      expect(value.test.item).toBe('default');
+      const value = Flux.getStore();
+      expect(value.test.item).toEqual('default');
     });
     
     it('should get a specific store returning an object', () => {
-      Flux['options'].useImmutable = false;
-      const value: object = Flux.getStore('test');
-      expect(value.item).toBe('default');
+      const value = Flux.getStore('test');
+      expect(value.item).toEqual('default');
     });
     
-    it('should get a specific item within a store', () => {
+    it('should get a specific item within a store using array', () => {
       const value: string = Flux.getStore(['test', 'item']);
-      expect(value).toBe('default');
+      expect(value).toEqual('default');
+    });
+    
+    it('should get a specific item within a store using dot notation', () => {
+      const value: string = Flux.getStore('test.item');
+      expect(value).toEqual('default');
     });
     
     it('should return default value from a null item', () => {
-      const value: string = Flux.getStore(['test', 'notDefault'], '');
-      expect(value).toBe('');
+      const value: string = Flux.getStore('test.notDefault', '');
+      expect(value).toEqual('');
+    });
+    
+    it('should return entire store object with empty key', () => {
+      const value: string = Flux.getStore('');
+      expect(value).toEqual({test: {item: 'default'}});
     });
   });
   
@@ -338,19 +356,19 @@ describe('Flux', () => {
       Flux.off('test', spy);
       Flux.dispatch({type: 'test'});
       
-      expect(spy.mock.calls.length).toBe(0);
+      expect(spy.mock.calls.length).toEqual(0);
     });
   });
   
   describe('#registerStores', () => {
     it('should save the store class', () => {
       const storeCls: Store = Flux['storeClasses'].test;
-      expect(storeCls.name).toBe('test');
+      expect(storeCls.name).toEqual('test');
     });
     
     it('should set the initial value', () => {
       const value: string = Flux['store'].test.item;
-      expect(value).toBe('default');
+      expect(value).toEqual('default');
     });
   });
   
@@ -358,25 +376,20 @@ describe('Flux', () => {
     it('should set session data', () => {
       // Method
       Flux.setSessionData(key, val);
-      expect(sessionSetSpy.mock.calls.length).toBe(1);
+      expect(sessionSetSpy.mock.calls.length).toEqual(1);
     });
   });
   
   describe('#setStore', () => {
-    let oldItem, changedItem, newItem;
+    let changedItem, newItem;
     
     beforeAll(() => {
-      oldItem = Flux.getStore(['test', 'testUpdate']);
-      changedItem = Flux.setStore(['test', 'testUpdate'], 'test');
-      newItem = Flux.getStore(['test', 'testUpdate']);
-    });
-    
-    it('should have the original value', () => {
-      expect(oldItem).toBe('default');
+      changedItem = Flux.setStore('test.testUpdate', 'test');
+      newItem = Flux.getStore('test.testUpdate');
     });
     
     it('should update the property within the store', () => {
-      expect(newItem).toBe('test');
+      expect(newItem).toEqual('test');
     });
   });
   
@@ -384,7 +397,7 @@ describe('Flux', () => {
     it('should set local data', () => {
       // Method
       Flux.setLocalData(key, val);
-      expect(localSetSpy.mock.calls.length).toBe(1);
+      expect(localSetSpy.mock.calls.length).toEqual(1);
     });
   });
 });

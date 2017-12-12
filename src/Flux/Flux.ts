@@ -6,6 +6,7 @@
 import {EventEmitter} from 'events';
 import {LocationDescriptor} from 'history';
 import {cloneDeep, get, isEqual, set} from 'lodash';
+import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
 export enum FluxDebugLevel {DISABLED, LOGS, DISPATCH}
@@ -30,6 +31,7 @@ export interface FluxOptions {
   readonly scrollToTop?: boolean;
   readonly title?: string;
   readonly useCache?: boolean;
+  readonly useImmutable?: boolean;
 }
 
 export interface FluxAction {
@@ -43,8 +45,8 @@ export interface FluxAction {
  */
 export class FluxFramework extends EventEmitter {
   // Properties
-  private store: object = {};
-  private storeClasses: object = {};
+  private store: any = {};
+  private storeClasses: any = {};
   private defaultOptions: FluxOptions = {
     debugLevel: FluxDebugLevel.DISABLED,
     forceRefresh: 'pushState' in window.history,
@@ -101,9 +103,9 @@ export class FluxFramework extends EventEmitter {
   /**
    * Removes all app data from sessionStorage.
    *
-   * @returns {boolean} Whether app data was successfully removed.
+   * @returns {Promise<boolean>} Whether app data was successfully removed.
    */
-  clearAppData(): boolean {
+  clearAppData(): Promise<boolean> {
     // Set all store data to initial state
     Object
       .keys(this.storeClasses)
@@ -188,20 +190,20 @@ export class FluxFramework extends EventEmitter {
    * Removes a key from localStorage.
    *
    * @param {string} key Key associated with the data to remove.
-   * @returns {boolean} Whether data was successfully removed.
+   * @returns {Promise<boolean>} Whether data was successfully removed.
    */
-  delLocalData(key: string): boolean {
+  delLocalData(key: string): Promise<boolean> {
     const {localStorage} = this.window;
     
     if(localStorage) {
       try {
         localStorage.removeItem(key);
-        return true;
+        return Promise.resolve(true);
       } catch(error) {
-        return false;
+        return Promise.resolve(false);
       }
     } else {
-      return false;
+      return Promise.resolve(false);
     }
   }
   
@@ -209,20 +211,20 @@ export class FluxFramework extends EventEmitter {
    * Removes a key from sessionStorage.
    *
    * @param {string} key Key associated with the data to remove.
-   * @returns {boolean} Whether data was successfully removed.
+   * @returns {Promise<boolean>} Whether data was successfully removed.
    */
-  delSessionData(key: string): boolean {
+  delSessionData(key: string): Promise<boolean> {
     const {sessionStorage} = this.window;
     
     if(sessionStorage) {
       try {
         sessionStorage.removeItem(key);
-        return true;
+        return Promise.resolve(true);
       } catch(error) {
-        return false;
+        return Promise.resolve(false);
       }
     } else {
-      return false;
+      return Promise.resolve(false);
     }
   }
   
@@ -240,14 +242,16 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {object} action to dispatch to all the stores.
    * @param {boolean} silent To silence any events.
+   * @returns {Promise} The promise is resolved when and if the app saves data to the SessionStorage, returning
+   * the action.
    */
-  dispatch(action: FluxAction, silent: boolean = false): FluxAction {
+  async dispatch(action: FluxAction, silent: boolean = false): Promise<FluxAction> {
     action = cloneDeep(action);
     const {type, ...data} = action;
     
     // Require a type
     if(!type) {
-      return action;
+      return Promise.resolve(action);
     }
     
     const oldState = cloneDeep(this.store);
@@ -285,14 +289,14 @@ export class FluxFramework extends EventEmitter {
     
     // Save cache in session storage
     if(useCache) {
-      this.setSessionData(name, this.store);
+      await this.setSessionData(name, this.store);
     }
     
     if(!silent) {
       this.emit(type, data);
     }
     
-    return action;
+    return Promise.resolve(action);
   }
   
   /**
@@ -308,7 +312,7 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
-   * Get a store object that is registered.
+   * Get a store object that is registered with Flux.
    *
    * @param {string} name The name of the store.
    * @returns {Store} the store object.
@@ -330,9 +334,9 @@ export class FluxFramework extends EventEmitter {
    * Get a key value from localStorage.
    *
    * @param {string} key The key for data.
-   * @returns {any} the data object associated with the key.
+   * @returns {Promise<any>} the data object associated with the key.
    */
-  getLocalData(key: string): any {
+  getLocalData(key: string): Promise<any> {
     const {localStorage} = this.window;
     
     if(localStorage) {
@@ -340,15 +344,15 @@ export class FluxFramework extends EventEmitter {
         const item = localStorage.getItem(key);
         
         if(item) {
-          return JSON.parse(item);
+          return Promise.resolve(JSON.parse(item));
         }
         
-        return null;
+        return Promise.resolve(null);
       } catch(error) {
-        return null;
+        return Promise.resolve(null);
       }
     } else {
-      return null;
+      return Promise.resolve(null);
     }
   }
   
@@ -356,9 +360,9 @@ export class FluxFramework extends EventEmitter {
    * Get a key value from sessionStorage.
    *
    * @param {string} key The key for data.
-   * @returns {any} the data object associated with the key.
+   * @returns {Promise<any>} the data object associated with the key.
    */
-  getSessionData(key: string): any {
+  getSessionData(key: string): Promise<any> {
     const {sessionStorage} = this.window;
     
     if(sessionStorage) {
@@ -366,15 +370,15 @@ export class FluxFramework extends EventEmitter {
         const item = sessionStorage.getItem(key);
         
         if(item) {
-          return JSON.parse(item);
+          return Promise.resolve(item ? JSON.parse(item) : null);
         }
         
-        return null;
+        return Promise.resolve(null);
       } catch(error) {
-        return null;
+        return Promise.resolve(null);
       }
     } else {
-      return null;
+      return Promise.resolve(null);
     }
   }
   
@@ -389,7 +393,7 @@ export class FluxFramework extends EventEmitter {
   getStore(name: string | string[] = '', defaultValue?): any {
     let storeValue;
     
-    if(name === '') {
+    if(!name) {
       storeValue = this.store || {};
     } else {
       storeValue = get(this.store, name);
@@ -399,12 +403,30 @@ export class FluxFramework extends EventEmitter {
   }
   
   /**
+   * Adds an initialization listener.
+   *
+   * @param {function} [listener] The callback associated with the subscribed event.
+   */
+  onInit(listener: (...args: any[]) => void): void {
+    this.on(ArkhamConstants.INIT, listener);
+  }
+
+  /**
+   * Removes the initialization listener.
+   *
+   * @param {function} [listener] The callback associated with the subscribed event.
+   */
+  offInit(listener: (...args: any[]) => void): void {
+    this.off(ArkhamConstants.INIT, listener);
+  }
+  
+  /**
    * Removes an event listener.
    *
    * @param {string} [eventType] Event to unsubscribe.
    * @param {function} [listener] The callback associated with the subscribed event.
    */
-  off(eventType: string, listener: () => void): void {
+  off(eventType: string, listener: (...args: any[]) => void): void {
     this.removeListener(eventType, listener);
   }
   
@@ -412,10 +434,13 @@ export class FluxFramework extends EventEmitter {
    * Registers new Stores.
    *
    * @param {array} stores Store class.
-   * @returns {array} the class object(s).
+   * @returns {Promise<object[]>} the class object(s).
    */
-  registerStores(stores: any[] = []): object[] {
-    return (stores || []).map((store: Store) => this.register(store));
+  registerStores(stores: any[]): Promise<object[]> {
+    return Promise.resolve().then(() => {
+      this.emit(ArkhamConstants.INIT);
+      return stores.map((store: Store) => this.register(store));
+    });
   }
   
   /**
@@ -423,20 +448,20 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {string} key Key to store data.
    * @param {any} value Data to store.
-   * @returns {boolean} Whether data was successfully saved.
+   * @returns {Promise<boolean>} Whether data was successfully saved.
    */
-  setLocalData(key: string, value): boolean {
+  setLocalData(key: string, value): Promise<boolean> {
     const {localStorage} = this.window;
     
     if(localStorage) {
       try {
         localStorage.setItem(key, JSON.stringify(value));
-        return true;
+        return Promise.resolve(true);
       } catch(error) {
-        return false;
+        return Promise.resolve(false);
       }
     } else {
-      return false;
+      return Promise.resolve(false);
     }
   }
   
@@ -445,20 +470,20 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {string} key Key to store data.
    * @param {any} value Data to store.
-   * @returns {boolean} Whether data was successfully saved.
+   * @returns {Promise<boolean>} Whether data was successfully saved.
    */
-  setSessionData(key: string, value): boolean {
+  setSessionData(key: string, value): Promise<boolean> {
     const {sessionStorage} = this.window;
     
     if(sessionStorage) {
       try {
         sessionStorage.setItem(key, JSON.stringify(value));
-        return true;
+        return Promise.resolve(true);
       } catch(error) {
-        return false;
+        return Promise.resolve(false);
       }
     } else {
-      return false;
+      return Promise.resolve(false);
     }
   }
   
@@ -480,7 +505,7 @@ export class FluxFramework extends EventEmitter {
     delete this.store[name];
   }
   
-  private register(StoreClass): object {
+  private register(StoreClass): Promise<Store> {
     if(!StoreClass) {
       throw Error('Class is undefined. Cannot register with Flux.');
     }
@@ -517,7 +542,7 @@ export class FluxFramework extends EventEmitter {
       }
     }
     
-    return this.storeClasses[storeName];
+    return Promise.resolve(this.storeClasses[storeName]);
   }
 }
 
