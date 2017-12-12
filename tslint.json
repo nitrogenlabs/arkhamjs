@@ -64,8 +64,11 @@
       true,
       120
     ],
-    "member-access": [true, "no-public"],
-    "member-ordering" :false,
+    "member-access": [
+      true,
+      "no-public"
+    ],
+    "member-ordering": false,
     "new-parens": true,
     "no-arg": true,
     "no-any": false,
@@ -110,7 +113,7 @@
       true,
       "never"
     ],
-    "switch-default": true,
+    "switch-default": false,
     "trailing-comma": [
       true,
       {
@@ -134,7 +137,10 @@
       "check-separator"
     ],
     // ESLint
-    "array-bracket-spacing": [true, "never"],
+    "array-bracket-spacing": [
+      true,
+      "never"
+    ],
     "block-spacing": [
       true,
       "never"
@@ -150,7 +156,10 @@
       true,
       "never"
     ],
-    "handle-callback-err": [true, "error"],
+    "handle-callback-err": [
+      true,
+      "error"
+    ],
     "no-constant-condition": true,
     "no-control-regex": true,
     "no-duplicate-case": true,
@@ -165,7 +174,9 @@
     "no-regex-spaces": true,
     "no-unexpected-multiline": true,
     "prefer-conditional-expression": false,
-    "ter-func-call-spacing": [true],
+    "ter-func-call-spacing": [
+      true
+    ],
     "ter-no-irregular-whitespace": [
       true
     ],

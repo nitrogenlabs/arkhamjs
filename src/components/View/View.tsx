@@ -7,7 +7,6 @@ import {ViewBase, ViewProps, ViewState} from './ViewBase';
 
 /**
  * View
- * @type {Component}
  */
 export class View extends ViewBase<ViewProps, ViewState> {
 }

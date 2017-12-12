@@ -11,7 +11,6 @@ import {
 
 /**
  * ViewContainer
- * @type {Component}
  */
 export class ViewContainer extends ViewContainerBase<ViewContainerProps, ViewContainerState> {
 }
