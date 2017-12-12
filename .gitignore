@@ -1,10 +1,21 @@
-.idea
-coverage
-dist
-docs
-node_modules
-tmp
-.DS_STORE
-*.log
+# OSX
+#
 ~.bash_profile
-yarn.lock
+.DS_Store
+*.log
+
+# node.js
+#
+node_modules
+
+# IntelliJ
+#
+build
+.idea
+
+# App
+#
+coverage
+docs
+lib
+tmp

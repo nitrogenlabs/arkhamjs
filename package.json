@@ -1,10 +1,10 @@
 {
   "name": "arkhamjs",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "A Typescript Flux library for ReactJS",
   "license": "MIT",
-  "main": "indxe.js",
-  "types": "./dist/index.d.ts",
+  "main": "index.js",
+  "types": "./lib/index.d.ts",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -25,38 +25,38 @@
     "compile": "tsc",
     "docs": "typedoc --target ES5 --module commonjs --out docs/ src/ --exclude src/index.ts --excludeExternals --hideGenerator",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "prepublishOnly": "NODE_ENV=production npm test && npm run compile",
     "pretest": "npm run lint",
-    "test": "jest",
-    "prepublishOnly": "NODE_ENV=production npm test && npm run compile"
+    "test": "jest"
   },
   "dependencies": {
     "history": "^4.7.2",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react": "^16.1.1",
+    "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-dom": "^16.1.1",
+    "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "@types/history": "^4.6.2",
     "@types/jest": "^21.1.8",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.0.58",
     "@types/prop-types": "^15.5.2",
-    "@types/react": "^16.0.25",
+    "@types/react": "^16.0.29",
     "@types/react-dom": "^16.0.3",
-    "@types/react-router-dom": "^4.2.2",
+    "@types/react-router-dom": "^4.2.3",
     "jest": "^21.2.1",
     "react-addons-test-utils": "^15.6.2",
     "react-scripts-ts": "^2.8.0",
-    "react-test-renderer": "^16.1.1",
-    "regenerator-runtime": "^0.11.0",
-    "ts-jest": "^21.2.3",
+    "react-test-renderer": "^16.2.0",
+    "regenerator-runtime": "^0.11.1",
+    "ts-jest": "^21.2.4",
     "tslint": "^5.8.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-react": "^3.2.0",
     "typedoc": "^0.9.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
   },
   "jest": {
     "moduleFileExtensions": [

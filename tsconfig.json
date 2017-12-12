@@ -15,7 +15,7 @@
     "noImplicitThis": true,
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "preserveConstEnums": true,
     "pretty": false,
     "removeComments": true,
@@ -27,8 +27,8 @@
   },
   "exclude": [
     "**/*.test.*",
-    "./dist",
     "./docs",
+    "./lib",
     "./node_modules"
   ],
   "include": [

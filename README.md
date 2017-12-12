@@ -56,7 +56,7 @@ $ yarn add arkhamjs
 Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
 
 ```typescript
-import {Flux, Store} from 'arkhamjs';
+import {Flux} from 'arkhamjs';
 ```
 
 ### How to use
@@ -147,7 +147,7 @@ export class AppView extends React.Component {
     this.onAppTest = this.onAppTest.bind(this);
   }
   
-  componentWillMount() {
+  componentWillMount(): void {
     // Add listeners
     Flux.on(AppConstants.TEST, this.onAppTest);
     
@@ -155,11 +155,11 @@ export class AppView extends React.Component {
     AppActions.test('Hello World');
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     Flux.off(AppConstants.TEST, this.onAppTest);
   }
   
-  onAppTest() {
+  onAppTest(): void {
     // Gets the object from store
     const myTest = Flux.getStore(['app', 'test'], '');
     
@@ -170,7 +170,7 @@ export class AppView extends React.Component {
     this.setState({myTest});
   }
   
-  render() {
+  render(): JSX.Element {
     return (
       <Arkham config={this.fluxOptions} stores={this.stores}>
         {this.state.myTest}
