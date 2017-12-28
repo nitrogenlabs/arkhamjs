@@ -4,17 +4,16 @@
  */
 'use strict';
 
+var lib = require('./lib');
+
 // Framework
-var Flux = require('./lib/Flux/Flux');
-exports.Flux = Flux.Flux;
-exports.FluxAction = Flux.FluxAction;
-exports.FluxOptions = Flux.FluxOptions;
-exports.FluxDebugLevel = Flux.FluxDebugLevel;
+exports.Flux = lib.Flux;
+exports.FluxAction = lib.FluxAction;
+exports.FluxOptions = lib.FluxOptions;
+exports.FluxDebugLevel = lib.FluxDebugLevel;
 
 // Store
-var Store = require('./lib/Store/Store');
-exports.Store = Store.Store;
+exports.Store = lib.Store;
 
 // Constants
-var ArkhamConstants = require('./lib/constants/ArkhamConstants');
-exports.ArkhamConstants = ArkhamConstants.ArkhamConstants;
+exports.ArkhamConstants = lib.ArkhamConstants;

@@ -1,10 +1,11 @@
 {
   "name": "arkhamjs",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Flux Library",
   "license": "MIT",
   "main": "index.js",
   "types": "./lib/index.d.ts",
+  "typings": "lib/index",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -28,14 +29,13 @@
     "pretest": "npm run lint",
     "test": "jest"
   },
-  "typings": "dist/index",
   "dependencies": {
     "lodash": "^4.17.4"
   },
   "devDependencies": {
     "@types/jest": "^21.1.10",
     "@types/node": "^8.5.2",
-    "arkhamjs-storage-browser": "^1.0.2",
+    "arkhamjs-storage-browser": "^1.0.3",
     "jest": "^22.0.4",
     "ts-jest": "^22.0.0",
     "tslint": "^5.8.0",

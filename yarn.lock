@@ -148,9 +148,9 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
-arkhamjs-storage-browser@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/arkhamjs-storage-browser/-/arkhamjs-storage-browser-1.0.2.tgz#f4a34f59e27e1355d78daf32d7df4746c80afdb0"
+arkhamjs-storage-browser@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/arkhamjs-storage-browser/-/arkhamjs-storage-browser-1.0.3.tgz#055b3abf2d42eb6c374fb377f23de21b0c8195d0"
 
 arr-diff@^2.0.0:
   version "2.0.0"
