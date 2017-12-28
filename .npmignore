@@ -1,10 +1,11 @@
 .idea
-docs
-node_modules
 .travis.yml
-package-lock.json
-yarn.lock
-tslint.json
-~.bash_profile
+*.bash_profile
 *.test.ts
 *.test.tsx
+docs
+node_modules
+src
+package-lock.json
+tslint.json
+yarn.lock

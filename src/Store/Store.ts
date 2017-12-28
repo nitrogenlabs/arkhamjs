@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, Nitrogen Labs, Inc.
+ * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
@@ -10,7 +10,7 @@
 export class Store {
   state: object;
   name: string;
-  
+
   /**
    * A Flux store interface
    *

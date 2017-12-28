@@ -1,11 +1,11 @@
 ![ArkhamJS](https://nitrogenlabs.com/logos/gh-arkhamjs.png "ArkhamJS")
 
-#### Flux Framework for ReactJS
+#### Flux Framework
 
-ArkhamJS is a lightweight framework that can accommodate a project of any size. From small start-up ideas to large enterprise projects. ReactJS is an amazing library but unfortunately, it is not a framework. Although the creators of ReactJS recommend using React in a Flux architecture, there is no official framework. The result is a wide variety of great third-party frameworks. Our goal is to create a simple framework with flexibility. And thus came ArkhamJS.
+ArkhamJS is a lightweight framework that can accommodate a project of any size. From small start-up ideas to large enterprise projects. Our goal is to create a simple framework with flexibility. And thus came ArkhamJS.
 
 #### Lightweight
-The framework is small. The bulk of your app should lay within your code, not the framework. While larger frameworks come with lots of "magic", they become very limited when new features arise within your project. ReactJS is very powerful in itself. ArkhamJS simply complements it.
+The framework is small. The bulk of your app should lay within your code, not the framework. While larger frameworks come with lots of "magic", they become very limited when new features arise within your project.
 
 #### Typescript
 Compatible with typescript. Definitions are included to support your Typescript project.
@@ -14,7 +14,7 @@ Compatible with typescript. Definitions are included to support your Typescript 
 All data is stored within a single store. The data can be accessed through all your views and components. Data is organized into multiple stores within the single store.
 
 #### Immutability
-To prevent object referencing, we use immutable objects. When a state changes in a ReactJS component, the state's property is not the only item that is changed, the item it references is also updated. To prevent passing around an object between different scopes, immutable objects give your data a one way update path.
+To prevent object referencing, we use immutable objects. When the state changes, the state's property is not the only item that is changed, the item it references is also updated. To prevent passing around an object between different scopes, immutable objects give your data a one way update path. You may also have returned values converted into ImmutableJS objects.
 
 #### Cache
 Your single store id stored in SessionStorage by default. While this can be turned off in your options, it can be very useful when saving state.
@@ -26,11 +26,14 @@ The most important factor in choosing a framework is how easy it is to build wit
 For a complete example of the setup, feel free to start your project with [arkhamjs-skeleton](https://github.com/nitrogenlabs/arkhamjs-skeleton).
 It includes a full setup of a bare bones React app using Webpack 2 and Babel 6. Also includes Karma unit testing and coverage reports.
 
+#### Storage
+If you plan to persist data, you will need to add a storage to the framework:
+ * NodeJS [arkhamjs-storage-node](https://github.com/nitrogenlabs/arkhamjs-storage-node)
+ * React [arkhamjs-storage-browser](https://github.com/nitrogenlabs/arkhamjs-storage-browser)
+ * React Native [arkhamjs-storage-native](https://github.com/nitrogenlabs/arkhamjs-storage-native)
+
 #### Documentation
 For some detailed [Documentation](http://www.arkhamjs.com) and additional options on the framework.
-
-#### React Native
-Looking into developing for mobile? There is a React Native version of ArkhamJS, [ArkhamJS Native](https://github.com/nitrogenlabs/arkhamjs-native). The biggest difference here is in the way storage is managed.
 
 [![npm version](https://img.shields.io/npm/v/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
 [![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs)

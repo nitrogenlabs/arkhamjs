@@ -1,20 +1,17 @@
 # OSX
-#
-~.bash_profile
 .DS_Store
+*.bash_profile
 *.log
 
 # node.js
-#
 node_modules
 
-# IntelliJ
-#
+# Client Editor
 build
 .idea
+.vscode
 
 # App
-#
 coverage
 docs
 lib

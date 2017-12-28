@@ -1,20 +1,20 @@
 /**
- * Copyright (c) 2017, Nitrogen Labs, Inc.
+ * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
+import {BrowserStorage} from 'arkhamjs-storage-browser';
 import {set} from 'lodash';
 import {Store} from '../Store/Store';
 import {Flux, FluxDebugLevel, FluxOptions} from './Flux';
 
 describe('Flux', () => {
-  let store, localSetSpy, sessionSetSpy, sessionSpy;
-  const val: string = 'hello_world';
-  const key: string = 'test';
+  let localSetSpy, sessionSetSpy, sessionSpy;
+  const browserStorage = new BrowserStorage({type: 'session'});
   const cfg: FluxOptions = {
     debugLevel: FluxDebugLevel.DISPATCH,
     name: 'arkhamjs',
-    useCache: true
+    storage: browserStorage
   };
 
   class TestStore extends Store {
@@ -40,7 +40,7 @@ describe('Flux', () => {
     }
   }
 
-  beforeAll(() => {
+  beforeAll(async () => {
     // Mock storage
     const storageMock = () => {
       const storage: object = {};
@@ -59,19 +59,19 @@ describe('Flux', () => {
     };
 
     // Vars
-    Flux['window'].sessionStorage = storageMock();
-    Flux['window'].localStorage = storageMock();
+    BrowserStorage.window.sessionStorage = storageMock();
+    BrowserStorage.window.localStorage = storageMock();
 
     // Configure
     Flux.config(cfg);
 
     // Spy
-    localSetSpy = jest.spyOn(Flux['window'].localStorage, 'setItem');
-    sessionSetSpy = jest.spyOn(Flux['window'].sessionStorage, 'setItem');
-    sessionSpy = jest.spyOn(Flux, 'setSessionData');
+    localSetSpy = jest.spyOn(BrowserStorage.window.localStorage, 'setItem');
+    sessionSetSpy = jest.spyOn(BrowserStorage.window.sessionStorage, 'setItem');
+    sessionSpy = jest.spyOn(BrowserStorage, 'setSessionData');
 
     // Method
-    store = Flux.registerStores([TestStore]);
+    await Flux.registerStores([TestStore]);
   });
 
   afterEach(() => {
@@ -197,24 +197,6 @@ describe('Flux', () => {
     });
   });
 
-  describe('#delLocalData', () => {
-    it('should remove local data', () => {
-      // Method
-      Flux.delLocalData(key);
-      const testVal: Promise<string> = Flux.getLocalData(key);
-      expect(testVal).resolves.toEqual(null);
-    });
-  });
-
-  describe('#delSessionData', () => {
-    it('should remove session data', () => {
-      // Method
-      Flux.delSessionData(key);
-      const testVal: Promise<string> = Flux.getSessionData(key);
-      expect(testVal).resolves.toEqual(null);
-    });
-  });
-
   describe('#deregisterStores', () => {
     beforeAll(() => {
       // Method
@@ -293,26 +275,6 @@ describe('Flux', () => {
     });
   });
 
-  describe('#getLocalData', () => {
-    it('should get local data', () => {
-      // Set data
-      Flux.setLocalData(key, val);
-
-      // Method
-      const testVal: Promise<string> = Flux.getLocalData(key);
-      expect(testVal).resolves.toEqual(val);
-    });
-  });
-
-  describe('#getSessionData', () => {
-    it('should get session data', () => {
-      // Method
-      Flux.setSessionData(key, val);
-      const testVal: Promise<string> = Flux.getSessionData(key);
-      expect(testVal).resolves.toEqual(val);
-    });
-  });
-
   describe('#getStore', () => {
     beforeAll(() => {
       Flux.setStore('test', {item: 'default'});
@@ -372,32 +334,16 @@ describe('Flux', () => {
     });
   });
 
-  describe('#setSessionData', () => {
-    it('should set session data', () => {
-      // Method
-      Flux.setSessionData(key, val);
-      expect(sessionSetSpy.mock.calls.length).toEqual(1);
-    });
-  });
-
   describe('#setStore', () => {
-    let changedItem, newItem;
+    let newItem: string;
 
-    beforeAll(() => {
-      changedItem = Flux.setStore('test.testUpdate', 'test');
-      newItem = Flux.getStore('test.testUpdate');
+    beforeAll(async () => {
+      await Flux.setStore('test.testUpdate', 'test');
+      newItem = await Flux.getStore('test.testUpdate');
     });
 
     it('should update the property within the store', () => {
       expect(newItem).toEqual('test');
-    });
-  });
-
-  describe('#setLocalData', () => {
-    it('should set local data', () => {
-      // Method
-      Flux.setLocalData(key, val);
-      expect(localSetSpy.mock.calls.length).toEqual(1);
     });
   });
 });

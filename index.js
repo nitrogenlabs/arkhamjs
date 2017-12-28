@@ -1,26 +1,20 @@
 /**
- * Copyright (c) 2017, Nitrogen Labs, Inc.
+ * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+'use strict';
+
 // Framework
-export {Flux, FluxAction, FluxOptions, FluxDebugLevel} from './lib/Flux/Flux';
+var Flux = require('./lib/Flux/Flux');
+exports.Flux = Flux.Flux;
+exports.FluxAction = Flux.FluxAction;
+exports.FluxOptions = Flux.FluxOptions;
+exports.FluxDebugLevel = Flux.FluxDebugLevel;
 
 // Store
-export {Store} from './lib/Store/Store';
-
-// Actions
-export {ArkhamActions} from './lib/actions/ArkhamActions/ArkhamActions';
+var Store = require('./lib/Store/Store');
+exports.Store = Store.Store;
 
 // Constants
-export {ArkhamConstants} from './lib/constants/ArkhamConstants';
-
-// Components
-export {Arkham} from './lib/components/Arkham/Arkham';
-export {View} from './lib/components/View/View';
-export {MatchProps, ViewBase, ViewProps, ViewState} from './lib/components/View/ViewBase';
-export {ViewContainer} from './lib/components/ViewContainer/ViewContainer';
-export {
-  ViewContainerBase,
-  ViewContainerProps,
-  ViewContainerState
-} from './lib/components/ViewContainer/ViewContainerBase';
+var ArkhamConstants = require('./lib/constants/ArkhamConstants');
+exports.ArkhamConstants = ArkhamConstants.ArkhamConstants;
