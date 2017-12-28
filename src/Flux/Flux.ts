@@ -17,7 +17,6 @@ export interface FluxOptions {
   readonly debugErrorFnc?: (debugLevel: number, ...args) => void;
   readonly debugInfoFnc?: (debugLevel: number, ...args) => void;
   readonly debugLogFnc?: (debugLevel: number, ...args) => void;
-  readonly forceRefresh?: boolean;
   readonly getUserConfirmation?: () => void;
   readonly hashType?: 'slash' | 'noslash' | 'hashbang';
   readonly history?: object;
@@ -52,7 +51,6 @@ export class FluxFramework extends EventEmitter {
   private storeClasses: any = {};
   private defaultOptions: FluxOptions = {
     debugLevel: FluxDebugLevel.DISABLED,
-    forceRefresh: 'pushState' in window.history,
     name: 'arkhamjs',
     routerType: 'browser',
     scrollToTop: true,
