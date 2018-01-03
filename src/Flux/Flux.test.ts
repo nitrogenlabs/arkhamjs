@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
-import {BrowserStorage} from 'arkhamjs-storage-browser';
+import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
 import {Store} from '../Store/Store';
 import {Flux, FluxDebugLevel, FluxOptions} from './Flux';
