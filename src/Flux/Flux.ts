@@ -9,6 +9,7 @@ import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
 export enum FluxDebugLevel {DISABLED, LOGS, DISPATCH}
+export type FluxPluginMethodType = (action: FluxAction) => Promise<FluxAction>;
 
 export interface FluxOptions {
   readonly basename?: string;
@@ -36,14 +37,12 @@ export interface FluxAction {
   readonly [key: string]: any;
 }
 
-export type FluxPluginMethodType = (action: FluxAction) => Promise<FluxAction>;
-
 export interface FluxStorageType {
   readonly getStorageData: (key: string) => Promise<any>;
   readonly setStorageData: (key: string, value: any) => Promise<boolean>;
 }
 
-export interface MiddlewareType {
+export interface FluxMiddlewareType {
   readonly name: string;
   readonly preDispatch?: FluxPluginMethodType;
   readonly postDispatch?: FluxPluginMethodType;
@@ -117,8 +116,8 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {array} middleware An array of middleware to add to the framework.
    */
-  addMiddleware(middleware: MiddlewareType[]): void {
-    middleware.forEach((middleObj: MiddlewareType) => {
+  addMiddleware(middleware: FluxMiddlewareType[]): void {
+    middleware.forEach((middleObj: FluxMiddlewareType) => {
       // Make sure middleware is either a class or object.
       if(!!middleObj && ((typeof middleObj === 'function') || (typeof middleObj === 'object'))) {
         const middleName: string = middleObj.name || '';

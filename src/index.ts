@@ -4,7 +4,15 @@
  */
 
 // Framework
-export {Flux, FluxAction, FluxOptions, FluxDebugLevel} from './Flux/Flux';
+export {
+  Flux,
+  FluxAction,
+  FluxDebugLevel,
+  FluxMiddlewareType,
+  FluxOptions,
+  FluxPluginMethodType,
+  FluxPluginType
+} from './Flux/Flux';
 
 // Store
 export {Store} from './Store/Store';
