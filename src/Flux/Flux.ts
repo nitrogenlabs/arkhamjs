@@ -4,7 +4,7 @@
  */
 
 import {EventEmitter} from 'events';
-import {cloneDeep, get, isEqual, set} from 'lodash';
+import {cloneDeep, get, isEqual, merge, set} from 'lodash';
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
@@ -27,7 +27,7 @@ export interface FluxOptions {
   readonly name?: string;
   readonly routerType?: string;
   readonly scrollToTop?: boolean;
-  readonly storage: FluxStorageType;
+  readonly storage?: FluxStorageType;
   readonly title?: string;
 }
 
@@ -36,9 +36,22 @@ export interface FluxAction {
   readonly [key: string]: any;
 }
 
+export type FluxPluginMethodType = (action: FluxAction) => Promise<FluxAction>;
+
 export interface FluxStorageType {
   readonly getStorageData: (key: string) => Promise<any>;
   readonly setStorageData: (key: string, value: any) => Promise<boolean>;
+}
+
+export interface MiddlewareType {
+  readonly name: string;
+  readonly preDispatch?: FluxPluginMethodType;
+  readonly postDispatch?: FluxPluginMethodType;
+}
+
+export interface FluxPluginType {
+  readonly name: string;
+  readonly method: FluxPluginMethodType;
 }
 
 /**
@@ -46,7 +59,10 @@ export interface FluxStorageType {
  * @type {EventEmitter}
  */
 export class FluxFramework extends EventEmitter {
-  // Properties
+  // Public properties
+  pluginTypes: string[] = ['preDispatch', 'postDispatch'];
+
+  // Private properties
   private store: any = {};
   private storeClasses: any = {};
   private defaultOptions: FluxOptions = {
@@ -57,6 +73,7 @@ export class FluxFramework extends EventEmitter {
     storage: null,
     title: 'ArkhamJS'
   };
+  private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
 
   /**
@@ -70,6 +87,7 @@ export class FluxFramework extends EventEmitter {
     super();
 
     // Methods
+    this.addMiddleware = this.addMiddleware.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
     this.config = this.config.bind(this);
     this.debugError = this.debugError.bind(this);
@@ -87,12 +105,42 @@ export class FluxFramework extends EventEmitter {
     this.registerStores = this.registerStores.bind(this);
     this.setStore = this.setStore.bind(this);
 
+    // Add middleware plugin types
+    this.pluginTypes.forEach((type: string) => this.middleware[`${type}List`] = []);
+
     // Configuration
     this.config(this.defaultOptions);
   }
 
   /**
-   * Removes all app data from storage.
+   * Add middleware to framework.
+   *
+   * @param {array} middleware An array of middleware to add to the framework.
+   */
+  addMiddleware(middleware: MiddlewareType[]): void {
+    middleware.forEach((middleObj: MiddlewareType) => {
+      // Make sure middleware is either a class or object.
+      if(!!middleObj && ((typeof middleObj === 'function') || (typeof middleObj === 'object'))) {
+        const middleName: string = middleObj.name || '';
+
+        if(!middleName) {
+          throw Error('Unknown middleware is not configured properly. Requires name property. Cannot add to Flux.');
+        }
+
+        // Sort middleware plugins for efficiency
+        this.pluginTypes.forEach((type: string) => {
+          const method = middleObj[type];
+          const plugin: FluxPluginType = {method, name: middleName};
+          this.middleware[`${type}List`] = this.addPlugin(type, plugin);
+        });
+      } else {
+        throw Error('Unknown middleware is not configured properly. Cannot add to Flux.');
+      }
+    });
+  }
+
+  /**
+   * Remove all app data from storage.
    *
    * @returns {Promise<boolean>} Whether app data was successfully removed.
    */
@@ -110,20 +158,32 @@ export class FluxFramework extends EventEmitter {
   }
 
   /**
+   * Remove all middleware.
+   *
+   * @returns {boolean} Whether middleware was successfully removed.
+   */
+  clearMiddleware(): boolean {
+    // Set all store data to initial state
+    Object
+      .keys(this.middleware)
+      .forEach((pluginType: string) => {
+        this.middleware[`${pluginType}List`] = [];
+      });
+
+    return true;
+  }
+
+  /**
    * Set configuration options.
    *
    * @param {object} options Configuration options.
    */
-  async config(options: FluxOptions): Promise<void> {
+  config(options: FluxOptions): Promise<void> {
     this.options = {...this.defaultOptions, ...options};
-    const {name, storage} = this.options;
+    const {name} = this.options;
 
-    // Cache
-    if(storage) {
-      this.store = await storage.getStorageData(name) || {};
-    }
-
-    return null;
+    // Update default store
+    return this.useStore(name);
   }
 
   /**
@@ -199,6 +259,16 @@ export class FluxFramework extends EventEmitter {
    */
   async dispatch(action: FluxAction, silent: boolean = false): Promise<FluxAction> {
     action = cloneDeep(action);
+
+    // Apply middleware before the action is processed
+    const {postDispatchList = [], preDispatchList = []} = this.middleware;
+
+    if(preDispatchList.length) {
+      action = await Promise
+        .all(preDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action)))
+        .then((actions) => merge(action, ...cloneDeep(actions)) as FluxAction);
+    }
+
     const {type, ...data} = action;
 
     // Require a type
@@ -244,8 +314,14 @@ export class FluxFramework extends EventEmitter {
       await storage.setStorageData(name, this.store);
     }
 
+    if(postDispatchList.length) {
+      action = await Promise
+        .all(postDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action)))
+        .then((actions) => merge(action, ...cloneDeep(actions)) as FluxAction);
+    }
+
     if(!silent) {
-      this.emit(type, data);
+      this.emit(type, action);
     }
 
     return Promise.resolve(action);
@@ -347,6 +423,21 @@ export class FluxFramework extends EventEmitter {
   }
 
   /**
+   * Remove middleware from framework.
+   *
+   * @param {array} string middleware names to remove.
+   * @returns {Promise<object[]>} the class object(s).
+   */
+  removeMiddleware(names: string[]): void {
+    names.forEach((name: string) => {
+      // Remove middleware plugins
+      this.pluginTypes.forEach((type: string) => {
+        this.middleware[`${type}List`] = this.removePlugin(type, name);
+      });
+    });
+  }
+
+  /**
    * Sets the current state object.
    *
    * @param {string|array} [name] The name of the store to set. You can also use an array to specify a property path
@@ -356,6 +447,26 @@ export class FluxFramework extends EventEmitter {
   setStore(name: string | string[] = '', value): void {
     if(!!name) {
       this.store = set(cloneDeep(this.store), name, cloneDeep(value));
+    }
+  }
+
+  private addPlugin(type: string, plugin: FluxPluginType): FluxPluginType[] {
+    const {method, name} = plugin;
+
+    if(method && typeof method === 'function') {
+      const list = this.middleware[`${type}List`] || [];
+
+      // Check if plugin already exists
+      const exists: boolean = !!list.filter((obj: FluxPluginType) => obj.name === name).length;
+
+      // Do not add duplicate plugins
+      if(!exists) {
+        list.push({name, method});
+      }
+
+      return list;
+    } else if(method !== undefined) {
+      throw Error(`${plugin.name} middleware is not configured properly. Method is not a function.`);
     }
   }
 
@@ -411,6 +522,24 @@ export class FluxFramework extends EventEmitter {
     }
 
     return promise.then(() => this.storeClasses[storeName]);
+  }
+
+  private removePlugin(type: string, name: string): FluxPluginType[] {
+    const list = this.middleware[`${type}List`] || [];
+
+    // remove all occurances of the plugin
+    return list.filter((obj: FluxPluginType) => obj.name !== name);
+  }
+
+  private async useStore(name: string): Promise<void> {
+    const {storage} = this.options;
+
+    // Cache
+    if(storage) {
+      this.store = await storage.getStorageData(name) || {};
+    }
+
+    return null;
   }
 }
 

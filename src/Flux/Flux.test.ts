@@ -6,7 +6,7 @@
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
 import {Store} from '../Store/Store';
-import {Flux, FluxDebugLevel, FluxOptions} from './Flux';
+import {Flux, FluxAction, FluxDebugLevel, FluxOptions} from './Flux';
 
 describe('Flux', () => {
   let localSetSpy, sessionSetSpy, sessionSpy;
@@ -24,9 +24,11 @@ describe('Flux', () => {
 
     initialState(): object {
       return {
+        falsey: false,
         item: 'default',
         testAction: 'default',
-        testUpdate: 'default'
+        testUpdate: 'default',
+        zeroValue: 0
       };
     }
 
@@ -86,17 +88,110 @@ describe('Flux', () => {
     sessionSpy.mockRestore();
   });
 
+  describe('#addMiddleware', () => {
+    describe('should apply object middleware', () => {
+      const middleTest: string = 'intercept object';
+
+      beforeAll(() => {
+        // Set test data
+        Flux.setStore('test.testAction', 'default');
+
+        // Add object middleware
+        const objMiddleware = {
+          name: 'objectMiddleware',
+          preDispatch: (action) => ({...action, testVar: middleTest})
+        };
+
+        Flux.addMiddleware([objMiddleware]);
+
+        // Dispatch an action
+        Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+      });
+
+      afterAll(() => {
+        Flux.clearMiddleware();
+      });
+
+      it('should alter data before sending to stores', () => {
+        expect(Flux.getStore('test.testAction')).toEqual(middleTest);
+      });
+    });
+
+    describe('should apply promise middleware', () => {
+      const middleTest: string = 'intercept promise';
+
+      beforeAll(() => {
+        // Set test data
+        Flux.setStore('test.testAction', 'default');
+
+        // Add object middleware
+        const promiseMiddleware = {
+          name: 'promiseMiddleware',
+          preDispatch: (action) => Promise.resolve({...action, testVar: middleTest})
+        };
+
+        Flux.addMiddleware([promiseMiddleware]);
+
+        // Dispatch an action
+        Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+      });
+
+      afterAll(() => {
+        Flux.clearMiddleware();
+      });
+
+      it('should alter data before sending to stores', () => {
+        expect(Flux.getStore('test.testAction')).toEqual(middleTest);
+      });
+    });
+
+    describe('should apply post dispatch middleware', () => {
+      const middleTest: string = 'intercept post';
+      let postAction: FluxAction;
+
+      beforeAll(async () => {
+        // Set test data
+        Flux.setStore('test.testAction', 'default');
+
+        // Add object middleware
+        const postMiddleware = {
+          name: 'postMiddleware',
+          postDispatch: (action) => Promise.resolve({...action, testVar: middleTest})
+        };
+
+        Flux.addMiddleware([postMiddleware]);
+
+        // Dispatch an action
+        postAction = await Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+      });
+
+      afterAll(() => {
+        Flux.clearMiddleware();
+      });
+
+      it('should not alter store data', () => {
+        expect(Flux.getStore('test.testAction')).toEqual('hello world');
+      });
+
+      it('should emit altered data', () => {
+        expect(postAction.testVar).toEqual(middleTest);
+      });
+    });
+  });
+
   describe('#clearAppData', () => {
     beforeAll(() => {
+      sessionSpy.mockReset();
+
       // Set test data
-      Flux.setStore(['test', 'item'], 'clear');
+      Flux.setStore('test.item', 'clear');
 
       // Method
       Flux.clearAppData();
     });
 
     it('should re-initialize session data', () => {
-      expect(sessionSpy.mock.calls.length).toEqual(2);
+      expect(sessionSpy.mock.calls.length).toEqual(1);
     });
 
     it('should reset the store data', () => {
@@ -108,8 +203,7 @@ describe('Flux', () => {
     // Vars
     const opts: FluxOptions = {
       debugLevel: 0,
-      name,
-      useCache: true
+      name
     };
 
     beforeAll(() => {
@@ -127,10 +221,6 @@ describe('Flux', () => {
 
     it('should set app name', () => {
       expect(Flux['options'].name).toEqual(opts.name);
-    });
-
-    it('should set useCache', () => {
-      expect(Flux['options'].useCache).toEqual(opts.useCache);
     });
   });
 
@@ -239,7 +329,7 @@ describe('Flux', () => {
     });
 
     it('should alter the store data', () => {
-      const item: string = Flux.getStore(['test', 'testAction']);
+      const item: string = Flux.getStore('test.testAction');
       expect(item).toEqual('test');
     });
 
@@ -276,8 +366,12 @@ describe('Flux', () => {
   });
 
   describe('#getStore', () => {
+    let initialState;
+
     beforeAll(() => {
-      Flux.setStore('test', {item: 'default'});
+      const storeCls: Store = Flux.getClass('test');
+      initialState = storeCls.initialState();
+      Flux.setStore('test', initialState);
     });
 
     it('should get a global store', () => {
@@ -307,7 +401,17 @@ describe('Flux', () => {
 
     it('should return entire store object with empty key', () => {
       const value: string = Flux.getStore('');
-      expect(value).toEqual({test: {item: 'default'}});
+      expect(value).toEqual({test: initialState});
+    });
+
+    it('should return a false value', () => {
+      const value = Flux.getStore('test.falsey');
+      expect(value).toEqual(false);
+    });
+
+    it('should return a zero value', () => {
+      const value = Flux.getStore('test.zeroValue');
+      expect(value).toEqual(0);
     });
   });
 
@@ -331,6 +435,25 @@ describe('Flux', () => {
     it('should set the initial value', () => {
       const value: string = Flux['store'].test.item;
       expect(value).toEqual('default');
+    });
+  });
+
+  describe('#removeMiddleware', () => {
+    beforeAll(() => {
+      Flux.clearMiddleware();
+
+      // Add object middleware
+      const objMiddleware = {
+        name: 'objectMiddleware',
+        preDispatch: (action) => ({...action})
+      };
+
+      Flux.addMiddleware([objMiddleware]);
+    });
+
+    it('should alter data before sending to stores', () => {
+      Flux.removeMiddleware(['objectMiddleware']);
+      expect(Flux['middleware'].preDispatchList.length).toEqual(0);
     });
   });
 
