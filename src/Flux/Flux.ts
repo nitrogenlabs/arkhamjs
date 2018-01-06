@@ -167,7 +167,7 @@ export class FluxFramework extends EventEmitter {
     Object
       .keys(this.middleware)
       .forEach((pluginType: string) => {
-        this.middleware[`${pluginType}List`] = [];
+        this.middleware[pluginType] = [];
       });
 
     return true;
@@ -451,11 +451,10 @@ export class FluxFramework extends EventEmitter {
   }
 
   private addPlugin(type: string, plugin: FluxPluginType): FluxPluginType[] {
+    const list = this.middleware[`${type}List`] || [];
     const {method, name} = plugin;
 
     if(method && typeof method === 'function') {
-      const list = this.middleware[`${type}List`] || [];
-
       // Check if plugin already exists
       const exists: boolean = !!list.filter((obj: FluxPluginType) => obj.name === name).length;
 
@@ -468,6 +467,8 @@ export class FluxFramework extends EventEmitter {
     } else if(method !== undefined) {
       throw Error(`${plugin.name} middleware is not configured properly. Method is not a function.`);
     }
+
+    return list;
   }
 
   private deregister(name: string = ''): void {
