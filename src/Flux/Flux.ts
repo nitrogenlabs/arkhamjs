@@ -4,20 +4,15 @@
  */
 
 import {EventEmitter} from 'events';
-import {cloneDeep, get, isEqual, merge, set} from 'lodash';
+import {cloneDeep, get, merge, set} from 'lodash';
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
-export enum FluxDebugLevel {DISABLED, LOGS, DISPATCH}
-export type FluxPluginMethodType = (action: FluxAction) => Promise<FluxAction>;
+export type FluxPluginMethodType = (action: FluxAction, store: object) => Promise<FluxAction>;
 
 export interface FluxOptions {
   readonly basename?: string;
   readonly context?: object;
-  readonly debugLevel?: FluxDebugLevel;
-  readonly debugErrorFnc?: (debugLevel: number, ...args) => void;
-  readonly debugInfoFnc?: (debugLevel: number, ...args) => void;
-  readonly debugLogFnc?: (debugLevel: number, ...args) => void;
   readonly getUserConfirmation?: () => void;
   readonly hashType?: 'slash' | 'noslash' | 'hashbang';
   readonly history?: object;
@@ -65,7 +60,6 @@ export class FluxFramework extends EventEmitter {
   private store: any = {};
   private storeClasses: any = {};
   private defaultOptions: FluxOptions = {
-    debugLevel: FluxDebugLevel.DISABLED,
     name: 'arkhamjs',
     routerType: 'browser',
     scrollToTop: true,
@@ -89,13 +83,9 @@ export class FluxFramework extends EventEmitter {
     this.addMiddleware = this.addMiddleware.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
     this.config = this.config.bind(this);
-    this.debugError = this.debugError.bind(this);
-    this.debugInfo = this.debugInfo.bind(this);
-    this.debugLog = this.debugLog.bind(this);
     this.deregister = this.deregister.bind(this);
     this.deregisterStores = this.deregisterStores.bind(this);
     this.dispatch = this.dispatch.bind(this);
-    this.enableDebugger = this.enableDebugger.bind(this);
     this.getClass = this.getClass.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.getStore = this.getStore.bind(this);
@@ -186,60 +176,6 @@ export class FluxFramework extends EventEmitter {
   }
 
   /**
-   * Logs errors in the console. Will also call the debugErrorFnc method set in the config.
-   *
-   * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
-   * are appended together in the order listed and output.
-   */
-  debugError(...obj): void {
-    const {debugErrorFnc, debugLevel} = this.options;
-
-    if(debugLevel) {
-      console.error(...obj);
-    }
-
-    if(debugErrorFnc) {
-      debugErrorFnc(debugLevel, ...obj);
-    }
-  }
-
-  /**
-   * Logs informational messages to the console. Will also call the debugInfoFnc method set in the config.
-   *
-   * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
-   * are appended together in the order listed and output.
-   */
-  debugInfo(...obj): void {
-    const {debugInfoFnc, debugLevel} = this.options;
-
-    if(debugLevel) {
-      console.info(...obj);
-    }
-
-    if(debugInfoFnc) {
-      debugInfoFnc(debugLevel, ...obj);
-    }
-  }
-
-  /**
-   * Logs data in the console. Only logs when in debug mode.  Will also call the debugLogFnc method set in the config.
-   *
-   * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
-   * are appended together in the order listed and output.
-   */
-  debugLog(...obj): void {
-    const {debugLogFnc, debugLevel} = this.options;
-
-    if(debugLevel) {
-      console.log(...obj);
-    }
-
-    if(debugLogFnc) {
-      debugLogFnc(debugLevel, ...obj);
-    }
-  }
-
-  /**
    * De-registers named stores.
    *
    * @param {array} storeNames An array of store names to remove from the framework.
@@ -264,8 +200,8 @@ export class FluxFramework extends EventEmitter {
 
     if(preDispatchList.length) {
       action = await Promise
-        .all(preDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action)))
-        .then((actions) => merge(action, ...cloneDeep(actions)) as FluxAction);
+        .all(preDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action, cloneDeep(this.store))))
+        .then((actions) => merge(cloneDeep(action), ...cloneDeep(actions)) as FluxAction);
     }
 
     const {type, ...data} = action;
@@ -275,8 +211,7 @@ export class FluxFramework extends EventEmitter {
       return Promise.resolve(action);
     }
 
-    const oldState = cloneDeep(this.store);
-    const {debugLevel, name, storage} = this.options;
+    const {name, storage} = this.options;
 
     // When an action comes in, it must be completely handled by all stores
     Object
@@ -288,26 +223,6 @@ export class FluxFramework extends EventEmitter {
         storeCls.state = this.store[storeName];
       });
 
-    if(debugLevel > FluxDebugLevel.LOGS) {
-      const hasChanged = !isEqual(this.store, oldState);
-      const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';
-      const updatedColor = hasChanged ? '#00d484' : '#959595';
-      const updatedStore = cloneDeep(this.store);
-
-      if(console.groupCollapsed) {
-        console.groupCollapsed(`FLUX DISPATCH: ${type}`);
-        console.log('%c Action: ', 'color: #00C4FF', action);
-        console.log('%c Last State: ', 'color: #959595', oldState);
-        console.log(`%c ${updatedLabel}: `, `color: ${updatedColor}`, updatedStore);
-        console.groupEnd();
-      } else {
-        console.log(`FLUX DISPATCH: ${type}`);
-        console.log(`Action: ${action}`);
-        console.log('Last State: ', oldState);
-        console.log(`${updatedLabel}: `, updatedStore);
-      }
-    }
-
     // Save cache in storage
     if(storage) {
       await storage.setStorageData(name, this.store);
@@ -315,8 +230,10 @@ export class FluxFramework extends EventEmitter {
 
     if(postDispatchList.length) {
       action = await Promise
-        .all(postDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action)))
-        .then((actions) => merge(action, ...cloneDeep(actions)) as FluxAction);
+        .all(postDispatchList.map(async (plugin: FluxPluginType) => {
+          return plugin.method(cloneDeep(action), cloneDeep(this.store));
+        }))
+        .then((actions) => merge(cloneDeep(action), ...cloneDeep(actions)) as FluxAction);
     }
 
     if(!silent) {
@@ -324,18 +241,6 @@ export class FluxFramework extends EventEmitter {
     }
 
     return Promise.resolve(action);
-  }
-
-  /**
-   * Enables the console debugger.
-   *
-   * @param {number} level Enable or disable the debugger. Uses the constants:
-   *   FluxDebugLevel.DISABLED (0) - Disable.
-   *   FluxDebugLevel.LOGS (1) - Enable console logs.
-   *   FluxDebugLevel.DISPATCH (2) - Enable console logs and dispatch action data (default).
-   */
-  enableDebugger(level: number = FluxDebugLevel.DISPATCH): void {
-    this.options = {...this.options, debugLevel: level};
   }
 
   /**

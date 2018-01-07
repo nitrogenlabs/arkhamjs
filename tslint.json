@@ -197,13 +197,6 @@
     "ter-arrow-spacing": [
       true
     ],
-    "ter-arrow-body-style": [
-      true,
-      "as-needed",
-      {
-        "requireReturnForObjectLiteral": false
-      }
-    ],
     "ter-func-call-spacing": [
       true
     ],

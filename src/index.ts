@@ -7,7 +7,6 @@
 export {
   Flux,
   FluxAction,
-  FluxDebugLevel,
   FluxMiddlewareType,
   FluxOptions,
   FluxPluginMethodType,

@@ -9,7 +9,6 @@ var lib = require('./lib');
 // Framework
 exports.Flux = lib.Flux;
 exports.FluxAction = lib.FluxAction;
-exports.FluxDebugLevel = lib.FluxDebugLevel;
 exports.FluxMiddlewareType = lib.FluxMiddlewareType;
 exports.FluxOptions = lib.FluxOptions;
 exports.FluxPluginMethodType = lib.FluxPluginMethodType;

@@ -6,13 +6,12 @@
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
 import {Store} from '../Store/Store';
-import {Flux, FluxAction, FluxDebugLevel, FluxOptions} from './Flux';
+import {Flux, FluxAction, FluxOptions} from './Flux';
 
 describe('Flux', () => {
   let localSetSpy, sessionSetSpy, sessionSpy;
   const browserStorage = new BrowserStorage({type: 'session'});
   const cfg: FluxOptions = {
-    debugLevel: FluxDebugLevel.DISPATCH,
     name: 'arkhamjs',
     storage: browserStorage
   };
@@ -202,7 +201,6 @@ describe('Flux', () => {
   describe('#config', () => {
     // Vars
     const opts: FluxOptions = {
-      debugLevel: 0,
       name
     };
 
@@ -215,75 +213,8 @@ describe('Flux', () => {
       Flux.config(cfg);
     });
 
-    it('should set debugLevel', () => {
-      expect(Flux['options'].debugLevel).toEqual(opts.debugLevel);
-    });
-
     it('should set app name', () => {
       expect(Flux['options'].name).toEqual(opts.name);
-    });
-  });
-
-  describe('#debugError', () => {
-    let consoleSpy;
-    const msg: string = 'test';
-
-    beforeAll(() => {
-      // Spy
-      consoleSpy = jest.spyOn(console, 'error');
-
-      // Method
-      Flux.debugError(msg);
-    });
-
-    afterAll(() => {
-      consoleSpy.mockRestore();
-    });
-
-    it('should send data to console.error', () => {
-      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
-    });
-  });
-
-  describe('#debugInfo', () => {
-    let consoleSpy;
-    const msg: string = 'test';
-
-    beforeAll(() => {
-      // Spy
-      consoleSpy = jest.spyOn(console, 'info');
-
-      // Method
-      Flux.debugInfo(msg);
-    });
-
-    afterAll(() => {
-      consoleSpy.mockRestore();
-    });
-
-    it('should send data to console.info', () => {
-      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
-    });
-  });
-
-  describe('#debugLog', () => {
-    let consoleSpy;
-    const msg: string = 'test';
-
-    beforeAll(() => {
-      // Spy
-      consoleSpy = jest.spyOn(console, 'log');
-
-      // Method
-      Flux.debugLog(msg);
-    });
-
-    afterAll(() => {
-      consoleSpy.mockRestore();
-    });
-
-    it('should send data to console.log', () => {
-      expect(consoleSpy.mock.calls[0][0]).toEqual(msg);
     });
   });
 
@@ -335,26 +266,6 @@ describe('Flux', () => {
 
     it('should dispatch an event', () => {
       expect(eventSpy.mock.calls.length).toEqual(2);
-    });
-  });
-
-  describe('#enableDebugger', () => {
-    it('should disable debugger', () => {
-      Flux.enableDebugger(FluxDebugLevel.DISABLED);
-      const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toEqual(0);
-    });
-
-    it('should enable debugger for logs', () => {
-      Flux.enableDebugger(FluxDebugLevel.LOGS);
-      const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toEqual(1);
-    });
-
-    it('should enable debugger for dispatch actions', () => {
-      Flux.enableDebugger(FluxDebugLevel.DISPATCH);
-      const options: FluxOptions = Flux.getOptions();
-      expect(options.debugLevel).toEqual(2);
     });
   });
 

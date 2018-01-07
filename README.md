@@ -51,4 +51,4 @@ $ yarn add arkhamjs
 ```
 
 ### Documentation
-For some detailed [Documentation](http://www.arkhamjs.com) and additional options on the framework.
+For some detailed [Documentation](http://www.arkhamjs.io) and additional options on the framework.
