@@ -23,21 +23,19 @@ All data is stored within a single store. The data can be accessed through all y
 #### Immutability
 To prevent object referencing, we use immutable objects. When the state changes, the state's property is not the only item that is changed, the item it references is also updated. To prevent passing around an object between different scopes, immutable objects give your data a one way update path. You may also have returned values converted into ImmutableJS objects.
 
-#### Cache
-Your single store id stored in SessionStorage by default. While this can be turned off in your options, it can be very useful when saving state.
-
 #### Debugger
-The most important factor in choosing a framework is how easy it is to build with it. And with building comes debugging. A detailed debugger is included with the framework. When turned on, it will display any actions that come through the framework. Making the previous and new state visible to the developer. Great way to make your data transparent! Supported browsers: Chrome, Firefox, and Safari.
+The most important factor in choosing a framework is how easy it is to build with it. And with building comes debugging. A state debugger can be added with the middleware, [arkhamjs-middleware-logger](https://github.com/nitrogenlabs/arkhamjs-middleware-logger). When turned on, it will display any actions and state changes that come through the framework. Making the previous and next state visible to the developer. Great way to make your data transparent! Supported browsers: Chrome, Firefox, and Safari.
 
 #### Skeleton
 For a complete example of the setup, feel free to start your project with [arkhamjs-skeleton-react](https://github.com/nitrogenlabs/arkhamjs-skeleton-react).
 It includes a full setup of a bare bones React app using Webpack 2 and Babel 6. Also includes Karma unit testing and coverage reports.
 
-#### Storage
+#### Cache Storage
+An app state is clears after a browser refresh. Keeping the state after a reload can be very useful when requiring a persistent state.
 If you plan to persist data, you will need to add a storage to the framework:
- * NodeJS [arkhamjs-storage-node](https://github.com/nitrogenlabs/arkhamjs-storage-node)
  * React [arkhamjs-storage-browser](https://github.com/nitrogenlabs/arkhamjs-storage-browser)
  * React Native [arkhamjs-storage-native](https://github.com/nitrogenlabs/arkhamjs-storage-native)
+ * NodeJS [arkhamjs-storage-node](https://github.com/nitrogenlabs/arkhamjs-storage-node)
 
 ### Installation
 
