@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
@@ -29,8 +29,8 @@
     "pretest": "npm run lint",
     "test": "jest"
   },
-  "dependencies": {
-    "lodash": "^4.17.4"
+  "peerDependencies": {
+    "lodash": "^4.0.0"
   },
   "devDependencies": {
     "@nlabs/arkhamjs-storage-browser": "^1.0.4",

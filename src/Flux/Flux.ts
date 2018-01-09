@@ -82,6 +82,7 @@ export class FluxFramework extends EventEmitter {
     // Methods
     this.addMiddleware = this.addMiddleware.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
+    this.clearMiddleware = this.clearMiddleware.bind(this);
     this.config = this.config.bind(this);
     this.deregister = this.deregister.bind(this);
     this.deregisterStores = this.deregisterStores.bind(this);
@@ -92,6 +93,7 @@ export class FluxFramework extends EventEmitter {
     this.off = this.off.bind(this);
     this.register = this.register.bind(this);
     this.registerStores = this.registerStores.bind(this);
+    this.removeMiddleware = this.removeMiddleware.bind(this);
     this.setStore = this.setStore.bind(this);
 
     // Add middleware plugin types
