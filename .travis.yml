@@ -6,4 +6,5 @@ install:
   - yarn
 script:
   - yarn test
+  - yarn compile
   - yarn deploy
