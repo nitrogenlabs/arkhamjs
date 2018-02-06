@@ -24,6 +24,7 @@ export interface FluxOptions {
   readonly routerType?: string;
   readonly scrollToTop?: boolean;
   readonly storage?: FluxStorageType;
+  readonly stores?: any[];
   readonly title?: string;
 }
 
@@ -64,6 +65,7 @@ export class FluxFramework extends EventEmitter {
     routerType: 'browser',
     scrollToTop: true,
     storage: null,
+    stores: [],
     title: 'ArkhamJS'
   };
   private middleware: any = {};
@@ -83,13 +85,13 @@ export class FluxFramework extends EventEmitter {
     this.addMiddleware = this.addMiddleware.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
     this.clearMiddleware = this.clearMiddleware.bind(this);
-    this.config = this.config.bind(this);
     this.deregister = this.deregister.bind(this);
     this.deregisterStores = this.deregisterStores.bind(this);
     this.dispatch = this.dispatch.bind(this);
     this.getClass = this.getClass.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.getStore = this.getStore.bind(this);
+    this.init = this.init.bind(this);
     this.off = this.off.bind(this);
     this.register = this.register.bind(this);
     this.registerStores = this.registerStores.bind(this);
@@ -98,9 +100,6 @@ export class FluxFramework extends EventEmitter {
 
     // Add middleware plugin types
     this.pluginTypes.forEach((type: string) => this.middleware[`${type}List`] = []);
-
-    // Configuration
-    this.config(this.defaultOptions);
   }
 
   /**
@@ -162,19 +161,6 @@ export class FluxFramework extends EventEmitter {
       });
 
     return true;
-  }
-
-  /**
-   * Set configuration options.
-   *
-   * @param {object} options Configuration options.
-   */
-  config(options: FluxOptions): Promise<void> {
-    this.options = {...this.defaultOptions, ...options};
-    const {name} = this.options;
-
-    // Update default store
-    return this.useStore(name);
   }
 
   /**
@@ -283,6 +269,25 @@ export class FluxFramework extends EventEmitter {
 
     const value = cloneDeep(storeValue);
     return value === undefined ? defaultValue : value;
+  }
+
+  /**
+   * Initialize and set configuration options.
+   *
+   * @param {object} options Configuration options.
+   */
+  async init(options: FluxOptions): Promise<void> {
+    this.options = {...this.defaultOptions, ...options};
+    const {name, stores} = this.options;
+
+    // Update default store
+    await this.useStore(name);
+
+    if(stores.length) {
+      await this.registerStores(stores);
+    }
+
+    this.emit(ArkhamConstants.INIT);
   }
 
   /**

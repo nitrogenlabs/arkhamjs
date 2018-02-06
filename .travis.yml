@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "9"
 install:
-  - npm install
+  - npm install -g yarn
+  - yarn
 script:
-  - npm test
+  - yarn test
+  - yarn deploy
