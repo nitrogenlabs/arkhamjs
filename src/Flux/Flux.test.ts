@@ -11,10 +11,6 @@ import {Flux, FluxAction, FluxOptions} from './Flux';
 describe('Flux', () => {
   let localSetSpy, sessionSetSpy, sessionSpy;
   const browserStorage = new BrowserStorage({type: 'session'});
-  const cfg: FluxOptions = {
-    name: 'arkhamjs',
-    storage: browserStorage
-  };
 
   class TestStore extends Store {
     constructor() {
@@ -41,6 +37,12 @@ describe('Flux', () => {
     }
   }
 
+  const cfg: FluxOptions = {
+    name: 'arkhamjs',
+    storage: browserStorage,
+    stores: [TestStore]
+  };
+
   beforeAll(async () => {
     // Mock storage
     const storageMock = () => {
@@ -64,7 +66,7 @@ describe('Flux', () => {
     BrowserStorage.window.localStorage = storageMock();
 
     // Configure
-    Flux.config(cfg);
+    Flux.init(cfg);
 
     // Spy
     localSetSpy = jest.spyOn(BrowserStorage.window.localStorage, 'setItem');
@@ -198,26 +200,6 @@ describe('Flux', () => {
     });
   });
 
-  describe('#config', () => {
-    // Vars
-    const opts: FluxOptions = {
-      name
-    };
-
-    beforeAll(() => {
-      // Method
-      Flux.config(opts);
-    });
-
-    afterAll(() => {
-      Flux.config(cfg);
-    });
-
-    it('should set app name', () => {
-      expect(Flux['options'].name).toEqual(opts.name);
-    });
-  });
-
   describe('#deregisterStores', () => {
     beforeAll(() => {
       // Method
@@ -323,6 +305,26 @@ describe('Flux', () => {
     it('should return a zero value', () => {
       const value = Flux.getStore('test.zeroValue');
       expect(value).toEqual(0);
+    });
+  });
+
+  describe('#init', () => {
+    // Vars
+    const opts: FluxOptions = {
+      name
+    };
+
+    beforeAll(() => {
+      // Method
+      Flux.init(opts);
+    });
+
+    afterAll(() => {
+      Flux.init(cfg);
+    });
+
+    it('should set app name', () => {
+      expect(Flux['options'].name).toEqual(opts.name);
     });
   });
 

@@ -15,11 +15,11 @@
     "noImplicitThis": true,
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
-    "outDir": "lib",
+    "outDir": "./lib",
     "preserveConstEnums": true,
     "pretty": false,
     "removeComments": true,
-    "rootDir": "src",
+    "rootDir": "./src",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": false,
@@ -38,5 +38,12 @@
     "./src/lib/types",
     "react",
     "jest"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "declaration": true,
+    "lib": ["es2015", "dom"],
+    "module": "commonjs",
+    "sourceMap": true,
+    "target": "es5"
+  }
 }

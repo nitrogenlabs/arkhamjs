@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "3.1.4",
+  "version": "3.2.0",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
@@ -17,55 +17,54 @@
     "type": "git",
     "url": "git+ssh://git@github.com/nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "http://www.arkhamjs.io",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "compile": "tsc",
-    "docs": "typedoc --target ES5 --module commonjs --out docs/ src/ --exclude src/index.ts --excludeExternals --hideGenerator",
-    "lint": "tslint -c tslint.json -p tslint.json 'src/**/*.{ts,tsx}'",
+    "compile": "tsc && webpack",
+    "deploy": "s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
+    "lint": "tslint -c ./tslint.json -p ./tsconfig.json './src/**/*.{ts,tsx}'",
     "prepublishOnly": "NODE_ENV=production npm test && npm run compile",
-    "pretest": "npm run lint",
+    "pretest": "yarn lint",
+    "reset": "rm -rf node_modules yarn.lock && yarn",
     "test": "jest"
   },
   "peerDependencies": {
     "lodash": "^4.0.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs-storage-browser": "^1.0.4",
-    "@types/jest": "^22.0.1",
-    "@types/node": "^8.5.7",
-    "jest": "^22.0.4",
+    "@nlabs/arkhamjs-storage-browser": "^1.0.5",
+    "@types/jest": "^22.1.0",
+    "@types/node": "^9.3.0",
+    "awesome-typescript-loader": "^3.4.1",
+    "jest": "^22.1.4",
+    "jest-environment-jsdom": "^22.1.4",
+    "s3-deploy": "^0.9.0",
     "ts-jest": "^22.0.1",
-    "tslint": "^5.8.0",
+    "tslint": "^5.9.1",
     "tslint-eslint-rules": "^4.1.1",
-    "typedoc": "^0.9.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
   },
   "jest": {
     "moduleFileExtensions": [
+      "js",
+      "jsx",
       "ts",
       "tsx",
-      "js"
+      "json"
     ],
+    "rootDir": "./",
     "setupFiles": [
       "<rootDir>/jest.setup.js"
     ],
+    "testEnvironment": "jsdom",
+    "testRegex": "./src/.*\\.test\\.(ts|tsx|js)$",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": [
-      "<rootDir>/src/**/*test.ts?(x)"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/dist/"
-    ],
     "verbose": false
-  },
-  "directories": {
-    "doc": "docs"
   }
 }
