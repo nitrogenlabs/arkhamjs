@@ -206,14 +206,13 @@ export class FluxFramework extends EventEmitter {
       .keys(this.storeClasses)
       .forEach((storeName: string) => {
         const storeCls: Store = this.storeClasses[storeName];
-        const state = this.store[storeName] || storeCls.initialState() || {};
-        this.store[storeName] = cloneDeep(storeCls.onAction(type, data, state)) || cloneDeep(state);
-        storeCls.state = this.store[storeName];
+        const state = cloneDeep(this.store[storeName]) || cloneDeep(storeCls.initialState()) || {};
+        this.store[storeName] = cloneDeep(storeCls.onAction(type, data, state)) || state;
       });
 
     // Save cache in storage
     if(storage) {
-      await storage.setStorageData(name, this.store);
+      const storageStatus: boolean = await storage.setStorageData(name, this.store);
     }
 
     if(postDispatchList.length) {
@@ -314,8 +313,18 @@ export class FluxFramework extends EventEmitter {
    * @param {string} [eventType] Event to unsubscribe.
    * @param {function} [listener] The callback associated with the subscribed event.
    */
-  off(eventType: string, listener: (...args: any[]) => void): void {
-    this.removeListener(eventType, listener);
+  off(eventType: string, listener: (...args: any[]) => void): this {
+    return this.removeListener(eventType, listener);
+  }
+
+  /**
+   * Adds an event listener.
+   *
+   * @param {string} [eventType] Event to subscribe.
+   * @param {function} [listener] The callback associated with the subscribed event.
+   */
+  on(eventType: string, listener: (...args: any[]) => void): this {
+    return this.addListener(eventType, listener);
   }
 
   /**
@@ -415,10 +424,8 @@ export class FluxFramework extends EventEmitter {
           .then(async (cachedData: object) => {
             // Get default values
             const storeData = cachedData || this.store || {};
-            const state = storeData[storeName] || storeCls.initialState() || [];
-            const store = cloneDeep(this.store);
-            store[storeName] = cloneDeep(state);
-            this.store = store;
+            const state = storeData[storeName] || storeCls.initialState() || {};
+            this.store[storeName] = cloneDeep(state);
 
             // Save cache in session storage
             await storage.setStorageData(name, this.store);
@@ -427,9 +434,7 @@ export class FluxFramework extends EventEmitter {
       } else {
         // Get default values
         const state = this.store[storeName] || storeCls.initialState() || [];
-        const store = cloneDeep(this.store);
-        store[storeName] = cloneDeep(state);
-        this.store = store;
+        this.store[storeName] = cloneDeep(state);
       }
     }
 

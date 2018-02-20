@@ -19,7 +19,7 @@ describe('Flux', () => {
 
     initialState(): object {
       return {
-        falsey: false,
+        falsy: false,
         item: 'default',
         testAction: 'default',
         testUpdate: 'default',
@@ -298,7 +298,7 @@ describe('Flux', () => {
     });
 
     it('should return a false value', () => {
-      const value = Flux.getStore('test.falsey');
+      const value = Flux.getStore('test.falsy');
       expect(value).toEqual(false);
     });
 
@@ -328,8 +328,33 @@ describe('Flux', () => {
     });
   });
 
-  describe('#off', () => {
-    it('should remove a listener', () => {
+  describe('event listeners', () => {
+    let eventSpy;
+
+    beforeAll(() => {
+      eventSpy = jest.fn();
+      Flux.on('test', eventSpy);
+    });
+
+    describe('#on', () => {
+      it('should add a listener', async () => {
+        await Flux.dispatch({type: 'test'});
+        expect(eventSpy.mock.calls.length).toEqual(1);
+      });
+    });
+
+    describe('#off', () => {
+      it('should remove a listener', async () => {
+        Flux.off('test', eventSpy);
+        await Flux.dispatch({type: 'test'});
+
+        expect(eventSpy.mock.calls.length).toEqual(1);
+      });
+    });
+  });
+
+  describe('#on', () => {
+    it('should add a listener', () => {
       const spy = jest.fn();
       Flux.on('test', spy);
       Flux.off('test', spy);
