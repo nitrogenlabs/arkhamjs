@@ -212,7 +212,7 @@ export class FluxFramework extends EventEmitter {
 
     // Save cache in storage
     if(storage) {
-      const storageStatus: boolean = await storage.setStorageData(name, this.store);
+      await storage.setStorageData(name, this.store);
     }
 
     if(postDispatchList.length) {
