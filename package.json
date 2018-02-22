@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",

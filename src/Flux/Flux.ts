@@ -25,6 +25,7 @@ export interface FluxOptions {
   readonly routerType?: string;
   readonly scrollToTop?: boolean;
   readonly storage?: FluxStorageType;
+  readonly storageWait?: number;
   readonly stores?: any[];
   readonly title?: string;
 }
@@ -66,6 +67,7 @@ export class FluxFramework extends EventEmitter {
     routerType: 'browser',
     scrollToTop: true,
     storage: null,
+    storageWait: 300,
     stores: [],
     title: 'ArkhamJS'
   };
@@ -446,14 +448,14 @@ export class FluxFramework extends EventEmitter {
   }
 
   private async useStore(name: string): Promise<void> {
-    const {storage} = this.options;
+    const {storage, storageWait} = this.options;
 
     // Cache
     if(storage) {
       this.store = await storage.getStorageData(name) || {};
       this.updateStorage = debounce(() => {
         return storage.setStorageData(name, this.store);
-      }, 300, {leading: true, trailing: true});
+      }, storageWait, {leading: true, trailing: true});
     }
 
     return null;
