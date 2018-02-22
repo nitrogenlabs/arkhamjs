@@ -20,6 +20,7 @@ export interface FluxOptions {
   readonly initialIndex?: number;
   readonly keyLength?: number;
   readonly location?: string | object;
+  readonly middleware?: FluxMiddlewareType[];
   readonly name?: string;
   readonly routerType?: string;
   readonly scrollToTop?: boolean;
@@ -280,13 +281,17 @@ export class FluxFramework extends EventEmitter {
    */
   async init(options: FluxOptions): Promise<void> {
     this.options = {...this.defaultOptions, ...options};
-    const {name, stores} = this.options;
+    const {middleware, name, stores} = this.options;
 
     // Update default store
     await this.useStore(name);
 
-    if(stores.length) {
+    if(!!stores && stores.length) {
       await this.registerStores(stores);
+    }
+
+    if(!!middleware && middleware.length) {
+      this.addMiddleware(middleware);
     }
 
     this.emit(ArkhamConstants.INIT);
