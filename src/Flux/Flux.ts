@@ -4,7 +4,7 @@
  */
 
 import {EventEmitter} from 'events';
-import {cloneDeep, get, merge, set} from 'lodash';
+import {cloneDeep, debounce, get, merge, set} from 'lodash';
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
@@ -70,6 +70,7 @@ export class FluxFramework extends EventEmitter {
   };
   private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
+  private updateStorage;
 
   /**
    * Create a new instance of Flux.  Note that the Flux object
@@ -201,8 +202,6 @@ export class FluxFramework extends EventEmitter {
       return Promise.resolve(clonedAction);
     }
 
-    const {name, storage} = this.options;
-
     // When an action comes in, it must be completely handled by all stores
     Object
       .keys(this.storeClasses)
@@ -213,8 +212,10 @@ export class FluxFramework extends EventEmitter {
       });
 
     // Save cache in storage
+    const {storage} = this.options;
+
     if(storage) {
-      await storage.setStorageData(name, this.store);
+      await this.updateStorage();
     }
 
     if(postDispatchList.length) {
@@ -445,6 +446,9 @@ export class FluxFramework extends EventEmitter {
     // Cache
     if(storage) {
       this.store = await storage.getStorageData(name) || {};
+      this.updateStorage = debounce(() => {
+        return storage.setStorageData(name, this.store);
+      }, 300, {leading: true, trailing: true});
     }
 
     return null;
