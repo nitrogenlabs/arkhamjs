@@ -181,22 +181,24 @@ export class FluxFramework extends EventEmitter {
    * the action.
    */
   async dispatch(action: FluxAction, silent: boolean = false): Promise<FluxAction> {
-    action = cloneDeep(action);
+    let clonedAction: FluxAction = cloneDeep(action);
 
     // Apply middleware before the action is processed
     const {postDispatchList = [], preDispatchList = []} = this.middleware;
 
     if(preDispatchList.length) {
-      action = await Promise
-        .all(preDispatchList.map(async (plugin: FluxPluginType) => plugin.method(action, cloneDeep(this.store))))
-        .then((actions) => merge(cloneDeep(action), ...cloneDeep(actions)) as FluxAction);
+      clonedAction = await Promise
+        .all(preDispatchList.map(async (plugin: FluxPluginType) => {
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.store));
+        }))
+        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
 
-    const {type, ...data} = action;
+    const {type, ...data} = clonedAction;
 
     // Require a type
     if(!type) {
-      return Promise.resolve(action);
+      return Promise.resolve(clonedAction);
     }
 
     const {name, storage} = this.options;
@@ -216,18 +218,18 @@ export class FluxFramework extends EventEmitter {
     }
 
     if(postDispatchList.length) {
-      action = await Promise
+      clonedAction = await Promise
         .all(postDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(action), cloneDeep(this.store));
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.store));
         }))
-        .then((actions) => merge(cloneDeep(action), ...cloneDeep(actions)) as FluxAction);
+        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
 
     if(!silent) {
-      this.emit(type, action);
+      this.emit(type, clonedAction);
     }
 
-    return Promise.resolve(action);
+    return Promise.resolve(clonedAction);
   }
 
   /**
@@ -333,13 +335,20 @@ export class FluxFramework extends EventEmitter {
    * @param {array} stores Store class.
    * @returns {Promise<object[]>} the class object(s).
    */
-  registerStores(stores: any[]): Promise<object[]> {
-    return Promise
-      .all(stores.map((store: Store) => this.register(store).then((storeObj: Store) => storeObj)))
-      .then((storeClasses: Store[] = []) => {
-        this.emit(ArkhamConstants.INIT);
-        return storeClasses;
-      });
+  async registerStores(stores: any[]): Promise<object[]> {
+    const storeClasses: Store[] = stores.map((store: Store) => this.register(store));
+    // Save cache in session storage
+    const {name, storage} = this.options;
+
+    if(storage) {
+      await storage.setStorageData(name, this.store);
+    }
+
+    // Emit ready event
+    this.emit(ArkhamConstants.INIT);
+
+    // Return classes
+    return storeClasses;
   }
 
   /**
@@ -366,7 +375,7 @@ export class FluxFramework extends EventEmitter {
    */
   setStore(name: string | string[] = '', value): void {
     if(!!name) {
-      this.store = set(cloneDeep(this.store), name, cloneDeep(value));
+      this.store = set(this.store, name, cloneDeep(value));
     }
   }
 
@@ -396,12 +405,11 @@ export class FluxFramework extends EventEmitter {
     delete this.store[name];
   }
 
-  private register(StoreClass): Promise<Store> {
+  private register(StoreClass): Store {
     if(!StoreClass) {
       throw Error('Class is undefined. Cannot register with Flux.');
     }
 
-    let promise: Promise<any> = Promise.resolve();
     const clsType: string = StoreClass.constructor.toString().substr(0, 5);
 
     if(clsType !== 'class' && clsType !== 'funct') {
@@ -412,39 +420,22 @@ export class FluxFramework extends EventEmitter {
     const storeCls = new StoreClass();
     const {name: storeName} = storeCls;
 
-    if(!this.storeClasses[storeName]) {
-      const {name, storage} = this.options;
-
+    if(storeName && !this.storeClasses[storeName]) {
       // Save store object
       this.storeClasses[storeName] = storeCls;
 
-      // Get cached data
-      if(storage) {
-        promise = storage.getStorageData(name)
-          .then(async (cachedData: object) => {
-            // Get default values
-            const storeData = cachedData || this.store || {};
-            const state = storeData[storeName] || storeCls.initialState() || {};
-            this.store[storeName] = cloneDeep(state);
-
-            // Save cache in session storage
-            await storage.setStorageData(name, this.store);
-            return this.storeClasses[storeName];
-          });
-      } else {
-        // Get default values
-        const state = this.store[storeName] || storeCls.initialState() || [];
-        this.store[storeName] = cloneDeep(state);
-      }
+      // Get default values
+      this.store[storeName] = this.store[storeName] || cloneDeep(storeCls.initialState()) || {};
     }
 
-    return promise.then(() => this.storeClasses[storeName]);
+    // Return store class
+    return this.storeClasses[storeName];
   }
 
   private removePlugin(type: string, name: string): FluxPluginType[] {
     const list = this.middleware[`${type}List`] || [];
 
-    // remove all occurances of the plugin
+    // remove all occurrences of the plugin
     return list.filter((obj: FluxPluginType) => obj.name !== name);
   }
 

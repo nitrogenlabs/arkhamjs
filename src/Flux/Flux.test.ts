@@ -10,7 +10,6 @@ import {Flux, FluxAction, FluxOptions} from './Flux';
 
 describe('Flux', () => {
   let localSetSpy, sessionSetSpy, sessionSpy;
-  const browserStorage = new BrowserStorage({type: 'session'});
 
   class TestStore extends Store {
     constructor() {
@@ -39,7 +38,7 @@ describe('Flux', () => {
 
   const cfg: FluxOptions = {
     name: 'arkhamjs',
-    storage: browserStorage,
+    storage: new BrowserStorage({type: 'session'}),
     stores: [TestStore]
   };
 
@@ -66,7 +65,7 @@ describe('Flux', () => {
     BrowserStorage.window.localStorage = storageMock();
 
     // Configure
-    Flux.init(cfg);
+    await Flux.init(cfg);
 
     // Spy
     localSetSpy = jest.spyOn(BrowserStorage.window.localStorage, 'setItem');
