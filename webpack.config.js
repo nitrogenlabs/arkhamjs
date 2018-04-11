@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const {name, version} = require('./package.json');
 
 module.exports = {
+  mode: 'production',
   entry: {
     [name + '-' + version]: './src/index.ts',
     [name + '-' + version + '.min']: './src/index.ts'
@@ -21,15 +22,10 @@ module.exports = {
   },
   devtool: 'source-map',
   plugins: [
-    new CheckerPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      sourceMap: true,
-      include: /\.min\.js$/,
-    })
+    new CheckerPlugin()
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.tsx?$/,
       loader: 'awesome-typescript-loader',
       exclude: /node_modules/,

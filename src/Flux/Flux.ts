@@ -2,11 +2,12 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
 import {EventEmitter} from 'events';
 import {cloneDeep, debounce, get, merge, set} from 'lodash';
+
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
+
 
 export type FluxPluginMethodType = (action: FluxAction, store: object) => Promise<FluxAction>;
 
@@ -24,6 +25,7 @@ export interface FluxOptions {
   readonly name?: string;
   readonly routerType?: string;
   readonly scrollToTop?: boolean;
+  readonly state?: any;
   readonly storage?: FluxStorageType;
   readonly storageWait?: number;
   readonly stores?: any[];
@@ -56,16 +58,18 @@ export interface FluxPluginType {
  * @type {EventEmitter}
  */
 export class FluxFramework extends EventEmitter {
+  isInit: boolean = false;
   // Public properties
   pluginTypes: string[] = ['preDispatch', 'postDispatch'];
 
   // Private properties
-  private store: any = {};
+  private state: any = {};
   private storeClasses: any = {};
   private defaultOptions: FluxOptions = {
     name: 'arkhamjs',
     routerType: 'browser',
     scrollToTop: true,
+    state: null,
     storage: null,
     storageWait: 300,
     stores: [],
@@ -73,7 +77,7 @@ export class FluxFramework extends EventEmitter {
   };
   private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
-  private updateStorage;
+  private updateStorage = () => Promise.resolve();
 
   /**
    * Create a new instance of Flux.  Note that the Flux object
@@ -94,12 +98,15 @@ export class FluxFramework extends EventEmitter {
     this.dispatch = this.dispatch.bind(this);
     this.getClass = this.getClass.bind(this);
     this.getOptions = this.getOptions.bind(this);
+    this.getState = this.getState.bind(this);
     this.getStore = this.getStore.bind(this);
     this.init = this.init.bind(this);
     this.off = this.off.bind(this);
     this.register = this.register.bind(this);
     this.registerStores = this.registerStores.bind(this);
     this.removeMiddleware = this.removeMiddleware.bind(this);
+    this.reset = this.reset.bind(this);
+    this.setState = this.setState.bind(this);
     this.setStore = this.setStore.bind(this);
 
     // Add middleware plugin types
@@ -144,11 +151,11 @@ export class FluxFramework extends EventEmitter {
       .keys(this.storeClasses)
       .forEach((storeName: string) => {
         const storeCls: Store = this.storeClasses[storeName];
-        this.store[storeCls.name] = cloneDeep(storeCls.initialState());
+        this.state[storeCls.name] = cloneDeep(storeCls.initialState());
       });
 
     const {name, storage} = this.options;
-    return storage.setStorageData(name, this.store);
+    return storage.setStorageData(name, this.state);
   }
 
   /**
@@ -193,7 +200,7 @@ export class FluxFramework extends EventEmitter {
     if(preDispatchList.length) {
       clonedAction = await Promise
         .all(preDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.store));
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state));
         }))
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
@@ -210,8 +217,8 @@ export class FluxFramework extends EventEmitter {
       .keys(this.storeClasses)
       .forEach((storeName: string) => {
         const storeCls: Store = this.storeClasses[storeName];
-        const state = cloneDeep(this.store[storeName]) || cloneDeep(storeCls.initialState()) || {};
-        this.store[storeName] = cloneDeep(storeCls.onAction(type, data, state)) || state;
+        const state = cloneDeep(this.state[storeName]) || cloneDeep(storeCls.initialState()) || {};
+        this.state[storeName] = cloneDeep(storeCls.onAction(type, data, state)) || state;
       });
 
     // Save cache in storage
@@ -224,7 +231,7 @@ export class FluxFramework extends EventEmitter {
     if(postDispatchList.length) {
       clonedAction = await Promise
         .all(postDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.store));
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state));
         }))
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
@@ -263,17 +270,23 @@ export class FluxFramework extends EventEmitter {
    * @param {any} [defaultValue] (optional) A default value to return if null.
    * @returns {any} the state object or a property value within.
    */
-  getStore(name: string | string[] = '', defaultValue?): any {
+  getState(name: string | string[] = '', defaultValue?): any {
     let storeValue;
 
-    if(!name) {
-      storeValue = this.store || {};
+    if(!path) {
+      storeValue = this.state || {};
     } else {
-      storeValue = get(this.store, name);
+      storeValue = get(this.state, path);
     }
 
     const value = cloneDeep(storeValue);
     return value === undefined ? defaultValue : value;
+  }
+
+  /* Deprecated. Please use getState instead. */
+  getStore(name: string | string[] = '', defaultValue?): any {
+    console.warn('ArkhamJS Deprecation: Flux.getStore has been deprecated in favor of Flux.getState.');
+    return this.getState(path, defaultValue);
   }
 
   /**
@@ -281,12 +294,26 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {object} options Configuration options.
    */
-  async init(options: FluxOptions): Promise<void> {
-    this.options = {...this.defaultOptions, ...options};
+  async init(options: FluxOptions, reset: boolean = false): Promise<void> {
+    // Should reset previous params
+    if(this.isInit && reset) {
+      this.reset(false);
+    }
+
+    // Set options
+    const updatedOptions = {...options};
+
+    if(this.isInit) {
+      // Remove the name from options if already initialized, otherwise the root app will not be able to access
+      // the state tree
+      updatedOptions.name = this.options.name;
+    }
+
+    this.options = {...this.defaultOptions, ...updatedOptions};
     const {middleware, name, stores} = this.options;
 
     // Update default store
-    await this.useStore(name);
+    await this.useStorage(name);
 
     if(!!stores && stores.length) {
       await this.registerStores(stores);
@@ -296,6 +323,7 @@ export class FluxFramework extends EventEmitter {
       this.addMiddleware(middleware);
     }
 
+    this.isInit = true;
     this.emit(ArkhamConstants.INIT);
   }
 
@@ -306,6 +334,10 @@ export class FluxFramework extends EventEmitter {
    */
   onInit(listener: (...args: any[]) => void): void {
     this.on(ArkhamConstants.INIT, listener);
+
+    if(this.isInit) {
+      listener();
+    }
   }
 
   /**
@@ -349,7 +381,7 @@ export class FluxFramework extends EventEmitter {
     const {name, storage} = this.options;
 
     if(storage) {
-      await storage.setStorageData(name, this.store);
+      await storage.setStorageData(name, this.state);
     }
 
     // Emit ready event
@@ -375,16 +407,41 @@ export class FluxFramework extends EventEmitter {
   }
 
   /**
+   * Reset framework.
+   *
+   * @param {array} string middleware names to remove.
+   * @returns {Promise<object[]>} the class object(s).
+   */
+  async reset(clearStorage: boolean = true): Promise<void> {
+    const {name, storage} = this.options;
+
+    // Clear persistent cache
+    if(storage && clearStorage) {
+      await storage.setStorageData(name, {});
+    }
+
+    // Clear all properties
+    this.state = {};
+    this.storeClasses = [];
+    this.options = {...this.defaultOptions};
+    this.isInit = false;
+  }
+
+  /**
    * Sets the current state object.
    *
    * @param {string|array} [name] The name of the store to set. You can also use an array to specify a property path
    * within the object.
    * @param {any} [value] The value to set.
    */
-  setStore(name: string | string[] = '', value): void {
+  setState(name: string | string[] = '', value): void {
     if(!!name) {
-      this.store = set(this.store, name, cloneDeep(value));
+      this.state = set(this.state, name, cloneDeep(value));
     }
+  }
+
+  setStore(name: string | string[] = '', value): void {
+    this.setState(name, value);
   }
 
   private addPlugin(type: string, plugin: FluxPluginType): FluxPluginType[] {
@@ -410,22 +467,35 @@ export class FluxFramework extends EventEmitter {
 
   private deregister(name: string = ''): void {
     delete this.storeClasses[name];
-    delete this.store[name];
+    delete this.state[name];
   }
 
   private register(StoreClass): Store {
     if(!StoreClass) {
-      throw Error('Class is undefined. Cannot register with Flux.');
+      throw Error('Store is undefined. Cannot register with Flux.');
     }
 
     const clsType: string = StoreClass.constructor.toString().substr(0, 5);
+    const isFnc: boolean = clsType === 'funct' || clsType === 'class';
+    const isClass: boolean = !!StoreClass['prototype']['onAction'];
 
-    if(clsType !== 'class' && clsType !== 'funct') {
-      throw Error(`${StoreClass} is not a class. Cannot register with Flux.`);
+    if(!isClass && !isFnc) {
+      throw Error(`${StoreClass} is not a class or store function. Cannot register with Flux.`);
     }
 
     // Create store object
-    const storeCls = new StoreClass();
+    let storeCls;
+
+    if(isClass) {
+      // Create new custom class
+      storeCls = new StoreClass();
+    } else {
+      // Create store based on simple function
+      storeCls = new Store();
+      storeCls.name = StoreClass.name;
+      storeCls.onAction = StoreClass;
+    }
+
     const {name: storeName} = storeCls;
 
     if(storeName && !this.storeClasses[storeName]) {
@@ -433,7 +503,7 @@ export class FluxFramework extends EventEmitter {
       this.storeClasses[storeName] = storeCls;
 
       // Get default values
-      this.store[storeName] = this.store[storeName] || cloneDeep(storeCls.initialState()) || {};
+      this.state[storeName] = this.state[storeName] || cloneDeep(storeCls.initialState()) || {};
     }
 
     // Return store class
@@ -447,15 +517,17 @@ export class FluxFramework extends EventEmitter {
     return list.filter((obj: FluxPluginType) => obj.name !== name);
   }
 
-  private async useStore(name: string): Promise<void> {
-    const {storage, storageWait} = this.options;
+  private async useStorage(name: string): Promise<void> {
+    const {storage, state, storageWait} = this.options;
 
     // Cache
     if(storage) {
-      this.store = await storage.getStorageData(name) || {};
+      this.state = state || await storage.getStorageData(name) || {};
       this.updateStorage = debounce(() => {
-        return storage.setStorageData(name, this.store);
+        return storage.setStorageData(name, this.state);
       }, storageWait, {leading: true, trailing: true});
+    } else {
+      this.state = state || {};
     }
 
     return null;
