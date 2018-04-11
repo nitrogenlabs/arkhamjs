@@ -77,7 +77,7 @@ export class FluxFramework extends EventEmitter {
   };
   private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
-  private updateStorage = () => Promise.resolve();
+  private updateStorage = () => Promise.resolve(false);
 
   /**
    * Create a new instance of Flux.  Note that the Flux object
@@ -270,7 +270,7 @@ export class FluxFramework extends EventEmitter {
    * @param {any} [defaultValue] (optional) A default value to return if null.
    * @returns {any} the state object or a property value within.
    */
-  getState(name: string | string[] = '', defaultValue?): any {
+  getState(path: string | string[] = '', defaultValue?): any {
     let storeValue;
 
     if(!path) {
@@ -284,7 +284,7 @@ export class FluxFramework extends EventEmitter {
   }
 
   /* Deprecated. Please use getState instead. */
-  getStore(name: string | string[] = '', defaultValue?): any {
+  getStore(path: string | string[] = '', defaultValue?): any {
     console.warn('ArkhamJS Deprecation: Flux.getStore has been deprecated in favor of Flux.getState.');
     return this.getState(path, defaultValue);
   }
@@ -434,14 +434,23 @@ export class FluxFramework extends EventEmitter {
    * within the object.
    * @param {any} [value] The value to set.
    */
-  setState(name: string | string[] = '', value): void {
-    if(!!name) {
-      this.state = set(this.state, name, cloneDeep(value));
+  setState(path: string | string[] = '', value): Promise<boolean> {
+    if(!!path) {
+      this.state = set(this.state, path, cloneDeep(value));
     }
+
+    // Update persistent cache
+    const {storage} = this.options;
+
+    if(storage) {
+      return this.updateStorage();
+    }
+
+    return Promise.resolve(false);
   }
 
-  setStore(name: string | string[] = '', value): void {
-    this.setState(name, value);
+  setStore(path: string | string[] = '', value): Promise<boolean> {
+    return this.setState(path, value);
   }
 
   private addPlugin(type: string, plugin: FluxPluginType): FluxPluginType[] {
@@ -524,7 +533,11 @@ export class FluxFramework extends EventEmitter {
     if(storage) {
       this.state = state || await storage.getStorageData(name) || {};
       this.updateStorage = debounce(() => {
-        return storage.setStorageData(name, this.state);
+        if(storage) {
+          return storage.setStorageData(name, this.state);
+        }
+
+        return Promise.resolve(false);
       }, storageWait, {leading: true, trailing: true});
     } else {
       this.state = state || {};
