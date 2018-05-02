@@ -1,6 +1,6 @@
 {
   "name": "arkhamjs",
-  "version": "3.3.3",
+  "version": "3.4.0",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
@@ -32,6 +32,7 @@
     "update": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
+    "error-stack-parser": "^2.0.1",
     "lodash": "^4.17.5"
   },
   "devDependencies": {

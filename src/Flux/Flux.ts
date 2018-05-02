@@ -2,18 +2,19 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+import * as ErrorStackParser from 'error-stack-parser';
 import {EventEmitter} from 'events';
 import {cloneDeep, debounce, get, merge, set} from 'lodash';
 
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 
-
-export type FluxPluginMethodType = (action: FluxAction, store: object) => Promise<FluxAction>;
+export type FluxPluginMethodType = (action: FluxAction, store: object, appData?: object) => Promise<FluxAction>;
 
 export interface FluxOptions {
   readonly basename?: string;
   readonly context?: object;
+  readonly debug?: boolean;
   readonly getUserConfirmation?: () => void;
   readonly hashType?: 'slash' | 'noslash' | 'hashbang';
   readonly history?: object;
@@ -194,13 +195,28 @@ export class FluxFramework extends EventEmitter {
   async dispatch(action: FluxAction, silent: boolean = false): Promise<FluxAction> {
     let clonedAction: FluxAction = cloneDeep(action);
 
+    // Log duration of dispatch
+    const startTime: number = +(new Date());
+
+    // Get stack
+    const {stackTraceLimit} = Error;
+    Error.stackTraceLimit = Infinity;
+    const stack = ErrorStackParser.parse(new Error());
+    Error.stackTraceLimit = stackTraceLimit;
+
+    // Get options
+    const options = cloneDeep(this.options);
+
+    // App info
+    const appInfo = {duration: 0, options, stack};
+
     // Apply middleware before the action is processed
     const {postDispatchList = [], preDispatchList = []} = this.middleware;
 
     if(preDispatchList.length) {
       clonedAction = await Promise
         .all(preDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state));
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo);
         }))
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
@@ -228,10 +244,14 @@ export class FluxFramework extends EventEmitter {
       await this.updateStorage();
     }
 
+    const endTime: number = +(new Date());
+    const duration: number = endTime - startTime;
+    appInfo.duration = duration;
+
     if(postDispatchList.length) {
       clonedAction = await Promise
         .all(postDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state));
+          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo);
         }))
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
@@ -310,7 +330,7 @@ export class FluxFramework extends EventEmitter {
     }
 
     this.options = {...this.defaultOptions, ...updatedOptions};
-    const {middleware, name, stores} = this.options;
+    const {debug, middleware, name, stores} = this.options;
 
     // Update default store
     await this.useStorage(name);
@@ -321,6 +341,12 @@ export class FluxFramework extends EventEmitter {
 
     if(!!middleware && middleware.length) {
       this.addMiddleware(middleware);
+    }
+
+    if(debug) {
+      window['arkhamjs'] = this;
+    } else {
+      delete window['arkhamjs'];
     }
 
     this.isInit = true;
@@ -383,9 +409,6 @@ export class FluxFramework extends EventEmitter {
     if(storage) {
       await storage.setStorageData(name, this.state);
     }
-
-    // Emit ready event
-    this.emit(ArkhamConstants.INIT);
 
     // Return classes
     return storeClasses;
