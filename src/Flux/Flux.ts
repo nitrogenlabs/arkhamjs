@@ -62,7 +62,6 @@ export class FluxFramework extends EventEmitter {
   isInit: boolean = false;
   // Public properties
   pluginTypes: string[] = ['preDispatch', 'postDispatch'];
-
   // Private properties
   private state: any = {};
   private storeClasses: any = {};
@@ -78,7 +77,6 @@ export class FluxFramework extends EventEmitter {
   };
   private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
-  private updateStorage = () => Promise.resolve(false);
 
   /**
    * Create a new instance of Flux.  Note that the Flux object
@@ -548,6 +546,8 @@ export class FluxFramework extends EventEmitter {
     // remove all occurrences of the plugin
     return list.filter((obj: FluxPluginType) => obj.name !== name);
   }
+
+  private updateStorage = () => Promise.resolve(false);
 
   private async useStorage(name: string): Promise<void> {
     const {storage, state, storageWait} = this.options;

@@ -9,10 +9,17 @@
   "keywords": [
     "arkhamjs",
     "flux",
+    "global state",
     "immutable",
-    "nitrogenlabs"
+    "nitrogenlabs",
+    "state",
+    "state management"
   ],
-  "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
   "repository": {
     "type": "git",
     "url": "nitrogenlabs/arkhamjs.git"
@@ -22,14 +29,14 @@
     "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "compile": "NODE_ENV=production tsc && webpack",
-    "deploy": "s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
-    "lint": "tslint -c ./tslint.json -p ./tsconfig.json './src/**/*.{ts,tsx}'",
+    "compile": "lex compile -r",
+    "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
+    "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn compile",
     "pretest": "yarn lint",
     "reset": "rm -rf node_modules yarn.lock && yarn",
-    "test": "NODE_ENV=test jest",
-    "update": "yarn upgrade-interactive --latest"
+    "test": "lex test",
+    "update": "lex update"
   },
   "dependencies": {
     "error-stack-parser": "^2.0.1",
@@ -37,38 +44,12 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs-storage-browser": "^1.0.5",
-    "@types/jest": "^22.2.2",
+    "@types/jest": "^22.2.3",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^9.6.2",
-    "awesome-typescript-loader": "^5.0.0",
-    "jest": "^22.4.3",
-    "jest-environment-jsdom": "^22.4.3",
-    "s3-deploy": "^0.10.0",
-    "ts-jest": "^22.4.2",
-    "tslint": "^5.9.1",
-    "tslint-eslint-rules": "^5.1.0",
-    "typescript": "^2.8.1",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "json"
-    ],
-    "rootDir": "./",
-    "setupFiles": [
-      "<rootDir>/jest.setup.js"
-    ],
-    "testEnvironment": "jsdom",
-    "testRegex": "./src/.*\\.test\\.(ts|tsx|js)$",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "verbose": false
+    "@types/node": "^10.1.3",
+    "eslint": "^4.19.1",
+    "eslint-config-styleguidejs": "^0.6.3",
+    "s3-deploy": "^1.0.0",
+    "typescript": "^2.8.3"
   }
 }

@@ -34,13 +34,16 @@ If you plan to persist data, you will need to add a storage to the framework:
 
 ### Installation
 
+Using Yarn:
+```bash
+$ yarn add arkhamjs
+```
+
+or
+
 Using [npm](https://www.npmjs.com/):
 ```bash
 $ npm install --save arkhamjs
-```
-or
-```bash
-$ yarn add arkhamjs
 ```
 
 ### Documentation
