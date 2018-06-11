@@ -2,14 +2,17 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
+
 import {Store} from '../Store/Store';
 import {Flux, FluxAction, FluxOptions} from './Flux';
 
+
 describe('Flux', () => {
-  let localSetSpy, sessionSetSpy, sessionSpy;
+  let localSetSpy;
+  let sessionSetSpy;
+  let sessionSpy;
 
   class TestStore extends Store {
     constructor() {
@@ -48,9 +51,7 @@ describe('Flux', () => {
       const storage: object = {};
 
       return {
-        getItem: (storageGetKey: string) => {
-          return storage[storageGetKey] || null;
-        },
+        getItem: (storageGetKey: string) => storage[storageGetKey] || null,
         removeItem: (storageRemoveKey: string) => {
           delete storage[storageRemoveKey];
         },
@@ -73,7 +74,7 @@ describe('Flux', () => {
     sessionSpy = jest.spyOn(BrowserStorage, 'setSessionData');
 
     // Method
-    await Flux.registerStores([TestStore]);
+    await Flux.addStores([TestStore]);
   });
 
   afterEach(() => {
@@ -105,7 +106,7 @@ describe('Flux', () => {
         Flux.addMiddleware([objMiddleware]);
 
         // Dispatch an action
-        Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+        Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
       });
 
       afterAll(() => {
@@ -133,7 +134,7 @@ describe('Flux', () => {
         Flux.addMiddleware([promiseMiddleware]);
 
         // Dispatch an action
-        Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+        Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
       });
 
       afterAll(() => {
@@ -162,7 +163,7 @@ describe('Flux', () => {
         Flux.addMiddleware([postMiddleware]);
 
         // Dispatch an action
-        postAction = await Flux.dispatch({type: 'TEST_EVENT', testVar: 'hello world'});
+        postAction = await Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
       });
 
       afterAll(() => {
@@ -199,22 +200,24 @@ describe('Flux', () => {
     });
   });
 
-  describe('#deregisterStores', () => {
+  describe('#removeStores', () => {
     beforeAll(() => {
       // Method
-      Flux.deregisterStores(['test']);
+      Flux.removeStores(['test']);
     });
 
     afterAll(() => {
-      Flux.registerStores([TestStore]);
+      Flux.addStores([TestStore]);
     });
 
     it('should remove class', () => {
-      expect(!!Flux['storeClasses'].test).toEqual(false);
+      const privateProperty: string = 'storeClasses';
+      expect(!!Flux[privateProperty].test).toEqual(false);
     });
 
     it('should remove store data', () => {
-      expect(!!Flux['state'].test).toEqual(false);
+      const privateProperty: string = 'state';
+      expect(!!Flux[privateProperty].test).toEqual(false);
     });
   });
 
@@ -228,7 +231,7 @@ describe('Flux', () => {
       Flux.on('TEST_EVENT', eventSpy);
 
       // Method
-      Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
     });
 
     afterAll(() => {
@@ -236,8 +239,8 @@ describe('Flux', () => {
     });
 
     it('should return an action', () => {
-      action = Flux.dispatch({type: 'TEST_EVENT', testVar: 'test'});
-      expect(action).resolves.toEqual({type: 'TEST_EVENT', testVar: 'test'});
+      action = Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+      expect(action).resolves.toEqual({testVar: 'test', type: 'TEST_EVENT'});
     });
 
     it('should alter the store data', () => {
@@ -324,7 +327,8 @@ describe('Flux', () => {
       });
 
       it('should set app name', () => {
-        expect(Flux['options'].name).toEqual('demo');
+        const privateProperty: string = 'options';
+        expect(Flux[privateProperty].name).toEqual('demo');
       });
     });
 
@@ -344,7 +348,8 @@ describe('Flux', () => {
       });
 
       it('should set app name', () => {
-        expect(Flux['options'].name).toEqual('arkhamjsTest');
+        const privateProperty: string = 'options';
+        expect(Flux[privateProperty].name).toEqual('arkhamjsTest');
       });
     });
 
@@ -365,11 +370,13 @@ describe('Flux', () => {
       });
 
       it('should set state', () => {
-        expect(Object.keys(Flux['state']).length).toEqual(1);
+        const privateProperty: string = 'state';
+        expect(Object.keys(Flux[privateProperty]).length).toEqual(1);
       });
 
       it('should set state branch for store', () => {
-        expect(Flux['state'].test.item).toEqual('default');
+        const privateProperty: string = 'state';
+        expect(Flux[privateProperty].test.item).toEqual('default');
       });
     });
 
@@ -390,18 +397,20 @@ describe('Flux', () => {
       });
 
       it('should set state', () => {
-        expect(Object.keys(Flux['state']).length).toEqual(1);
+        const privateProperty: string = 'state';
+        expect(Object.keys(Flux[privateProperty]).length).toEqual(1);
       });
 
       it('should set state branch for store', () => {
-        expect(Flux['state'].test.item).toEqual('default');
+        const privateProperty: string = 'state';
+        expect(Flux[privateProperty].test.item).toEqual('default');
       });
     });
 
     describe('set defined state', () => {
       // Vars
       const opts: FluxOptions = {
-        state: {'test': {'hello': 'world'}, 'second': 'value'},
+        state: {second: 'value', test: {hello: 'world'}},
         stores: [TestStore]
       };
 
@@ -415,11 +424,13 @@ describe('Flux', () => {
       });
 
       it('should set state', () => {
-        expect(Object.keys(Flux['state']).length).toEqual(2);
+        const privateProperty: string = 'state';
+        expect(Object.keys(Flux[privateProperty]).length).toEqual(2);
       });
 
       it('should set state branch for store', () => {
-        expect(Flux['state'].test.hello).toEqual('world');
+        const privateProperty: string = 'state';
+        expect(Flux[privateProperty].test.hello).toEqual('world');
       });
     });
   });
@@ -460,20 +471,22 @@ describe('Flux', () => {
     });
   });
 
-  describe('#registerStores', () => {
-    describe('register classes', () => {
+  describe('#addStores', () => {
+    describe('add classes', () => {
       it('should save the store class', () => {
-        const storeCls: Store = Flux['storeClasses'].test;
+        const privateProperty: string = 'storeClasses';
+        const storeCls: Store = Flux[privateProperty].test;
         expect(storeCls.name).toEqual('test');
       });
 
       it('should set the initial value', () => {
-        const value: string = Flux['state'].test.item;
+        const privateProperty: string = 'state';
+        const value: string = Flux[privateProperty].test.item;
         expect(value).toEqual('default');
       });
     });
 
-    describe('register functions', () => {
+    describe('add functions', () => {
       beforeAll(() => {
         const demo = (type, data, state) => {
           if(type === 'DEMO_TEST') {
@@ -483,11 +496,12 @@ describe('Flux', () => {
           return state;
         };
 
-        Flux.registerStores([demo]);
+        Flux.addStores([demo]);
       });
 
       it('should create and save a Store class', () => {
-        const storeCls: Store = Flux['storeClasses'].demo;
+        const privateProperty: string = 'storeClasses';
+        const storeCls: Store = Flux[privateProperty].demo;
         expect(storeCls.name).toEqual('demo');
       });
 
@@ -514,7 +528,8 @@ describe('Flux', () => {
 
     it('should alter data before sending to stores', () => {
       Flux.removeMiddleware(['objectMiddleware']);
-      expect(Flux['middleware'].preDispatchList.length).toEqual(0);
+      const privateProperty: string = 'middleware';
+      expect(Flux[privateProperty].preDispatchList.length).toEqual(0);
     });
   });
 

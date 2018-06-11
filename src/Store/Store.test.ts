@@ -2,9 +2,10 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
 import {isObject} from 'lodash';
+
 import {Store} from './Store';
+
 
 describe('Store', () => {
   let store;

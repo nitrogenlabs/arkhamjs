@@ -90,6 +90,7 @@ export class FluxFramework extends EventEmitter {
 
     // Methods
     this.addMiddleware = this.addMiddleware.bind(this);
+    this.addStores = this.addStores.bind(this);
     this.clearAppData = this.clearAppData.bind(this);
     this.clearMiddleware = this.clearMiddleware.bind(this);
     this.deregister = this.deregister.bind(this);
@@ -104,6 +105,7 @@ export class FluxFramework extends EventEmitter {
     this.register = this.register.bind(this);
     this.registerStores = this.registerStores.bind(this);
     this.removeMiddleware = this.removeMiddleware.bind(this);
+    this.removeStores = this.removeStores.bind(this);
     this.reset = this.reset.bind(this);
     this.setState = this.setState.bind(this);
     this.setStore = this.setStore.bind(this);
@@ -178,8 +180,13 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {array} storeNames An array of store names to remove from the framework.
    */
-  deregisterStores(storeNames: string[]): void {
+  removeStores(storeNames: string[]): void {
     storeNames.forEach((name: string) => this.deregister(name));
+  }
+
+  deregisterStores(storeNames: string[]): void {
+    console.warn('ArkhamJS Deprecation: Flux.deregisterStores has been deprecated in favor of Flux.removeStores.');
+    this.removeStores(storeNames);
   }
 
   /**
@@ -213,9 +220,11 @@ export class FluxFramework extends EventEmitter {
 
     if(preDispatchList.length) {
       clonedAction = await Promise
-        .all(preDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo);
-        }))
+        .all(
+          preDispatchList.map(async (plugin: FluxPluginType) => plugin.method(
+            cloneDeep(clonedAction), cloneDeep(this.state), appInfo)
+          )
+        )
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
 
@@ -248,9 +257,11 @@ export class FluxFramework extends EventEmitter {
 
     if(postDispatchList.length) {
       clonedAction = await Promise
-        .all(postDispatchList.map(async (plugin: FluxPluginType) => {
-          return plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo);
-        }))
+        .all(
+          postDispatchList.map(
+            async (plugin: FluxPluginType) => plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo)
+          )
+        )
         .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
     }
 
@@ -334,17 +345,19 @@ export class FluxFramework extends EventEmitter {
     await this.useStorage(name);
 
     if(!!stores && stores.length) {
-      await this.registerStores(stores);
+      await this.addStores(stores);
     }
 
     if(!!middleware && middleware.length) {
       this.addMiddleware(middleware);
     }
 
+    const windowProperty: string = 'arkhamjs';
+
     if(debug) {
-      window['arkhamjs'] = this;
+      window[windowProperty] = this;
     } else {
-      delete window['arkhamjs'];
+      delete window[windowProperty];
     }
 
     this.isInit = true;
@@ -399,7 +412,7 @@ export class FluxFramework extends EventEmitter {
    * @param {array} stores Store class.
    * @returns {Promise<object[]>} the class object(s).
    */
-  async registerStores(stores: any[]): Promise<object[]> {
+  async addStores(stores: any[]): Promise<object[]> {
     const storeClasses: Store[] = stores.map((store: Store) => this.register(store));
     // Save cache in session storage
     const {name, storage} = this.options;
@@ -410,6 +423,11 @@ export class FluxFramework extends EventEmitter {
 
     // Return classes
     return storeClasses;
+  }
+
+  async registerStores(stores: any[]): Promise<object[]> {
+    console.warn('ArkhamJS Deprecation: Flux.registerStores has been deprecated in favor of Flux.addStores.');
+    return this.addStores(stores);
   }
 
   /**
@@ -484,7 +502,7 @@ export class FluxFramework extends EventEmitter {
 
       // Do not add duplicate plugins
       if(!exists) {
-        list.push({name, method});
+        list.push({method, name});
       }
 
       return list;
@@ -507,7 +525,7 @@ export class FluxFramework extends EventEmitter {
 
     const clsType: string = StoreClass.constructor.toString().substr(0, 5);
     const isFnc: boolean = clsType === 'funct' || clsType === 'class';
-    const isClass: boolean = !!StoreClass['prototype']['onAction'];
+    const isClass: boolean = !!StoreClass.prototype.onAction;
 
     if(!isClass && !isFnc) {
       throw Error(`${StoreClass} is not a class or store function. Cannot register with Flux.`);
