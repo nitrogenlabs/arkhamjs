@@ -191,7 +191,8 @@ export class FluxFramework extends EventEmitter {
     const {type, ...data} = clonedAction;
 
     // Require a type
-    if(!type) {
+    if(!type || type === '') {
+      console.warn('ArkhamJS Warning: Flux.dispatch is missing an action type for the payload:', data);
       return Promise.resolve(clonedAction);
     }
 
