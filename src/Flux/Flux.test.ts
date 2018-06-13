@@ -9,35 +9,35 @@ import {Store} from '../Store/Store';
 import {FluxAction, FluxOptions} from '../types/flux';
 import {Flux} from './Flux';
 
+class TestStore extends Store {
+  constructor() {
+    super('test');
+  }
+
+  initialState(): object {
+    return {
+      falsy: false,
+      item: 'default',
+      testAction: 'default',
+      testUpdate: 'default',
+      zeroValue: 0
+    };
+  }
+
+  onAction(type: string, data, state): object {
+    switch(type) {
+      case 'TEST_EVENT':
+        return set(state, 'testAction', data.testVar);
+      default:
+        return state;
+    }
+  }
+}
+
 describe('Flux', () => {
   let localSetSpy;
   let sessionSetSpy;
   let sessionSpy;
-
-  class TestStore extends Store {
-    constructor() {
-      super('test');
-    }
-
-    initialState(): object {
-      return {
-        falsy: false,
-        item: 'default',
-        testAction: 'default',
-        testUpdate: 'default',
-        zeroValue: 0
-      };
-    }
-
-    onAction(type: string, data, state): object {
-      switch(type) {
-        case 'TEST_EVENT':
-          return set(state, 'testAction', data.testVar);
-        default:
-          return state;
-      }
-    }
-  }
 
   const cfg: FluxOptions = {
     name: 'arkhamjsTest',
@@ -311,24 +311,47 @@ describe('Flux', () => {
   });
 
   describe('#init', () => {
-    describe('set app name', () => {
-      // Vars
-      const opts: FluxOptions = {
-        name: 'demo'
-      };
+    // Vars
+    const opts: FluxOptions = {
+      name: 'demo'
+    };
 
-      beforeAll(() => {
-        // Method
-        Flux.init(opts, true);
+    describe('set app name', () => {
+      beforeEach(() => {
+        const privateProperty: string = 'options';
+        Flux[privateProperty].name = cfg.name;
       });
 
       afterAll(() => {
-        Flux.init(cfg, true);
+        const privateInit: string = 'isInit';
+        Flux[privateInit] = true;
+
+        Flux.init(cfg);
+
+        const privateProperty: string = 'options';
+        Flux[privateProperty].name = cfg.name;
       });
 
-      it('should set app name', () => {
+      it('should update app name if initializing for the first time', () => {
+        const privateInit: string = 'isInit';
+        Flux[privateInit] = false;
+
+        // Method
+        Flux.init(opts);
+
         const privateProperty: string = 'options';
         expect(Flux[privateProperty].name).toEqual('demo');
+      });
+
+      it('should not update app name if initializing again', () => {
+        const privateInit: string = 'isInit';
+        Flux[privateInit] = true;
+
+        // Method
+        Flux.init(opts);
+
+        const privateProperty: string = 'options';
+        expect(Flux[privateProperty].name).toEqual('arkhamjsTest');
       });
     });
 
@@ -501,6 +524,7 @@ describe('Flux', () => {
 
       it('should create and save a Store class', () => {
         const privateProperty: string = 'storeClasses';
+        console.log('Flux[privateProperty]', Flux[privateProperty]);
         const storeCls: Store = Flux[privateProperty].demo;
         expect(storeCls.name).toEqual('demo');
       });

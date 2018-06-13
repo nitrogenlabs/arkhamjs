@@ -486,7 +486,7 @@ export class FluxFramework extends EventEmitter {
 
     const clsType: string = StoreClass.constructor.toString().substr(0, 5);
     const isFnc: boolean = clsType === 'funct' || clsType === 'class';
-    const isClass: boolean = !!StoreClass.prototype;
+    const isClass: boolean = !!StoreClass.prototype.onAction;
 
     if(!isClass && !isFnc) {
       throw Error(`${StoreClass} is not a class or store function. Cannot register with Flux.`);

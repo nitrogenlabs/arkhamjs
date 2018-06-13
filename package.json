@@ -44,12 +44,12 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs-storage-browser": "^1.0.5",
-    "@types/jest": "^23.0.0",
+    "@types/jest": "^23.1.0",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^10.3.2",
+    "@types/node": "^10.3.3",
     "eslint": "^4.19.1",
-    "eslint-config-styleguidejs": "^0.7.4",
+    "eslint-config-styleguidejs": "^0.7.5",
     "s3-deploy": "^1.0.0",
-    "typescript": "^2.9.1"
+    "typescript": "^2.9.2"
   }
 }
