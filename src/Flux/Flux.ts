@@ -2,7 +2,7 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import * as ErrorStackParser from 'error-stack-parser';
+import ErrorStackParser from 'error-stack-parser';
 import {EventEmitter} from 'events';
 import {cloneDeep, debounce, get, merge, set} from 'lodash';
 
@@ -486,7 +486,7 @@ export class FluxFramework extends EventEmitter {
 
     const clsType: string = StoreClass.constructor.toString().substr(0, 5);
     const isFnc: boolean = clsType === 'funct' || clsType === 'class';
-    const isClass: boolean = !!StoreClass.prototype.onAction;
+    const isClass: boolean = !!StoreClass.prototype;
 
     if(!isClass && !isFnc) {
       throw Error(`${StoreClass} is not a class or store function. Cannot register with Flux.`);

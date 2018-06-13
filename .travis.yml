@@ -3,7 +3,8 @@ node_js:
   - "9"
 install:
   - npm install -g yarn @nlabs/lex
+  - lex versions
   - yarn
 script:
-  - yarn compile
+  - yarn build
   - yarn test
