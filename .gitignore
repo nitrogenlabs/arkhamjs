@@ -13,6 +13,6 @@ build
 
 # App
 coverage
+dist
 docs
-lib
 tmp

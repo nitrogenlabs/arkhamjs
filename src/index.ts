@@ -5,13 +5,17 @@
 
 // Framework
 export {
-  Flux,
+  Flux
+} from './Flux/Flux';
+
+// Typescript types
+export {
   FluxAction,
   FluxMiddlewareType,
   FluxOptions,
   FluxPluginMethodType,
   FluxPluginType
-} from './Flux/Flux';
+} from './types/flux';
 
 // Store
 export {Store} from './Store/Store';

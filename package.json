@@ -1,11 +1,11 @@
 {
   "name": "arkhamjs",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
-  "types": "./lib/index.d.ts",
-  "typings": "lib/index",
+  "types": "./dist/index.d.ts",
+  "typings": "dist/index",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -29,12 +29,12 @@
     "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "compile": "lex compile -r",
-    "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
+    "build": "lex compile -r",
+    "deploy": "lex build -r && s3-deploy './dist/static/**' --cwd './dist/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "prepublishOnly": "yarn test && yarn compile",
+    "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "reset": "rm -rf node_modules yarn.lock && yarn",
+    "reset": "lex clean && yarn",
     "test": "lex test",
     "update": "lex update -i"
   },

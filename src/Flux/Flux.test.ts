@@ -6,8 +6,8 @@ import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
 
 import {Store} from '../Store/Store';
-import {Flux, FluxAction, FluxOptions} from './Flux';
-
+import {FluxAction, FluxOptions} from '../types/flux';
+import {Flux} from './Flux';
 
 describe('Flux', () => {
   let localSetSpy;
