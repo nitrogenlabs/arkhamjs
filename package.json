@@ -4,8 +4,7 @@
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
-  "types": "./dist/index.d.ts",
-  "typings": "dist/index",
+  "types": "./dist/index.d.js",
   "keywords": [
     "arkhamjs",
     "flux",
