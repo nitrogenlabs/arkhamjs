@@ -4,4 +4,4 @@
  */
 'use strict';
 
-module.exports = require('./dist');
+module.exports = require('./lib');

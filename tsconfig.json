@@ -18,7 +18,7 @@
     "noImplicitThis": true,
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
-    "outDir": "./dist",
+    "outDir": "./lib",
     "pretty": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -33,7 +33,7 @@
   ],
   "exclude": [
     "**/*.test.*",
-    "./dist",
+    "./lib",
     "./node_modules",
     "./test"
   ]

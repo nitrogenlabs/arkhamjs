@@ -4,7 +4,11 @@
  */
 import ErrorStackParser from 'error-stack-parser';
 import {EventEmitter} from 'events';
-import {cloneDeep, debounce, get, merge, set} from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import debounce from 'lodash/debounce';
+import get from 'lodash/get';
+import merge from 'lodash/merge';
+import set from 'lodash/set';
 
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';

@@ -4,18 +4,10 @@
  */
 
 // Framework
-export {
-  Flux
-} from './Flux/Flux';
+export {Flux} from './Flux/Flux';
 
 // Typescript types
-export {
-  FluxAction,
-  FluxMiddlewareType,
-  FluxOptions,
-  FluxPluginMethodType,
-  FluxPluginType
-} from './types/flux';
+export {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginMethodType, FluxPluginType} from './types/flux';
 
 // Store
 export {Store} from './Store/Store';
