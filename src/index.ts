@@ -2,15 +2,18 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+import {ArkhamConstants} from './constants/ArkhamConstants';
+import {Flux} from './Flux/Flux';
+import {Store} from './Store/Store';
+import {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginMethodType, FluxPluginType} from './types/flux';
 
-// Framework
-export {Flux} from './Flux/Flux';
-
-// Typescript types
-export {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginMethodType, FluxPluginType} from './types/flux';
-
-// Store
-export {Store} from './Store/Store';
-
-// Constants
-export {ArkhamConstants} from './constants/ArkhamConstants';
+export {
+  ArkhamConstants,
+  Flux,
+  FluxAction,
+  FluxMiddlewareType,
+  FluxOptions,
+  FluxPluginMethodType,
+  FluxPluginType,
+  Store
+};

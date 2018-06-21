@@ -1,5 +1,5 @@
 module.exports = {
   outputPath: 'lib',
-  targetEnvironment: 'web',
+  targetEnvironment: 'node',
   useTypescript: true
 };
