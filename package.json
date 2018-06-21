@@ -1,10 +1,10 @@
 {
   "name": "arkhamjs",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "description": "Javascript Flux Library",
   "license": "MIT",
   "main": "index.js",
-  "types": "./dist/index.d.js",
+  "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "lex compile -r",
-    "deploy": "lex build -r && s3-deploy './dist/static/**' --cwd './dist/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
+    "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
@@ -43,12 +43,12 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs-storage-browser": "^1.0.5",
-    "@types/jest": "^23.1.0",
-    "@types/lodash": "^4.14.106",
-    "@types/node": "^10.3.3",
+    "@types/jest": "^23.1.1",
+    "@types/lodash": "^4.14.110",
+    "@types/node": "^10.3.4",
     "eslint": "^4.19.1",
     "eslint-config-styleguidejs": "^0.7.5",
-    "s3-deploy": "^1.0.0",
+    "s3-deploy": "^1.0.1",
     "typescript": "^2.9.2"
   }
 }
