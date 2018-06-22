@@ -288,7 +288,7 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {object} options Configuration options.
    */
-  async init(options: FluxOptions, reset: boolean = false): Promise<void> {
+  async init(options: FluxOptions = {}, reset: boolean = false): Promise<void> {
     // Should reset previous params
     if(this.isInit && reset) {
       this.reset(false);
