@@ -3,7 +3,7 @@
   "version": "3.5.6",
   "description": "Javascript Flux Library",
   "license": "MIT",
-  "main": "index.js",
+  "main": "./lib/index.ts",
   "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
@@ -42,11 +42,11 @@
     "lodash": "^4.17.5"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs-storage-browser": "^1.0.5",
-    "@types/jest": "^23.1.1",
+    "@nlabs/arkhamjs-storage-browser": "^1.0.7",
+    "@types/jest": "^23.1.2",
     "@types/lodash": "^4.14.110",
-    "@types/node": "^10.3.4",
-    "eslint": "^4.19.1",
+    "@types/node": "^10.5.0",
+    "eslint": "^5.0.1",
     "eslint-config-styleguidejs": "^0.7.5",
     "s3-deploy": "^1.0.1",
     "typescript": "^2.9.2"

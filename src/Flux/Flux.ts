@@ -189,7 +189,10 @@ export class FluxFramework extends EventEmitter {
             cloneDeep(clonedAction), cloneDeep(this.state), appInfo)
           )
         )
-        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
+        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction)
+        .catch((error) => {
+          throw error;
+        });
     }
 
     const {type, ...data} = clonedAction;
@@ -197,7 +200,10 @@ export class FluxFramework extends EventEmitter {
     // Require a type
     if(!type || type === '') {
       console.warn('ArkhamJS Warning: Flux.dispatch is missing an action type for the payload:', data);
-      return Promise.resolve(clonedAction);
+      return Promise.resolve(clonedAction)
+        .catch((error) => {
+          throw error;
+        });
     }
 
     // When an action comes in, it must be completely handled by all stores
@@ -227,7 +233,10 @@ export class FluxFramework extends EventEmitter {
             async (plugin: FluxPluginType) => plugin.method(cloneDeep(clonedAction), cloneDeep(this.state), appInfo)
           )
         )
-        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction);
+        .then((actions) => merge(cloneDeep(clonedAction), ...cloneDeep(actions)) as FluxAction)
+        .catch((error) => {
+          throw error;
+        });
     }
 
     if(!silent) {
