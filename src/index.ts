@@ -5,15 +5,6 @@
 import {ArkhamConstants} from './constants/ArkhamConstants';
 import {Flux} from './Flux/Flux';
 import {Store} from './Store/Store';
-import {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginMethodType, FluxPluginType} from './types/flux';
 
-export {
-  ArkhamConstants,
-  Flux,
-  FluxAction,
-  FluxMiddlewareType,
-  FluxOptions,
-  FluxPluginMethodType,
-  FluxPluginType,
-  Store
-};
+export * from './types/flux';
+export {ArkhamConstants, Flux, Store};
