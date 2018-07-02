@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@nlabs/arkhamjs-storage-browser@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@nlabs/arkhamjs-storage-browser/-/arkhamjs-storage-browser-1.0.7.tgz#e82062548d661742410f5c3fb277753c9ddac2b0"
+"@nlabs/arkhamjs-storage-browser@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.npmjs.org/@nlabs/arkhamjs-storage-browser/-/arkhamjs-storage-browser-1.0.8.tgz#91ef4a678c69813ab35a66a716350c2b7968ba0f"
 
 "@types/jest@^23.1.2":
   version "23.1.3"
