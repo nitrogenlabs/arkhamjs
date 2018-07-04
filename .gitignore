@@ -9,7 +9,6 @@ node_modules
 # Client Editor
 build
 .idea
-.vscode
 
 # App
 coverage

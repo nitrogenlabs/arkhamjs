@@ -1,0 +1,10 @@
+coverage
+docs
+node_modules
+src
+.eslintrc
+lex.config.js
+package-lock.json
+tsconfig.json
+yarn-error.log
+yarn.lock

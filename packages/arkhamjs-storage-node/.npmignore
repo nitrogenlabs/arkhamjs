@@ -1,0 +1,12 @@
+.node-persist
+coverage
+docs
+node_modules
+src
+.eslintrc
+.travis.yml
+jest.setup.js
+lex.config.js
+package-lock.json
+tsconfig.json
+yarn.lock

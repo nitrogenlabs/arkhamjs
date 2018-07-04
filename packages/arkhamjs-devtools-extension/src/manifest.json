@@ -1,0 +1,26 @@
+{
+  "name": "ArkhamJS DevTools",
+  "description": "ArkhamJS development tool used to debug apps",
+  "devtools_page": "devtoolsBackground.html",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "minimum_chrome_version": "50",
+  "permissions": [
+    "storage",
+    "tabs",
+    "background",
+    "activeTab",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentScripts.js"
+      ]
+    }
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

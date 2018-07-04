@@ -1,0 +1,6 @@
+/* Base */
+@import 'bootstrap/dist/css/bootstrap.css';
+
+body, p, h1 {
+  font-family: 'Open Sans', sans-serif;
+}

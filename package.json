@@ -1,54 +1,14 @@
 {
-  "name": "arkhamjs",
-  "version": "3.5.10",
-  "description": "Javascript Flux Library",
+  "private": true,
   "license": "MIT",
-  "main": "./lib/index.ts",
-  "types": "./lib/index.d.js",
-  "keywords": [
-    "arkhamjs",
-    "flux",
-    "global state",
-    "immutable",
-    "nitrogenlabs",
-    "state",
-    "state management"
-  ],
-  "author": {
-    "name": "Giraldo Rosales",
-    "email": "giraldo@nitrogenlabs.com",
-    "url": "http://nitrogenlabs.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "nitrogenlabs/arkhamjs.git"
-  },
-  "homepage": "https://arkhamjs.io",
-  "bugs": {
-    "url": "nitrogenlabs/arkhamjs/issues"
-  },
   "scripts": {
-    "build": "lex compile -r",
-    "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
-    "lint": "eslint ./src --ext .ts,.tsx",
-    "prepublishOnly": "yarn test && yarn build",
-    "pretest": "yarn lint",
-    "reset": "lex clean && yarn",
-    "test": "lex test",
-    "update": "lex update -i"
-  },
-  "dependencies": {
-    "error-stack-parser": "^2.0.2",
-    "lodash": "^4.17.5"
+    "lint": "lerna run lint",
+    "test": "lerna run test"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs-storage-browser": "^1.0.8",
-    "@types/jest": "^23.1.2",
-    "@types/lodash": "^4.14.110",
-    "@types/node": "^10.5.0",
-    "eslint": "^5.0.1",
-    "eslint-config-styleguidejs": "^0.7.5",
-    "s3-deploy": "^1.0.1",
-    "typescript": "^2.9.2"
-  }
+    "lerna": "^2.11.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

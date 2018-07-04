@@ -1,0 +1,1 @@
+Any images to be imported would be placed in the img directory.

@@ -1,9 +1,9 @@
+# ArkhamJS
 <img src="https://arkhamjs.io/img/logos/gh-arkhamjs.png" width="400"/>
 
-[![npm version](https://img.shields.io/npm/v/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
-[![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+[![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
 [![Issues](http://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs/issues)
-[![npm downloads](https://img.shields.io/npm/dm/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/arkhamjs)
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
@@ -31,27 +31,3 @@ If you plan to persist data, you will need to add a storage to the framework:
  * React [arkhamjs-storage-browser](https://github.com/nitrogenlabs/arkhamjs-storage-browser)
  * React Native [arkhamjs-storage-native](https://github.com/nitrogenlabs/arkhamjs-storage-native)
  * NodeJS [arkhamjs-storage-node](https://github.com/nitrogenlabs/arkhamjs-storage-node)
-
-### Installation
-
-Using Yarn:
-```bash
-$ yarn add arkhamjs
-```
-
-or
-
-Using [npm](https://www.npmjs.com/):
-```bash
-$ npm install --save arkhamjs
-```
-
-### Documentation
-For some detailed [Documentation](http://arkhamjs.io) and additional options on the framework.
-
-### Demo
-Try tinkering with a simplified demo in [JSFiddle](https://jsfiddle.net/nitrog7/j3k762vd/)!
-
-### Skeleton
-For a complete example of the setup, feel free to start your project with [arkhamjs-skeleton-react](https://github.com/nitrogenlabs/arkhamjs-skeleton-react).
-It includes a full setup of a bare bones React app using Webpack 2 and Babel 6. Also includes Karma unit testing and coverage reports.

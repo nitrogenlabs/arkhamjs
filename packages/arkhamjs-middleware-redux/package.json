@@ -1,0 +1,56 @@
+{
+  "name": "@nlabs/arkhamjs-middleware-redux",
+  "version": "1.1.13",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Integrate ArkhamJS state management within Redux",
+  "license": "MIT",
+  "main": "index.js",
+  "types": "./lib/index.d.ts",
+  "keywords": [
+    "arkhamjs",
+    "flux",
+    "immutable",
+    "middleware",
+    "nitrogenlabs",
+    "redux"
+  ],
+  "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
+  "repository": {
+    "type": "git",
+    "url": "nitrogenlabs/arkhamjs-middleware-redux.git"
+  },
+  "homepage": "https://arkhamjs.io",
+  "bugs": {
+    "url": "nitrogenlabs/arkhamjs-middleware-redux/issues"
+  },
+  "scripts": {
+    "build": "lex compile -t -r",
+    "clean": "lex clean",
+    "lint": "eslint ./src --ext .ts,.tsx",
+    "prepublishOnly": "yarn lint && yarn build",
+    "pretest": "yarn lint",
+    "reset": "yarn clean && yarn",
+    "test": "",
+    "update": "lex update -i"
+  },
+  "peerDependencies": {
+    "@nlabs/arkhamjs": "^3.5.0",
+    "redux": "^3.0.0"
+  },
+  "devDependencies": {
+    "@nlabs/arkhamjs": "^3.5.12",
+    "@types/jest": "^23.1.1",
+    "@types/node": "^10.3.4",
+    "@types/redux": "^3.6.0",
+    "eslint": "^5.0.1",
+    "eslint-config-styleguidejs": "^0.7.5",
+    "redux": "^4.0.0",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "@types/webpack": "^4.4.5",
+    "lodash": "^4.17.10"
+  }
+}

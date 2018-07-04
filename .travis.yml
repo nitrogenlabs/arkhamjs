@@ -6,5 +6,5 @@ install:
   - lex versions
   - yarn
 script:
-  - yarn build
+  - yarn lint
   - yarn test

@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "styleguidejs/typescript"
+  ],
+  "rules": {
+    "no-underscore-dangle": 0
+  }
+}

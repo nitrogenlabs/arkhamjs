@@ -1,0 +1,6 @@
+{
+  "extends": "styleguidejs/typescript",
+  "rules": {
+    "import/no-extraneous-dependencies": 0
+  }
+}

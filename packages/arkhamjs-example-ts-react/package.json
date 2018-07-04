@@ -1,0 +1,64 @@
+{
+  "name": "@nlabs/arkhamjs-example-ts-react",
+  "version": "1.0.5",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "ArkhamJS React Typescript Example App",
+  "license": "MIT",
+  "keywords": [
+    "arkhamjs",
+    "example",
+    "nitrogenlabs",
+    "react",
+    "typescript",
+    "skeleton",
+    "lex"
+  ],
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "nitrogenlabs/arkhamjs-example-ts-react"
+  },
+  "homepage": "https://github.com/nitrogenlabs/arkhamjs-example-ts-react",
+  "bugs": {
+    "url": "https://github.com/nitrogenlabs/arkhamjs-example-ts-react/issues"
+  },
+  "scripts": {
+    "build": "lex build",
+    "development": "lex dev",
+    "lint": "eslint ./src --ext .ts,.tsx",
+    "prepublishOnly": "yarn test",
+    "production": "yarn test && yarn build",
+    "reset": "lex clean && yarn",
+    "start": "lex dev -o",
+    "test": "lex test",
+    "update": "lex update -i"
+  },
+  "dependencies": {
+    "@nlabs/arkhamjs": "^3.5.12",
+    "@nlabs/arkhamjs-middleware-devtools": "^0.1.1",
+    "@nlabs/arkhamjs-middleware-logger": "^1.0.3",
+    "@nlabs/arkhamjs-storage-browser": "^1.0.7",
+    "bootstrap": "^4.1.0",
+    "lodash": "^4.17.10",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-hot-loader": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/history": "^4.6.2",
+    "@types/jest": "^23.1.3",
+    "@types/node": "^10.5.1",
+    "@types/react": "^16.4.5",
+    "@types/react-dom": "^16.0.6",
+    "eslint": "^5.0.1",
+    "eslint-config-styleguidejs": "^0.7.5",
+    "react-test-renderer": "^16.4.1",
+    "typescript": "^2.9.2"
+  }
+}

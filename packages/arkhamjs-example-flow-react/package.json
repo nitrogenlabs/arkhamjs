@@ -1,0 +1,58 @@
+{
+  "name": "@nlabs/arkhamjs-example-flow-react",
+  "version": "1.0.5",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "ArkhamJS React Flow Example App",
+  "license": "MIT",
+  "keywords": [
+    "arkhamjs",
+    "example",
+    "nitrogenlabs",
+    "react",
+    "flow",
+    "skeleton",
+    "lex"
+  ],
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "nitrogenlabs/arkhamjs-example-flow-react"
+  },
+  "homepage": "https://github.com/nitrogenlabs/arkhamjs-example-flow-react",
+  "bugs": {
+    "url": "https://github.com/nitrogenlabs/arkhamjs-example-flow-react/issues"
+  },
+  "scripts": {
+    "build": "lex build",
+    "development": "lex dev",
+    "lint": "eslint ./src",
+    "prepublishOnly": "yarn lint && yarn test",
+    "production": "yarn lint && yarn test && yarn build",
+    "reset": "lex clean",
+    "start": "lex dev -o",
+    "test": "lex test",
+    "update": "lex update -i"
+  },
+  "dependencies": {
+    "@nlabs/arkhamjs": "^3.5.12",
+    "@nlabs/arkhamjs-middleware-devtools": "^0.1.1",
+    "@nlabs/arkhamjs-middleware-logger": "^1.0.3",
+    "@nlabs/arkhamjs-storage-browser": "^1.0.7",
+    "bootstrap": "^4.1.0",
+    "lodash": "^4.17.10",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-hot-loader": "^4.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "eslint-config-styleguidejs": "^0.7.5",
+    "react-test-renderer": "^16.4.1"
+  }
+}

@@ -29,9 +29,22 @@
   "eslint.alwaysShowStatus": true,
   "eslint.enable": true,
   "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript"
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
   ],
   "explorer.confirmDragAndDrop": false,
   "explorer.decorations.badges": false,

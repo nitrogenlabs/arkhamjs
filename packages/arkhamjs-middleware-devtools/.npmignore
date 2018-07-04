@@ -1,0 +1,9 @@
+coverage
+docs
+node_modules
+src
+.eslintrc
+jest.setup.js
+package-lock.json
+tsconfig.json
+yarn.lock
