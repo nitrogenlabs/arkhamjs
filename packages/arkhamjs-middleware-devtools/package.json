@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-devtools",
-  "version": "0.1.1",
+  "version": "3.11.0",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,7 @@
     "clean": "lex clean",
     "compile": "lex compile -r",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "prepublishOnly": "yarn lint && yarn compile",
+    "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
     "test": "",
     "update": "lex update -i"
@@ -44,7 +44,7 @@
     "redux": "^3.0.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.5.12",
+    "@nlabs/arkhamjs": "^3.11.0",
     "@types/jest": "^23.1.4",
     "@types/node": "^10.5.1",
     "eslint": "^5.0.1",

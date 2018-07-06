@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.5.12",
+  "version": "3.11.0",
   "publishConfig": {
     "access": "public"
   },
@@ -46,7 +46,7 @@
     "lodash": "^4.17.5"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs-storage-browser": "^1.0.8",
+    "@nlabs/arkhamjs-storage-browser": "^3.11.0",
     "@types/events": "^1.2.0",
     "@types/jest": "^23.1.2",
     "@types/lodash": "^4.14.110",

@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-redux",
-  "version": "1.1.13",
+  "version": "3.11.0",
   "publishConfig": {
     "access": "public"
   },
@@ -33,6 +33,7 @@
     "build": "lex compile -r",
     "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
+    "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
     "test": "",
     "update": "lex update -i"
@@ -41,8 +42,11 @@
     "@nlabs/arkhamjs": "^3.5.0",
     "redux": "^3.0.0"
   },
+  "dependencies": {
+    "lodash": "^4.17.10"
+  },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.5.12-6",
+    "@nlabs/arkhamjs": "^3.11.0",
     "@types/jest": "^23.1.1",
     "@types/node": "^10.3.4",
     "@types/redux": "^3.6.0",

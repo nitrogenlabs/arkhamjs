@@ -1,17 +1,18 @@
 # ArkhamJS React TypeScript Example
 
 A simple base application to start you off on your ReactJS project. Uses the following modules:
- - [arkhamjs](https://www.npmjs.com/package/arkhamjs) - A clean, simple Flux framework.
- - [react](https://www.npmjs.com/package/react) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
- - [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Jest](https://facebook.github.io/jest/), [Webpack](https://webpack.js.org/), and [Typescript](http://www.typescriptlang.org/).
- - [@nlabs/arkhamjs-storage-browser](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-browser) - ArkhamJS browser storage. Caches state in session or local storage.
- - [@nlabs/arkhamjs-middleware-logger](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-logger) - ArkhamJS console log middleware.
 
-[![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs-example-react.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs-example-react)
+- [react](https://www.npmjs.com/package/react) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
+- [@nlabs/arkhamjs](https://www.npmjs.com/package/arkhamjs) - A clean, simple Flux framework.
+- [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Jest](https://facebook.github.io/jest/), [Webpack](https://webpack.js.org/), and [Typescript](http://www.typescriptlang.org/).
+- [@nlabs/arkhamjs-storage-browser](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-browser) - ArkhamJS browser storage. Caches state in session or local storage.
+- [@nlabs/arkhamjs-middleware-logger](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-logger) - ArkhamJS console log middleware.
+
+[![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs)
+[![Issues](https://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs/issues)
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
-[![Issues](http://img.shields.io/github/issues/nitrogenlabs/arkhamjs-example-react.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs-example-react/issues)
-[![Gitter](https://img.shields.io/gitter/room/NitrgenLabs/arkhamjs.svg?style=flat-square)](https://gitter.im/NitrogenLabs/arkhamjs)
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+[![Chat](https://img.shields.io/discord/446122412715802649.svg)](https://discord.gg/Ttgev58)
 
 ## Getting Started
 
@@ -19,7 +20,7 @@ A simple base application to start you off on your ReactJS project. Uses the fol
 
 - Clone the repo and install the necessary node modules:
 
-```bash
+```shell
 $ npm install -g yarn @nlabs/lex  # Install Yarn and Lex
 $ yarn                            # Install Node modules listed in ./package.json (may take a while the first time)
 ```
@@ -46,7 +47,7 @@ Runs all unit tests within your app with Jest.
 
 ### `yarn production`
 
-Run tests and then, on success, compile your application for a production environment. 
+Run tests and then, on success, compile your application for a production environment.
 
 ### `yarn dev`
 
@@ -64,7 +65,7 @@ See [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) for documentation on 
 
 The folder structure provided is only meant to serve as a guide, it is by no means prescriptive. It is something that has worked very well for me and my team, but use only what makes sense to you.
 
-```bash
+```shell
 .
 ├── coverage                 # Unit test coverage reports
 ├── dist                     # Compiled files
