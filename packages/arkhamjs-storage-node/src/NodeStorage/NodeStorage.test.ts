@@ -1,11 +1,11 @@
+import PersistStorage from 'node-persist';
+
+import {NodeStorage} from './NodeStorage';
+
 /**
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
-import PersistStorage from 'node-persist';
-
-import {NodeStorage} from './NodeStorage';
 
 describe('NodeStorage', () => {
   beforeAll(() => {

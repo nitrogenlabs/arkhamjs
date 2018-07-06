@@ -1,52 +1,39 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
     "declaration": true,
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
     "jsx": "react",
     "lib": [
       "es6",
-      "dom",
-      "es2015.promise"
+      "es7",
+      "esnext",
+      "dom"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noStrictGenericChecks": true,
     "noUnusedLocals": true,
-    "outDir": "./lib",
-    "preserveConstEnums": true,
-    "pretty": false,
-    "removeComments": true,
-    "rootDir": "./src",
+    "outDir": "lib",
+    "pretty": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "strictNullChecks": false,
-    "target": "es5"
+    "target": "ES5",
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/json-d-ts"
+    ]
   },
-  "exclude": [
-    "**/*.test.*",
-    "./docs",
-    "./lib",
-    "./node_modules"
-  ],
   "include": [
     "./src/**/*"
   ],
-  "types": [
-    "./src/lib/types",
-    "react",
-    "jest"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "declaration": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "module": "commonjs",
-    "sourceMap": true,
-    "target": "es5"
-  }
+  "exclude": [
+    "**/*.test.*",
+    "lib",
+    "./node_modules",
+    "./test"
+  ]
 }

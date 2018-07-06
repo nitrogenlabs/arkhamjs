@@ -8,7 +8,6 @@
   "license": "MIT",
   "main": "index.js",
   "types": "./lib/index.d.ts",
-  "typings": "lib/index",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -17,21 +16,26 @@
     "nitrogenlabs",
     "devtools"
   ],
-  "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
   "repository": {
     "type": "git",
-    "url": "nitrogenlabs/arkhamjs-middleware-devtools.git"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
   "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "nitrogenlabs/arkhamjs-middleware-devtools/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
+    "build": "",
+    "clean": "lex clean",
     "compile": "lex compile -r",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn lint && yarn compile",
     "pretest": "yarn lint",
-    "reset": "lex clean",
     "test": "",
     "update": "lex update -i"
   },

@@ -1,0 +1,1 @@
+Any font files to be imported would be placed in the fonts directory.

@@ -2,6 +2,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "build": "lerna run build",
+    "clean": "lex clean && lerna run clean",
     "lint": "lerna run lint",
     "test": "lerna run test"
   },

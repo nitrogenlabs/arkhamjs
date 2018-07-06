@@ -16,18 +16,21 @@
     "nitrogenlabs",
     "react"
   ],
-  "authors": [
-    "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)"
-  ],
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
   "repository": {
     "type": "git",
-    "url": "nitrogenlabs/arkhamjs-devtools-extension"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "nitrogenlabs/arkhamjs-devtools-extension",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-devtools-extension/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
+    "clean": "lex clean",
     "compile": "NODE_ENV=production tsc && webpack",
     "development": "NODE_ENV=development webpack -w",
     "lint": "eslint ./src --ext .ts,.tsx",

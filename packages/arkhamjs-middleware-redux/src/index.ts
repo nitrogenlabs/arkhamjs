@@ -7,4 +7,4 @@ import {arkhamMiddleware} from './middleware/arkhamMiddleware';
 import {ReduxMiddleware} from './middleware/ReduxMiddleware';
 
 export * from './types/main';
-export {arkhamMiddleware, createArkhamStore, ReduxMiddleware};
+export {ReduxMiddleware, arkhamMiddleware, createArkhamStore};

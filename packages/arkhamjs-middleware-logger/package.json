@@ -14,21 +14,25 @@
     "logging",
     "nitrogenlabs"
   ],
-  "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/nitrogenlabs/arkhamjs-middleware-logger.git"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "http://www.arkhamjs.io",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-middleware-logger/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile -r",
+    "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "reset": "lex clean",
     "test": "lex test",
     "update": "lex update -i"
   },

@@ -22,19 +22,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/nitrogenlabs/arkhamjs-storage-native.git"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
   "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-storage-native/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile -r",
+    "clean": "lex clean",
     "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "reset": "lex clean",
     "test": "lex test -s ./jest.setup.js",
     "update": "lex update -i"
   },
@@ -51,7 +51,7 @@
     "eslint": "^5.0.1",
     "eslint-config-styleguidejs": "^0.7.5",
     "lodash": "^4.17.10",
-    "react-native": "^0.55.4",
+    "react-native": "^0.56.0",
     "typescript": "^2.9.2"
   }
 }

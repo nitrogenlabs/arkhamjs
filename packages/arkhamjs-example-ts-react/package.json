@@ -22,19 +22,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "nitrogenlabs/arkhamjs-example-ts-react"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "https://github.com/nitrogenlabs/arkhamjs-example-ts-react",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-example-ts-react/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex build",
+    "clean": "lex clean",
     "development": "lex dev",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test",
     "production": "yarn test && yarn build",
-    "reset": "lex clean && yarn",
     "start": "lex dev -o",
     "test": "lex test",
     "update": "lex update -i"

@@ -22,19 +22,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "nitrogenlabs/arkhamjs-example-flow-react"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "https://github.com/nitrogenlabs/arkhamjs-example-flow-react",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-example-flow-react/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex build",
+    "clean": "lex clean",
     "development": "lex dev",
     "lint": "eslint ./src",
     "prepublishOnly": "yarn lint && yarn test",
     "production": "yarn lint && yarn test && yarn build",
-    "reset": "lex clean",
     "start": "lex dev -o",
     "test": "lex test",
     "update": "lex update -i"

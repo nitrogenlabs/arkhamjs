@@ -15,27 +15,30 @@
     "nitrogenlabs",
     "storage"
   ],
-  "author": "Giraldo Rosales <giraldo@nitrogenlabs.com> (http://nitrogenlabs.com/)",
+  "author": {
+    "name": "Giraldo Rosales",
+    "email": "giraldo@nitrogenlabs.com",
+    "url": "http://nitrogenlabs.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/nitrogenlabs/arkhamjs-storage-node.git"
+    "url": "nitrogenlabs/arkhamjs.git"
   },
-  "homepage": "http://www.arkhamjs.io",
+  "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs-storage-node/issues"
+    "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile -r",
+    "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "reset": "lex clean",
-    "test": "lex test - s ./jest.setup.js",
+    "test": "lex test -s ./jest.setup.js",
     "update": "lex update -i"
   },
-  "typings": "dist/index",
   "dependencies": {
-    "node-persist": "^3.0.1"
+    "node-persist": "^2.1.0"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.5.0"

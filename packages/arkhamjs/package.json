@@ -32,14 +32,15 @@
   },
   "scripts": {
     "build": "lex compile -r",
+    "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "reset": "lex clean && yarn",
     "test": "lex test",
     "update": "lex update -i"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.51",
     "error-stack-parser": "^2.0.2",
     "events": "^3.0.0",
     "lodash": "^4.17.5"
