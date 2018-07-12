@@ -168,11 +168,15 @@ export class FluxFramework extends EventEmitter {
     const startTime: number = +(new Date());
 
     // Get stack
-    const stackProperty: string = 'stackTraceLimit';
-    const {stackTraceLimit}: any = Error;
-    Error[stackProperty] = Infinity;
-    const stack = ErrorStackParser.parse(new Error());
-    Error[stackProperty] = stackTraceLimit;
+    let stack = [];
+
+    try {
+      const stackProperty: string = 'stackTraceLimit';
+      const {stackTraceLimit}: any = Error;
+      Error[stackProperty] = Infinity;
+      stack = ErrorStackParser.parse(new Error());
+      Error[stackProperty] = stackTraceLimit;
+    } catch(error) {}
 
     // Get options
     const options = cloneDeep(this.options);
@@ -220,7 +224,9 @@ export class FluxFramework extends EventEmitter {
     const {storage} = this.options;
 
     if(storage) {
-      await this.updateStorage();
+      try {
+        await this.updateStorage();
+      } catch(error) {}
     }
 
     const endTime: number = +(new Date());
@@ -317,10 +323,20 @@ export class FluxFramework extends EventEmitter {
     const {debug, middleware, name, stores} = this.options;
 
     // Update default store
-    await this.useStorage(name);
+    try {
+      await this.useStorage(name);
+    } catch(error) {
+      console.error('Arkham Error: There was an error while using storage.', name);
+      throw error;
+    }
 
     if(!!stores && stores.length) {
-      await this.addStores(stores);
+      try {
+        await this.addStores(stores);
+      } catch(error) {
+        console.error('Arkham Error: There was an error while adding stores.', stores);
+        throw error;
+      }
     }
 
     if(!!middleware && middleware.length) {
@@ -393,7 +409,11 @@ export class FluxFramework extends EventEmitter {
     const {name, storage} = this.options;
 
     if(storage) {
-      await storage.setStorageData(name, this.state);
+      try {
+        await storage.setStorageData(name, this.state);
+      } catch(error) {
+        throw error;
+      }
     }
 
     // Return classes
@@ -431,7 +451,11 @@ export class FluxFramework extends EventEmitter {
 
     // Clear persistent cache
     if(storage && clearStorage) {
-      await storage.setStorageData(name, {});
+      try {
+        await storage.setStorageData(name, {});
+      } catch(error) {
+        throw error;
+      }
     }
 
     // Clear all properties
@@ -547,14 +571,19 @@ export class FluxFramework extends EventEmitter {
 
     // Cache
     if(storage) {
-      this.state = state || await storage.getStorageData(name) || {};
-      this.updateStorage = debounce(() => {
-        if(storage) {
-          return storage.setStorageData(name, this.state);
-        }
+      try {
+        this.state = state || await storage.getStorageData(name) || {};
+        this.updateStorage = debounce(() => {
+          if(storage) {
+            return storage.setStorageData(name, this.state);
+          }
 
-        return Promise.resolve(false);
-      }, storageWait, {leading: true, trailing: true});
+          return Promise.resolve(false);
+        }, storageWait, {leading: true, trailing: true});
+      } catch(error) {
+        console.error(`ArkhamJS Error: Using storage, "${name}".`);
+        throw error;
+      }
     } else {
       this.state = state || {};
     }
