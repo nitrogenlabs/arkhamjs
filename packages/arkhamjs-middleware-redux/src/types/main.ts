@@ -6,5 +6,6 @@ export interface ArkhamReduxStoreType {
   flux: any;
   reducers: Dispatch<AnyAction>;
   reduxMiddleware: Middleware[];
+  sagas: any;
   statePath: string;
 }

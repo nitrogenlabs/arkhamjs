@@ -24,7 +24,7 @@ export class Store {
 
     // Vars
     this.state = {};
-    this.name = name.toLowerCase();
+    this.name = name;
   }
 
   /**

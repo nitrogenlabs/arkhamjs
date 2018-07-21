@@ -44,14 +44,14 @@
     "@nlabs/arkhamjs-middleware-devtools": "^3.11.0",
     "@nlabs/arkhamjs-middleware-logger": "^3.11.0",
     "@nlabs/arkhamjs-storage-browser": "^3.11.0",
-    "bootstrap": "^4.1.0",
+    "bootstrap": "^4.1.2",
     "lodash": "^4.17.10",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.3"
   },
   "devDependencies": {
-    "eslint": "^5.0.1",
+    "eslint": "^5.1.0",
     "eslint-config-styleguidejs": "^0.7.5",
     "react-test-renderer": "^16.4.1"
   }

@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-redux",
-  "version": "3.11.0",
+  "version": "3.11.1",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,7 @@
     "lint": "eslint ./src --ext .ts,.tsx",
     "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
-    "test": "",
+    "test": "lex test",
     "update": "lex update -i"
   },
   "peerDependencies": {
@@ -47,11 +47,11 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.11.0",
-    "@types/jest": "^23.1.1",
+    "@types/jest": "^23.1.5",
     "@types/node": "^10.3.4",
     "@types/redux": "^3.6.0",
     "@types/webpack": "^4.4.5",
-    "eslint": "^5.0.1",
+    "eslint": "^5.1.0",
     "eslint-config-styleguidejs": "^0.7.5",
     "redux": "^4.0.0",
     "typescript": "^2.9.2"

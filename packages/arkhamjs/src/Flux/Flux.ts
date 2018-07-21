@@ -289,7 +289,7 @@ export class FluxFramework extends EventEmitter {
       storeValue = get(this.state, path);
     }
 
-    const value = cloneDeep(storeValue);
+    const value = storeValue ? cloneDeep(storeValue) : storeValue;
     return value === undefined ? defaultValue : value;
   }
 

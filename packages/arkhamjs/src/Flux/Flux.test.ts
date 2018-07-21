@@ -11,7 +11,7 @@ import {Flux} from './Flux';
 
 class TestStore extends Store {
   constructor() {
-    super('test');
+    super('helloWorld');
   }
 
   initialState(): object {
@@ -95,7 +95,7 @@ describe('Flux', () => {
 
       beforeAll(() => {
         // Set test data
-        Flux.setState('test.testAction', 'default');
+        Flux.setState('helloWorld.testAction', 'default');
 
         // Add object middleware
         const objMiddleware = {
@@ -114,7 +114,7 @@ describe('Flux', () => {
       });
 
       it('should alter data before sending to stores', () => {
-        expect(Flux.getState('test.testAction')).toEqual(middleTest);
+        expect(Flux.getState('helloWorld.testAction')).toEqual(middleTest);
       });
     });
 
@@ -123,7 +123,7 @@ describe('Flux', () => {
 
       beforeAll(() => {
         // Set test data
-        Flux.setState('test.testAction', 'default');
+        Flux.setState('helloWorld.testAction', 'default');
 
         // Add object middleware
         const promiseMiddleware = {
@@ -142,7 +142,7 @@ describe('Flux', () => {
       });
 
       it('should alter data before sending to stores', () => {
-        expect(Flux.getState('test.testAction')).toEqual(middleTest);
+        expect(Flux.getState('helloWorld.testAction')).toEqual(middleTest);
       });
     });
 
@@ -152,7 +152,7 @@ describe('Flux', () => {
 
       beforeAll(async () => {
         // Set test data
-        Flux.setState('test.testAction', 'default');
+        Flux.setState('helloWorld.testAction', 'default');
 
         // Add object middleware
         const postMiddleware = {
@@ -171,7 +171,7 @@ describe('Flux', () => {
       });
 
       it('should not alter store data', () => {
-        expect(Flux.getState('test.testAction')).toEqual('hello world');
+        expect(Flux.getState('helloWorld.testAction')).toEqual('hello world');
       });
 
       it('should emit altered data', () => {
@@ -185,7 +185,7 @@ describe('Flux', () => {
       sessionSpy.mockReset();
 
       // Set test data
-      Flux.setState('test.item', 'clear');
+      Flux.setState('helloWorld.item', 'clear');
 
       // Method
       Flux.clearAppData();
@@ -196,7 +196,7 @@ describe('Flux', () => {
     });
 
     it('should reset the store data', () => {
-      expect(Flux.getState(['test', 'item'])).toEqual('default');
+      expect(Flux.getState(['helloWorld', 'item'])).toEqual('default');
     });
   });
 
@@ -244,7 +244,7 @@ describe('Flux', () => {
     });
 
     it('should alter the store data', () => {
-      const item: string = Flux.getState('test.testAction');
+      const item: string = Flux.getState('helloWorld.testAction');
       expect(item).toEqual('test');
     });
 
@@ -255,8 +255,8 @@ describe('Flux', () => {
 
   describe('#getClass', () => {
     it('should get a store class', () => {
-      const storeCls: Store = Flux.getClass('test');
-      expect(storeCls.name).toEqual('test');
+      const storeCls: Store = Flux.getClass('helloWorld');
+      expect(storeCls.name).toEqual('helloWorld');
     });
   });
 
@@ -264,48 +264,48 @@ describe('Flux', () => {
     let initialState;
 
     beforeAll(() => {
-      const storeCls: Store = Flux.getClass('test');
+      const storeCls: Store = Flux.getClass('helloWorld');
       initialState = storeCls.initialState();
-      Flux.setState('test', initialState);
+      Flux.setState('helloWorld', initialState);
     });
 
     it('should get a global store', () => {
       const value = Flux.getState();
-      expect(value.test.item).toEqual('default');
+      expect(value.helloWorld.item).toEqual('default');
     });
 
     it('should get a specific store returning an object', () => {
-      const value = Flux.getState('test');
+      const value = Flux.getState('helloWorld');
       expect(value.item).toEqual('default');
     });
 
     it('should get a specific item within a store using array', () => {
-      const value: string = Flux.getState(['test', 'item']);
+      const value: string = Flux.getState(['helloWorld', 'item']);
       expect(value).toEqual('default');
     });
 
     it('should get a specific item within a store using dot notation', () => {
-      const value: string = Flux.getState('test.item');
+      const value: string = Flux.getState('helloWorld.item');
       expect(value).toEqual('default');
     });
 
     it('should return default value from a null item', () => {
-      const value: string = Flux.getState('test.notDefault', '');
+      const value: string = Flux.getState('helloWorld.notDefault', '');
       expect(value).toEqual('');
     });
 
     it('should return entire store object with empty key', () => {
       const value: string = Flux.getState('');
-      expect(value).toEqual({test: initialState});
+      expect(value).toEqual({helloWorld: initialState});
     });
 
     it('should return a false value', () => {
-      const value = Flux.getState('test.falsy');
+      const value = Flux.getState('helloWorld.falsy');
       expect(value).toEqual(false);
     });
 
     it('should return a zero value', () => {
-      const value = Flux.getState('test.zeroValue');
+      const value = Flux.getState('helloWorld.zeroValue');
       expect(value).toEqual(0);
     });
   });
@@ -399,7 +399,7 @@ describe('Flux', () => {
 
       it('should set state branch for store', () => {
         const privateProperty: string = 'state';
-        expect(Flux[privateProperty].test.item).toEqual('default');
+        expect(Flux[privateProperty].helloWorld.item).toEqual('default');
       });
     });
 
@@ -426,7 +426,7 @@ describe('Flux', () => {
 
       it('should set state branch for store', () => {
         const privateProperty: string = 'state';
-        expect(Flux[privateProperty].test.item).toEqual('default');
+        expect(Flux[privateProperty].helloWorld.item).toEqual('default');
       });
     });
 
@@ -448,7 +448,7 @@ describe('Flux', () => {
 
       it('should set state', () => {
         const privateProperty: string = 'state';
-        expect(Object.keys(Flux[privateProperty]).length).toEqual(2);
+        expect(Object.keys(Flux[privateProperty]).length).toEqual(3);
       });
 
       it('should set state branch for store', () => {
@@ -498,13 +498,13 @@ describe('Flux', () => {
     describe('add classes', () => {
       it('should save the store class', () => {
         const privateProperty: string = 'storeClasses';
-        const storeCls: Store = Flux[privateProperty].test;
-        expect(storeCls.name).toEqual('test');
+        const storeCls: Store = Flux[privateProperty].helloWorld;
+        expect(storeCls.name).toEqual('helloWorld');
       });
 
       it('should set the initial value', () => {
         const privateProperty: string = 'state';
-        const value: string = Flux[privateProperty].test.item;
+        const value: string = Flux[privateProperty].helloWorld.item;
         expect(value).toEqual('default');
       });
     });
@@ -561,8 +561,8 @@ describe('Flux', () => {
     let newItem: string;
 
     beforeAll(async () => {
-      await Flux.setState('test.testUpdate', 'test');
-      newItem = await Flux.getState('test.testUpdate');
+      await Flux.setState('helloWorld.testUpdate', 'test');
+      newItem = await Flux.getState('helloWorld.testUpdate');
     });
 
     it('should update the property within the store', () => {

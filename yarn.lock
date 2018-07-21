@@ -488,9 +488,9 @@
     pirates "^3.0.1"
     source-map-support "^0.4.2"
 
-"@babel/runtime@^7.0.0-beta.51":
-  version "7.0.0-beta.52"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.0.0-beta.52.tgz#3f3b42b82b92b4e1a283fc78df1bb2fd4ba8d0c7"
+"@babel/runtime@^7.0.0-beta.53":
+  version "7.0.0-beta.53"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.0.0-beta.53.tgz#9df22ae34823ce89f790060594b83ee572e2c5d2"
   dependencies:
     core-js "^2.5.7"
     regenerator-runtime "^0.12.0"
@@ -590,13 +590,13 @@
   version "4.6.2"
   resolved "https://registry.npmjs.org/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
 
-"@types/jest@^23.1.1", "@types/jest@^23.1.2", "@types/jest@^23.1.3", "@types/jest@^23.1.4":
-  version "23.1.4"
-  resolved "https://registry.npmjs.org/@types/jest/-/jest-23.1.4.tgz#71e1e2d08b1db742f479ee2795536ebc999a2419"
+"@types/jest@^23.1.5":
+  version "23.1.5"
+  resolved "https://registry.npmjs.org/@types/jest/-/jest-23.1.5.tgz#e31be003956e1fa8c860124d99bea9ae327ae37b"
 
-"@types/lodash@^4.14.110":
-  version "4.14.110"
-  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.110.tgz#fb07498f84152947f30ea09d89207ca07123461e"
+"@types/lodash@^4.14.111":
+  version "4.14.111"
+  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.111.tgz#d926250baa9526c0ffe85914dd10363068e7893a"
 
 "@types/node-persist@^0.0.33":
   version "0.0.33"
@@ -620,9 +620,9 @@
     "@types/node" "*"
     "@types/react" "*"
 
-"@types/react-native@^0.55.27":
-  version "0.55.28"
-  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.55.28.tgz#b57d796f6e5ee26ef6fab2328d84ae6f3e67abdf"
+"@types/react-native@^0.56.0":
+  version "0.56.0"
+  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.56.0.tgz#f61f8f056d1af672621e44b5918204a2ad087081"
   dependencies:
     "@types/react" "*"
 
@@ -1654,9 +1654,9 @@ boolbase@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
 
-bootstrap@^4.1.0:
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-4.1.1.tgz#3aec85000fa619085da8d2e4983dfd67cf2114cb"
+bootstrap@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-4.1.2.tgz#aee2a93472e61c471fc79fb475531dcbc87de326"
 
 bplist-creator@0.0.7:
   version "0.0.7"
@@ -2937,13 +2937,17 @@ eslint-scope@^4.0.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
+eslint-utils@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.npmjs.org/eslint-utils/-/eslint-utils-1.3.1.tgz#9a851ba89ee7c460346f97cf8939c7298827e512"
+
 eslint-visitor-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
 
-eslint@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/eslint/-/eslint-5.0.1.tgz#109b90ab7f7a736f54e0f341c8bb9d09777494c3"
+eslint@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/eslint/-/eslint-5.1.0.tgz#2ed611f1ce163c0fb99e1e0cda5af8f662dff645"
   dependencies:
     ajv "^6.5.0"
     babel-code-frame "^6.26.0"
@@ -2952,6 +2956,7 @@ eslint@^5.0.1:
     debug "^3.1.0"
     doctrine "^2.1.0"
     eslint-scope "^4.0.0"
+    eslint-utils "^1.3.1"
     eslint-visitor-keys "^1.0.0"
     espree "^4.0.0"
     esquery "^1.0.1"
@@ -2959,7 +2964,7 @@ eslint@^5.0.1:
     file-entry-cache "^2.0.0"
     functional-red-black-tree "^1.0.1"
     glob "^7.1.2"
-    globals "^11.5.0"
+    globals "^11.7.0"
     ignore "^3.3.3"
     imurmurhash "^0.1.4"
     inquirer "^5.2.0"
@@ -3524,7 +3529,7 @@ global@^4.3.0:
     min-document "^2.19.0"
     process "~0.5.1"
 
-globals@^11.1.0, globals@^11.5.0:
+globals@^11.1.0, globals@^11.7.0:
   version "11.7.0"
   resolved "https://registry.npmjs.org/globals/-/globals-11.7.0.tgz#a583faa43055b1aca771914bf68258e2fc125673"
 
@@ -5156,13 +5161,12 @@ node-notifier@^5.2.1:
     shellwords "^0.1.1"
     which "^1.3.0"
 
-node-persist@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/node-persist/-/node-persist-2.1.0.tgz#e652bbf3885a04dad6a353d74176177c83914707"
+node-persist@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/node-persist/-/node-persist-3.0.1.tgz#e80d36ad7bf93e75ffaccd407ac1c6e4ade935c6"
   dependencies:
     is-absolute "^0.2.6"
     mkdirp "~0.5.1"
-    q "~1.1.1"
 
 node-pre-gyp@^0.10.0:
   version "0.10.2"
@@ -5721,10 +5725,6 @@ q@^1.4.1, q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-q@~1.1.1:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
-
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
@@ -5770,9 +5770,9 @@ rc-hammerjs@~0.6.0:
     hammerjs "^2.0.8"
     prop-types "^15.5.9"
 
-rc-tabs@^9.2.4:
-  version "9.2.5"
-  resolved "https://registry.npmjs.org/rc-tabs/-/rc-tabs-9.2.5.tgz#fdd8e0633247f50c533030b73e3992270849f1f6"
+rc-tabs@^9.2.6:
+  version "9.2.6"
+  resolved "https://registry.npmjs.org/rc-tabs/-/rc-tabs-9.2.6.tgz#4bd88086496b4f2d19c75c832fe7ec08e6b1643d"
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"
@@ -7353,9 +7353,9 @@ webpack-sources@^1.0.1, webpack-sources@^1.1.0:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^4.5.0:
-  version "4.15.1"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-4.15.1.tgz#dc716779a3b88827c369f18c71a6137fa7e582fd"
+webpack@^4.16.0:
+  version "4.16.0"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-4.16.0.tgz#660dae90890e55b8ed17c6f9d17bebb01dab5b4c"
   dependencies:
     "@webassemblyjs/ast" "1.5.13"
     "@webassemblyjs/helper-module-context" "1.5.13"
