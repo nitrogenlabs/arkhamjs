@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-ts-react",
-  "version": "3.11.4",
+  "version": "3.11.5",
   "publishConfig": {
     "access": "public"
   },
@@ -40,10 +40,10 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@nlabs/arkhamjs": "^3.11.4",
-    "@nlabs/arkhamjs-middleware-devtools": "^3.11.4",
-    "@nlabs/arkhamjs-middleware-logger": "^3.11.4",
-    "@nlabs/arkhamjs-storage-browser": "^3.11.4",
+    "@nlabs/arkhamjs": "^3.11.5",
+    "@nlabs/arkhamjs-middleware-devtools": "^3.11.5",
+    "@nlabs/arkhamjs-middleware-logger": "^3.11.5",
+    "@nlabs/arkhamjs-storage-browser": "^3.11.5",
     "bootstrap": "^4.1.3",
     "lodash": "^4.17.10",
     "react": "^16.4.1",
