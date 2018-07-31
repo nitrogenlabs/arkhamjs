@@ -54,5 +54,6 @@
     "eslint": "^5.2.0",
     "eslint-config-styleguidejs": "^0.7.7",
     "react-test-renderer": "^16.4.1"
-  }
+  },
+  "gitHead": "7d0c024809e573b69caaf2b84ecad266c60b6b0a"
 }
