@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.11.3",
+  "version": "3.11.4",
   "publishConfig": {
     "access": "public"
   },
@@ -40,19 +40,18 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.53",
+    "@babel/runtime": "^7.0.0-beta.55",
     "error-stack-parser": "^2.0.2",
     "events": "^3.0.0",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs-storage-browser": "^3.11.3",
     "@types/events": "^1.2.0",
-    "@types/jest": "^23.1.5",
-    "@types/lodash": "^4.14.111",
-    "@types/node": "^10.5.0",
-    "eslint": "^5.1.0",
-    "eslint-config-styleguidejs": "^0.7.5",
-    "typescript": "^2.9.2"
+    "@types/jest": "^23.3.1",
+    "@types/lodash": "^4.14.115",
+    "@types/node": "^10.5.4",
+    "eslint": "^5.2.0",
+    "eslint-config-styleguidejs": "^0.7.7",
+    "typescript": "^3.0.1"
   }
 }
