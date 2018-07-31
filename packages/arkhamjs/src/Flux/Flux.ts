@@ -116,7 +116,12 @@ export class FluxFramework extends EventEmitter {
       });
 
     const {name, storage} = this.options;
-    return storage.setStorageData(name, this.state);
+
+    if(storage) {
+      return storage.setStorageData(name, this.state);
+    }
+
+    return Promise.resolve(true);
   }
 
   /**
@@ -538,9 +543,11 @@ export class FluxFramework extends EventEmitter {
       storeCls = new StoreClass();
     } else {
       // Create store based on simple function
+      const fncStore = StoreClass;
       storeCls = new Store();
-      storeCls.name = StoreClass.name;
-      storeCls.onAction = StoreClass;
+      storeCls.name = fncStore.name;
+      storeCls.onAction = fncStore;
+      storeCls.defaultState = fncStore();
     }
 
     const {name: storeName} = storeCls;

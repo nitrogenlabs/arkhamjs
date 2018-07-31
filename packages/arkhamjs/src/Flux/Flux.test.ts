@@ -2,7 +2,6 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {set} from 'lodash';
 
 import {Store} from '../Store/Store';
@@ -35,58 +34,14 @@ class TestStore extends Store {
 }
 
 describe('Flux', () => {
-  let localSetSpy;
-  let sessionSetSpy;
-  let sessionSpy;
-
   const cfg: FluxOptions = {
     name: 'arkhamjsTest',
-    storage: new BrowserStorage({type: 'session'}),
     stores: [TestStore]
   };
 
   beforeAll(async () => {
-    // Mock storage
-    const storageMock = () => {
-      const storage: object = {};
-
-      return {
-        getItem: (storageGetKey: string) => storage[storageGetKey] || null,
-        removeItem: (storageRemoveKey: string) => {
-          delete storage[storageRemoveKey];
-        },
-        setItem: (storageSetKey, storageSetValue) => {
-          storage[storageSetKey] = storageSetValue || '';
-        }
-      };
-    };
-
-    // Vars
-    BrowserStorage.window.sessionStorage = storageMock();
-    BrowserStorage.window.localStorage = storageMock();
-
     // Configure
     await Flux.init(cfg);
-
-    // Spy
-    localSetSpy = jest.spyOn(BrowserStorage.window.localStorage, 'setItem');
-    sessionSetSpy = jest.spyOn(BrowserStorage.window.sessionStorage, 'setItem');
-    sessionSpy = jest.spyOn(BrowserStorage, 'setSessionData');
-
-    // Method
-    await Flux.addStores([TestStore]);
-  });
-
-  afterEach(() => {
-    localSetSpy.mockClear();
-    sessionSetSpy.mockClear();
-    sessionSpy.mockClear();
-  });
-
-  afterAll(() => {
-    localSetSpy.mockRestore();
-    sessionSetSpy.mockRestore();
-    sessionSpy.mockRestore();
   });
 
   describe('#addMiddleware', () => {
@@ -182,17 +137,11 @@ describe('Flux', () => {
 
   describe('#clearAppData', () => {
     beforeAll(() => {
-      sessionSpy.mockReset();
-
       // Set test data
       Flux.setState('helloWorld.item', 'clear');
 
       // Method
       Flux.clearAppData();
-    });
-
-    it('should re-initialize session data', () => {
-      expect(sessionSpy.mock.calls.length).toEqual(1);
     });
 
     it('should reset the store data', () => {

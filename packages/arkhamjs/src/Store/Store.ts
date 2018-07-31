@@ -8,6 +8,7 @@
  * @type {Class}
  */
 export class Store {
+  defaultState: object;
   state: object;
   name: string;
 
@@ -33,7 +34,7 @@ export class Store {
    * @return {object} The initial state of the store as a JSON object.
    */
   initialState(): object {
-    return {};
+    return this.defaultState || {};
   }
 
   /**
