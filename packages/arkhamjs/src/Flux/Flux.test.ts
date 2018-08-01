@@ -460,7 +460,7 @@ describe('Flux', () => {
 
     describe('add functions', () => {
       beforeAll(() => {
-        const demo = (type, data, state) => {
+        const demo = (type, data, state = {helloWorld: 'joker'}) => {
           if(type === 'DEMO_TEST') {
             state.helloWorld = data.helloWorld;
           }
@@ -473,9 +473,20 @@ describe('Flux', () => {
 
       it('should create and save a Store class', () => {
         const privateProperty: string = 'storeClasses';
-        console.log('Flux[privateProperty]', Flux[privateProperty]);
         const storeCls: Store = Flux[privateProperty].demo;
         expect(storeCls.name).toEqual('demo');
+      });
+
+      it('should set default state', () => {
+        const privateProperty: string = 'storeClasses';
+        const storeCls: Store = Flux[privateProperty].demo;
+        expect(storeCls.defaultState).toEqual({helloWorld: 'joker'});
+      });
+
+      it('should set initial state', () => {
+        const privateProperty: string = 'storeClasses';
+        const storeCls: Store = Flux[privateProperty].demo;
+        expect(storeCls.initialState()).toEqual({helloWorld: 'joker'});
       });
 
       // it('should be able to update on action dispatch', async () => {

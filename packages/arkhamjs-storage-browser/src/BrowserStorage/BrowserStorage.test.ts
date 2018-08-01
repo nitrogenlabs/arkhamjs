@@ -2,9 +2,8 @@
  * Copyright (c) 2018, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
 import {BrowserStorage} from './BrowserStorage';
-import 'jest-localstorage-mock';
+
 
 describe('BrowserStorage', () => {
   let localSpy;
@@ -12,10 +11,28 @@ describe('BrowserStorage', () => {
   const val: string = 'hello_world';
   const key: string = 'test';
   const storage: BrowserStorage = new BrowserStorage({type: 'session'});
-  const {localStorage: globalLocal, sessionStorage: globalSession} = window as any;
-  BrowserStorage.window = {localStorage: globalLocal, sessionStorage: globalSession};
+  BrowserStorage.window = {localStorage: jest.fn(), sessionStorage: jest.fn()};
 
   beforeAll(() => {
+    // Mock storage
+    const storageMock = () => {
+      const storage: object = {};
+
+      return {
+        getItem: (storageGetKey: string) => storage[storageGetKey] || null,
+        removeItem: (storageRemoveKey: string) => {
+          delete storage[storageRemoveKey];
+        },
+        setItem: (storageSetKey, storageSetValue) => {
+          storage[storageSetKey] = storageSetValue || '';
+        }
+      };
+    };
+
+    // Vars
+    BrowserStorage.window.sessionStorage = storageMock();
+    BrowserStorage.window.localStorage = storageMock();
+
     localSpy = jest.spyOn(BrowserStorage.window.localStorage, 'setItem');
     sessionSpy = jest.spyOn(BrowserStorage.window.sessionStorage, 'setItem');
   });

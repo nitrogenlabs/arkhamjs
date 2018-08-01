@@ -6,7 +6,6 @@ import {isObject} from 'lodash';
 
 import {Store} from './Store';
 
-
 describe('Store', () => {
   let store;
 
