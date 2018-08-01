@@ -40,7 +40,7 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.56",
+    "@babel/runtime": "^7.0.0-rc.1",
     "error-stack-parser": "^2.0.2",
     "events": "^3.0.0",
     "lodash": "^4.17.5"
@@ -52,7 +52,6 @@
     "@types/node": "^10.5.7",
     "eslint": "^5.3.0",
     "eslint-config-styleguidejs": "^0.7.7",
-    "lerna": "^3.0.0-rc.0",
     "typescript": "^3.0.1"
   },
   "gitHead": "7d0c024809e573b69caaf2b84ecad266c60b6b0a"
