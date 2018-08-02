@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2018, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
 import ErrorStackParser from 'error-stack-parser';
 import {EventEmitter} from 'events';
 import cloneDeep from 'lodash/cloneDeep';
@@ -10,10 +14,6 @@ import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {Store} from '../Store/Store';
 import {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginType} from '../types/flux';
 
-/**
- * Copyright (c) 2018, Nitrogen Labs, Inc.
- * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
- */
 /**
  * FluxFramework
  * @type {EventEmitter}
