@@ -6,7 +6,7 @@
   },
   "description": "Javascript Flux Library",
   "license": "MIT",
-  "main": "./lib/index.ts",
+  "main": "./lib/index.js",
   "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
@@ -40,7 +40,7 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.55",
+    "@babel/runtime": "^7.0.0-beta.56",
     "error-stack-parser": "^2.0.2",
     "events": "^3.0.0",
     "lodash": "^4.17.5"
@@ -48,9 +48,9 @@
   "devDependencies": {
     "@types/events": "^1.2.0",
     "@types/jest": "^23.3.1",
-    "@types/lodash": "^4.14.115",
-    "@types/node": "^10.5.4",
-    "eslint": "^5.2.0",
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^10.5.7",
+    "eslint": "^5.3.0",
     "eslint-config-styleguidejs": "^0.7.7",
     "lerna": "^3.0.0-rc.0",
     "typescript": "^3.0.1"
