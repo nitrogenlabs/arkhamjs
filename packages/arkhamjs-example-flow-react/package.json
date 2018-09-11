@@ -29,12 +29,12 @@
     "url": "nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "lex build",
+    "build": "lex build -r",
     "clean": "lex clean",
-    "development": "lex dev",
+    "dev": "lex dev",
     "lint": "eslint ./src",
     "prepublishOnly": "yarn lint && yarn test",
-    "production": "yarn lint && yarn test && yarn build",
+    "prod": "yarn lint && yarn test && yarn build",
     "start": "lex dev -o",
     "test": "lex test",
     "update": "lex update -i"
@@ -55,5 +55,5 @@
     "eslint-config-styleguidejs": "^0.7.9",
     "react-test-renderer": "^16.5.0"
   },
-  "gitHead": "1b1085dfa1f0d3ab1c4324fd2a28c544be2dadf8"
+  "gitHead": "ca196f147316f6590794c49f53965ab6770b2dd6"
 }
