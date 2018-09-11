@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-devtools",
-  "version": "3.11.7",
+  "version": "3.11.8",
   "publishConfig": {
     "access": "public"
   },
@@ -44,7 +44,7 @@
     "redux": "^3.0.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.11.7",
+    "@nlabs/arkhamjs": "^3.11.8",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "eslint": "^5.5.0",
