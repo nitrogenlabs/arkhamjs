@@ -46,19 +46,19 @@
     "@nlabs/arkhamjs-storage-browser": "^3.11.6",
     "bootstrap": "^4.1.3",
     "lodash": "^4.17.10",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-hot-loader": "^4.3.6"
   },
   "devDependencies": {
     "@types/history": "^4.7.0",
-    "@types/jest": "^23.3.1",
+    "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
-    "@types/react": "^16.4.13",
+    "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "eslint": "^5.5.0",
-    "eslint-config-styleguidejs": "^0.7.8",
-    "react-test-renderer": "^16.4.2",
+    "eslint-config-styleguidejs": "^0.7.9",
+    "react-test-renderer": "^16.5.0",
     "typescript": "^3.0.3"
   },
   "gitHead": "7d0c024809e573b69caaf2b84ecad266c60b6b0a"

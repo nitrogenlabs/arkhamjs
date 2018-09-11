@@ -42,10 +42,10 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.11.6",
-    "@types/jest": "^23.3.1",
+    "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "eslint": "^5.5.0",
-    "eslint-config-styleguidejs": "^0.7.8",
+    "eslint-config-styleguidejs": "^0.7.9",
     "lodash": "^4.17.10",
     "typescript": "^3.0.3"
   },
