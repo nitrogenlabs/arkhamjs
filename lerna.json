@@ -1,7 +1,14 @@
 {
   "lerna": "3.3.0",
   "packages": [
-    "packages/*"
+    "packages/arkhamjs",
+    "packages/arkhamjs-example-flow-react",
+    "packages/arkhamjs-example-ts-react",
+    "packages/arkhamjs-middleware-logger",
+    "packages/arkhamjs-middleware-redux",
+    "packages/arkhamjs-storage-browser",
+    "packages/arkhamjs-storage-native",
+    "packages/arkhamjs-storage-node"
   ],
   "npmClient": "yarn",
   "useWorkspaces": true,
