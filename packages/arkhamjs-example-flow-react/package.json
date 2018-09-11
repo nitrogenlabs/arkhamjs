@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-flow-react",
-  "version": "3.11.6",
+  "version": "3.11.8",
   "publishConfig": {
     "access": "public"
   },
@@ -40,20 +40,20 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@nlabs/arkhamjs": "^3.11.6",
-    "@nlabs/arkhamjs-middleware-devtools": "^3.11.6",
-    "@nlabs/arkhamjs-middleware-logger": "^3.11.6",
-    "@nlabs/arkhamjs-storage-browser": "^3.11.6",
+    "@nlabs/arkhamjs": "^3.11.8",
+    "@nlabs/arkhamjs-middleware-devtools": "^3.11.8",
+    "@nlabs/arkhamjs-middleware-logger": "^3.11.8",
+    "@nlabs/arkhamjs-storage-browser": "^3.11.8",
     "bootstrap": "^4.1.3",
     "lodash": "^4.17.10",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-hot-loader": "^4.3.6"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
-    "eslint-config-styleguidejs": "^0.7.8",
-    "react-test-renderer": "^16.4.2"
+    "eslint-config-styleguidejs": "^0.7.9",
+    "react-test-renderer": "^16.5.0"
   },
-  "gitHead": "7d0c024809e573b69caaf2b84ecad266c60b6b0a"
+  "gitHead": "1b1085dfa1f0d3ab1c4324fd2a28c544be2dadf8"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-browser",
-  "version": "3.11.6",
+  "version": "3.11.8",
   "publishConfig": {
     "access": "public"
   },
@@ -41,12 +41,12 @@
     "@nlabs/arkhamjs": "^3.5.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.11.6",
-    "@types/jest": "^23.3.1",
+    "@nlabs/arkhamjs": "^3.11.8",
+    "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "eslint": "^5.5.0",
-    "eslint-config-styleguidejs": "^0.7.8",
+    "eslint-config-styleguidejs": "^0.7.9",
     "typescript": "^3.0.3"
   },
-  "gitHead": "7d0c024809e573b69caaf2b84ecad266c60b6b0a"
+  "gitHead": "1b1085dfa1f0d3ab1c4324fd2a28c544be2dadf8"
 }
