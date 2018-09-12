@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.11.8",
-    "@nlabs/arkhamjs-middleware-devtools": "^3.11.8",
     "@nlabs/arkhamjs-middleware-logger": "^3.11.8",
     "@nlabs/arkhamjs-storage-browser": "^3.11.8",
     "bootstrap": "^4.1.3",
