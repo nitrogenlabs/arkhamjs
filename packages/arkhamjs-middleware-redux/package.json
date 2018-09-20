@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-redux",
-  "version": "3.11.9",
+  "version": "3.11.10",
   "publishConfig": {
     "access": "public"
   },
@@ -46,7 +46,7 @@
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.11.9",
+    "@nlabs/arkhamjs": "^3.11.10",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.10.1",
     "@types/redux": "^3.6.0",
