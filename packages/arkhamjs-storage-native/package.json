@@ -45,14 +45,14 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.11.11",
-    "@types/jest": "^23.3.2",
-    "@types/node": "^10.11.0",
-    "@types/react-native": "^0.56.24",
-    "eslint": "^5.6.0",
-    "eslint-config-styleguidejs": "^0.7.11",
+    "@types/jest": "~23.3.5",
+    "@types/node": "~10.11.5",
+    "@types/react-native": "~0.57.4",
+    "eslint": "~5.6.1",
+    "eslint-config-styleguidejs": "~0.7.13",
     "lodash": "^4.17.11",
-    "react-native": "^0.57.1",
-    "typescript": "^3.0.3"
+    "react-native": "~0.57.2",
+    "typescript": "^3.1.1"
   },
   "gitHead": "8094ab0c57fbe3e21c93c5870d2de9943cd4b390"
 }
