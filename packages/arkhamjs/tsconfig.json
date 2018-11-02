@@ -5,6 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
+    "inlineSourceMap": true,
     "jsx": "react",
     "lib": [
       "es6",

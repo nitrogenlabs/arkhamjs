@@ -5,6 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
+    "inlineSourceMap": true,
     "jsx": "react",
     "lib": [
       "es6",
@@ -21,7 +22,6 @@
     "outDir": "./dist",
     "pretty": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "target": "ES5",
     "typeRoots": [
       "node_modules/@types",
