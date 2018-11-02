@@ -309,7 +309,7 @@ export class FluxFramework extends EventEmitter {
    *
    * @param {object} options Configuration options.
    */
-  async init(options: FluxOptions = {}, reset: boolean = false): Promise<void> {
+  async init(options: FluxOptions = {}, reset: boolean = false): Promise<FluxFramework> {
     // Should reset previous params
     if(this.isInit && reset) {
       this.reset(false);
@@ -358,6 +358,8 @@ export class FluxFramework extends EventEmitter {
 
     this.isInit = true;
     this.emit(ArkhamConstants.INIT);
+
+    return this;
   }
 
   /**
