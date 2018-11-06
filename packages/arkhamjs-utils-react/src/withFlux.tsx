@@ -6,9 +6,10 @@ import {FluxFramework} from '@nlabs/arkhamjs';
 import map from 'lodash/map';
 import React, {ComponentType} from 'react';
 
+import {FluxContext} from './FluxProvider';
 import {FluxComponentProps, FluxComponentState} from './types/withFlux';
 
-export const withFlux = (actionTypes: string[], mapStateToProps: any) => (Component: ComponentType<any>) =>
+export const withFlux = (actionTypes: string[], mapStateToProps: any) => (Component: ComponentType<any>) => {
   class FluxComponent extends React.Component<FluxComponentProps, FluxComponentState> {
     Flux: FluxFramework;
 
@@ -64,4 +65,9 @@ export const withFlux = (actionTypes: string[], mapStateToProps: any) => (Compon
     render() {
       return <Component {...this.props} {...this.state.propsFromMapState} dispatch={this.Flux.dispatch} />;
     }
-  };
+  }
+
+  return (props: any) => (
+    <FluxContext.Consumer>{(Flux) => <FluxComponent {...props} Flux={Flux} />}</FluxContext.Consumer>
+  );
+};
