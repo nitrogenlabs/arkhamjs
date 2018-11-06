@@ -40,19 +40,19 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@babel/runtime": "~7.1.2",
+    "@babel/runtime": "~7.1.5",
     "error-stack-parser": "^2.0.2",
     "events": "^3.0.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/events": "^1.2.0",
-    "@types/jest": "~23.3.5",
-    "@types/lodash": "~4.14.117",
-    "@types/node": "~10.11.5",
-    "eslint": "~5.6.1",
+    "@types/jest": "~23.3.9",
+    "@types/lodash": "~4.14.118",
+    "@types/node": "~10.12.2",
+    "eslint": "~5.8.0",
     "eslint-config-styleguidejs": "~0.7.13",
-    "typescript": "^3.1.1"
+    "typescript": "~3.1.6"
   },
   "gitHead": "8094ab0c57fbe3e21c93c5870d2de9943cd4b390"
 }

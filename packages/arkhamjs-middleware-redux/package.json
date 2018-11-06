@@ -47,14 +47,14 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.11.12",
-    "@types/jest": "~23.3.5",
-    "@types/node": "~10.11.5",
+    "@types/jest": "~23.3.9",
+    "@types/node": "~10.12.2",
     "@types/redux": "^3.6.0",
-    "@types/webpack": "~4.4.15",
-    "eslint": "~5.6.1",
+    "@types/webpack": "~4.4.17",
+    "eslint": "~5.8.0",
     "eslint-config-styleguidejs": "~0.7.13",
-    "redux": "^4.0.0",
-    "typescript": "^3.1.1"
+    "redux": "~4.0.1",
+    "typescript": "~3.1.6"
   },
   "gitHead": "8094ab0c57fbe3e21c93c5870d2de9943cd4b390"
 }

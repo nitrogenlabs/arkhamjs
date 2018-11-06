@@ -8,7 +8,8 @@
     "packages/arkhamjs-middleware-redux",
     "packages/arkhamjs-storage-browser",
     "packages/arkhamjs-storage-native",
-    "packages/arkhamjs-storage-node"
+    "packages/arkhamjs-storage-node",
+    "packages/arkhamjs-utils-react"
   ],
   "npmClient": "yarn",
   "useWorkspaces": true,

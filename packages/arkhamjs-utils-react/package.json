@@ -1,24 +1,34 @@
 {
-  "name": "@nlabs/arkhamjs-middleware-logger",
-  "version": "3.11.12",
+  "name": "@nlabs/arkhamjs-utils-react",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Add console logging for ArkhamJS",
+  "description": "ArkhamJS React Utilities",
   "license": "MIT",
-  "main": "index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
     "flux",
-    "logging",
-    "nitrogenlabs"
+    "global state",
+    "nitrogenlabs",
+    "state",
+    "state management",
+    "withFlux"
   ],
-  "author": {
-    "name": "Giraldo Rosales",
-    "email": "giraldo@nitrogenlabs.com",
-    "url": "http://nitrogenlabs.com"
-  },
+  "contributors": [
+    {
+      "name": "Giraldo Rosales",
+      "email": "giraldo@nitrogenlabs.com",
+      "url": "http://nitrogenlabs.com"
+    },
+    {
+      "name": "Sartaj Chowdhury",
+      "email": "sartaj@sartaj.me",
+      "url": "http://github.com/Sartaj"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "nitrogenlabs/arkhamjs.git"
@@ -36,18 +46,21 @@
     "test": "lex test",
     "update": "lex update -i"
   },
-  "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.5.0",
-    "lodash": "^4.0.0"
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "react": "^16.0.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.11.12",
     "@types/jest": "~23.3.9",
+    "@types/lodash": "~4.14.118",
     "@types/node": "~10.12.2",
     "eslint": "~5.8.0",
     "eslint-config-styleguidejs": "~0.7.13",
-    "lodash": "^4.17.11",
     "typescript": "~3.1.6"
+  },
+  "peerDependencies": {
+    "@nlabs/arkhamjs": "^3.11.0",
+    "react": "^16.0.0"
   },
   "gitHead": "8094ab0c57fbe3e21c93c5870d2de9943cd4b390"
 }

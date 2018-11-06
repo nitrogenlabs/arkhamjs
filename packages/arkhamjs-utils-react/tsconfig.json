@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "jsx": "react",
+    "lib": [
+      "es6",
+      "es7",
+      "esnext",
+      "dom"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noStrictGenericChecks": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "pretty": true,
+    "skipLibCheck": true,
+    "target": "ES5",
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/json-d-ts"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "**/*.test.*",
+    "lib",
+    "./node_modules",
+    "./test"
+  ]
+}
