@@ -49,10 +49,10 @@
     "@types/events": "^1.2.0",
     "@types/jest": "~23.3.9",
     "@types/lodash": "~4.14.118",
-    "@types/node": "~10.12.2",
+    "@types/node": "~10.12.3",
     "eslint": "~5.8.0",
     "eslint-config-styleguidejs": "~0.7.13",
     "typescript": "~3.1.6"
   },
-  "gitHead": "8094ab0c57fbe3e21c93c5870d2de9943cd4b390"
+  "gitHead": "e844e29a45597888ed1e7d4369bdef40bc6c32e3"
 }

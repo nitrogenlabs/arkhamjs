@@ -1,9 +1,12 @@
 /**
- * Copyright (c) 2018 to Present, Nitrogen Labs, Inc.
+ * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {FluxFramework} from '@nlabs/arkhamjs';
-import map from 'lodash/map';
+import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
+import isPlainObject from 'lodash/isPlainObject';
+import mapValues from 'lodash/mapValues';
 import React, {ComponentType} from 'react';
 
 import {FluxContext} from './FluxProvider';
@@ -17,53 +20,62 @@ export const withFlux = (actionTypes: string[], mapStateToProps: any) => (Compon
       super(props);
 
       // Methods
-      this.runCallback = this.runCallback.bind(this);
+      this.onCallback = this.onCallback.bind(this);
 
       // Initial props
       this.Flux = props.Flux;
 
       // Initial state
       this.state = {
+        error: new Error(),
+        hasError: false,
         propsFromMapState: {}
       };
     }
 
+    static getDerivedStateFromError(error) {
+      return {error, hasError: true};
+    }
+
+    componentDidCatch(error) {
+      console.error(`An error occurred in the FluxProvider. Error: ${error.message}`);
+    }
+
     componentWillMount() {
-      if(!actionTypes) {
+      if(!isArray(actionTypes)) {
         throw new Error('Action must be an array of action types');
       }
 
-      actionTypes.forEach((action) => this.Flux.on(action, this.runCallback));
-      this.runCallback();
+      actionTypes.forEach((action) => this.Flux.on(action, this.onCallback));
+      this.onCallback();
     }
 
     componentWillUnmount() {
-      if(!actionTypes) {
-        throw new Error('Action must be an array of action types');
-      }
-
-      actionTypes.forEach((action) => this.Flux.off(action, this.runCallback));
+      actionTypes.forEach((action) => this.Flux.off(action, this.onCallback));
     }
 
-    runCallback(): void {
+    onCallback(): void {
       let propsFromMapState;
 
-      switch(typeof mapStateToProps) {
-        case 'object':
-          propsFromMapState = map(mapStateToProps, (stateKey: string) => this.Flux.getState(stateKey));
-          break;
-        case 'function':
-          propsFromMapState = mapStateToProps(this.Flux.getState);
-          break;
-        default:
-          throw new Error('withFlux second parameter must be an object of strings to fetch, or a function');
+      if(isPlainObject(mapStateToProps)) {
+        propsFromMapState = mapValues(mapStateToProps, (stateKey: string) => this.Flux.getState(stateKey));
+      } else if(isFunction(mapStateToProps)) {
+        propsFromMapState = mapStateToProps(this.Flux.getState);
+      } else {
+        throw new Error('withFlux second parameter must be an object of strings to fetch, or a function');
       }
 
       this.setState({propsFromMapState});
     }
 
     render() {
-      return <Component {...this.props} {...this.state.propsFromMapState} dispatch={this.Flux.dispatch} />;
+      const {hasError, propsFromMapState} = this.state;
+
+      if(hasError) {
+        return <div>FluxProvider Error</div>;
+      }
+
+      return <Component {...this.props} {...propsFromMapState} dispatch={this.Flux.dispatch} />;
     }
   }
 

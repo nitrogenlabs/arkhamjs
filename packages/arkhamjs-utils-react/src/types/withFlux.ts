@@ -1,9 +1,11 @@
 import {FluxFramework} from '@nlabs/arkhamjs';
 
 export interface FluxComponentProps {
-  Flux: FluxFramework;
+  readonly Flux: FluxFramework;
 }
 
 export interface FluxComponentState {
-  propsFromMapState: object;
+  readonly error: Error;
+  readonly hasError: boolean;
+  readonly propsFromMapState: object;
 }
