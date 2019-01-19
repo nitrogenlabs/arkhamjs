@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.12.2",
+  "version": "3.12.3",
   "publishConfig": {
     "access": "public"
   },
