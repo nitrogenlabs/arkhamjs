@@ -9,7 +9,7 @@
     "update": "lex update -i"
   },
   "devDependencies": {
-    "lerna": "~3.10.2"
+    "lerna": "~3.10.6"
   },
   "workspaces": [
     "packages/arkhamjs",

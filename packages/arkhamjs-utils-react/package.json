@@ -52,13 +52,13 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.12.2",
-    "@types/jest": "~23.3.12",
-    "@types/lodash": "~4.14.119",
+    "@types/jest": "~23.3.13",
+    "@types/lodash": "~4.14.120",
     "@types/node": "~10.12.18",
-    "eslint": "~5.12.0",
+    "eslint": "~5.12.1",
     "eslint-config-styleguidejs": "~0.7.14",
     "react-test-renderer": "~16.7.0",
-    "typescript": "~3.2.2"
+    "typescript": "~3.2.4"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.11.0",
