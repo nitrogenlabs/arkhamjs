@@ -45,14 +45,14 @@
     "@nlabs/arkhamjs-storage-browser": "^3.12.3",
     "bootstrap": "^4.2.1",
     "lodash": "^4.17.11",
-    "react": "~16.7.0",
-    "react-dom": "~16.7.0",
-    "react-hot-loader": "~4.6.3"
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-hot-loader": "^4.6.3"
   },
   "devDependencies": {
-    "eslint": "~5.12.1",
-    "eslint-config-styleguidejs": "~0.7.14",
-    "react-test-renderer": "~16.7.0"
+    "eslint": "^5.12.1",
+    "eslint-config-styleguidejs": "^1.0.2",
+    "react-test-renderer": "^16.7.0"
   },
   "gitHead": "e844e29a45597888ed1e7d4369bdef40bc6c32e3"
 }

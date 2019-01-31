@@ -3,13 +3,13 @@
   "license": "MIT",
   "scripts": {
     "build": "lerna run build",
-    "clean": "lex clean && lerna run clean",
+    "clean": "lerna run clean && lex clean",
     "lint": "lerna run lint",
     "test": "lerna run test",
     "update": "lex update -i"
   },
   "devDependencies": {
-    "lerna": "~3.10.6"
+    "lerna": "^3.10.7"
   },
   "workspaces": [
     "packages/arkhamjs",
