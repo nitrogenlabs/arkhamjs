@@ -3,11 +3,13 @@ import merge from 'lodash/merge';
 
 import {EnvConfig} from '../types/config';
 
+const {NODE_ENV} = process.env;
+
 export class Config {
   static values: EnvConfig = {
     default: {
       appId: 'arkhamjs-skeleton',
-      env: process.env.NODE_ENV
+      env: NODE_ENV
     },
     development: {
       appName: 'Arkham Skeleton Development'
@@ -24,7 +26,7 @@ export class Config {
   };
 
   static get(path: string | string[]): any {
-    const environment: string = process.env.NODE_ENV || 'development';
+    const environment: string = NODE_ENV || 'development';
     const configValues: object = merge(this.values.default, this.values[environment], {environment});
     return get(configValues, path);
   }

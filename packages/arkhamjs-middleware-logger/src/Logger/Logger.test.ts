@@ -2,12 +2,12 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
 import {Flux, FluxAction, Store} from '@nlabs/arkhamjs';
 import set from 'lodash/set';
 
-import {Logger} from './Logger';
 import {LoggerDebugLevel, LoggerOptions} from '../types/main';
+import {Logger} from './Logger';
+
 
 class TestStore extends Store {
   constructor() {

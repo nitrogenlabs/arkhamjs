@@ -23,12 +23,9 @@
     "pretty": true,
     "skipLibCheck": true,
     "target": "ES5",
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/json-d-ts"
-    ],
     "types": [
-      "chrome"
+      "chrome",
+      "node"
     ]
   },
   "include": [

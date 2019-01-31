@@ -1,4 +1,8 @@
-export enum LoggerDebugLevel {DISABLED, LOGS, DISPATCH}
+export enum LoggerDebugLevel {
+  DISABLED = 0,
+  LOGS = 1,
+  DISPATCH = 2
+}
 
 export interface LoggerOptions {
   readonly debugLevel?: LoggerDebugLevel;
