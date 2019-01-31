@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.12.4",
+  "version": "3.12.5",
   "publishConfig": {
     "access": "public"
   },
@@ -54,5 +54,5 @@
     "eslint-config-styleguidejs": "^1.0.2",
     "typescript": "^3.2.4"
   },
-  "gitHead": "e844e29a45597888ed1e7d4369bdef40bc6c32e3"
+  "gitHead": "6a072e7718ddc626950d0b5b9eb25bee5fe6e431"
 }

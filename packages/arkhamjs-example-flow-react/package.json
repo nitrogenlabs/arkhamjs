@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-flow-react",
-  "version": "3.12.4",
+  "version": "3.12.5",
   "publishConfig": {
     "access": "public"
   },
@@ -40,9 +40,9 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@nlabs/arkhamjs": "^3.12.4",
-    "@nlabs/arkhamjs-middleware-logger": "^3.12.4",
-    "@nlabs/arkhamjs-storage-browser": "^3.12.4",
+    "@nlabs/arkhamjs": "^3.12.5",
+    "@nlabs/arkhamjs-middleware-logger": "^3.12.5",
+    "@nlabs/arkhamjs-storage-browser": "^3.12.5",
     "bootstrap": "^4.2.1",
     "lodash": "^4.17.11",
     "react": "^16.7.0",
@@ -54,5 +54,5 @@
     "eslint-config-styleguidejs": "^1.0.2",
     "react-test-renderer": "^16.7.0"
   },
-  "gitHead": "e844e29a45597888ed1e7d4369bdef40bc6c32e3"
+  "gitHead": "6a072e7718ddc626950d0b5b9eb25bee5fe6e431"
 }

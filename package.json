@@ -5,6 +5,7 @@
     "build": "lerna run build",
     "clean": "lerna run clean && lex clean",
     "lint": "lerna run lint",
+    "publishAll": "lerna publish",
     "test": "lerna run test",
     "update": "lex update -i"
   },
