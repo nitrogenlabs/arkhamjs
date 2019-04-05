@@ -26,7 +26,7 @@
   },
   "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "nitrogenlabs/arkhamjs/issues"
+    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex build -r",
@@ -43,16 +43,16 @@
     "@nlabs/arkhamjs": "^3.12.5",
     "@nlabs/arkhamjs-middleware-logger": "^3.12.5",
     "@nlabs/arkhamjs-storage-browser": "^3.12.5",
-    "bootstrap": "^4.2.1",
+    "bootstrap": "^4.3.1",
     "lodash": "^4.17.11",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-hot-loader": "^4.6.3"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.8.2"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
-    "eslint-config-styleguidejs": "^1.0.2",
-    "react-test-renderer": "^16.7.0"
+    "eslint": "^5.16.0",
+    "eslint-config-styleguidejs": "^1.0.10",
+    "react-test-renderer": "^16.8.6"
   },
   "gitHead": "acb4b0907a28629b2ef824d0da2851d9d61557e9"
 }

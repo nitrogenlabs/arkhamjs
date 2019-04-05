@@ -27,7 +27,7 @@
   },
   "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "nitrogenlabs/arkhamjs/issues"
+    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "",

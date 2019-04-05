@@ -2,18 +2,36 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {NativeStorage} from './NativeStorage';
 
-describe('NativeStorage', () => {
-  // beforeAll(() => {
-  //   const mockImpl = new MockAsyncStorage();
-  //   jest.mock('AsyncStorage', () => mockImpl);
-  // });
+// jest.mock('@react-native-community/async-storage');
 
-  afterAll(() => {
-    // release();
+describe('NativeStorage', () => {
+  let cache = {};
+  const asyncUtil = require('@react-native-community/async-storage');
+  let asyncStorage;
+
+  beforeAll(() => {
+    asyncStorage = asyncUtil.default;
+    asyncUtil.default = {
+      clear: (key) => new Promise((resolve, reject) => resolve(cache = {})),
+      getAllKeys: (key) => new Promise((resolve, reject) => resolve(Object.keys(cache))),
+      getItem: (key, value) => new Promise((resolve) => (cache.hasOwnProperty(key)
+        ? resolve(cache[key])
+        : resolve(null))),
+      removeItem: (key) => new Promise((resolve, reject) => (cache.hasOwnProperty(key)
+        ? resolve(delete cache[key])
+        : reject('No such key!'))),
+      setItem: (key, value) => new Promise((resolve, reject) => ((typeof key !== 'string' || typeof value !== 'string')
+        ? reject(new Error('key and value must be string'))
+        : resolve(cache[key] = value)))
+    };
+  });
+
+  afterEach(() => {
+    asyncUtil.default = asyncStorage;
   });
 
   describe('.delAsyncData', () => {

@@ -2,9 +2,9 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import {NativeStorageOptions} from '../types/main';
+import {NativeStorageOptions} from './NativeStorage.types';
 
 export class NativeStorage {
   private options: NativeStorageOptions = {};

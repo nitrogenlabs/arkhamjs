@@ -1,3 +1,6 @@
 {
-  "extends": "styleguidejs/typescript"
+  "extends": "styleguidejs/typescript",
+  "rules": {
+    "import/no-named-as-default": 0
+  }
 }

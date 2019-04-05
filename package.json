@@ -7,10 +7,10 @@
     "lint": "lerna run lint",
     "publishAll": "lerna publish",
     "test": "lerna run test",
-    "update": "lex update -i"
+    "update": "yarn upgradeInteractive --latest"
   },
   "devDependencies": {
-    "lerna": "^3.10.7"
+    "lerna": "^3.13.1"
   },
   "workspaces": [
     "packages/arkhamjs",
