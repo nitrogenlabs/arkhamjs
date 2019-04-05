@@ -775,10 +775,10 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@react-native-community/async-storage@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.2.2.tgz#1f9851a6dd2b0af08ed3ab69b7f7353c4e85ea1d"
-  integrity sha512-sjL32DFXSD26RKVZfdBgRBKQCfqO9Vh8yBukjW0ajnMsCmqRxpe0tic6D+g+EW+MI8sohtr/02bhHfVClG8Eqw==
+"@react-native-community/async-storage@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.2.3.tgz#0751d328d0e86f30f3bbaba14525e21ed6904574"
+  integrity sha512-Yho8VKIAk6Z2jXzoEW2fPsBB0S2/4aQSfekOHbPhEsIKH7Ym1e6zrLGlKTsfqjl4ORLFXdyx9QxVK4qELog06Q==
 
 "@types/anymatch@*":
   version "1.3.0"
