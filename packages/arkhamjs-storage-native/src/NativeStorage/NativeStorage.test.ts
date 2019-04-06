@@ -6,19 +6,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import {NativeStorage} from './NativeStorage';
 
-// jest.mock('@react-native-community/async-storage');
-
 describe('NativeStorage', () => {
-  let cache = {};
   const asyncUtil = require('@react-native-community/async-storage');
   let asyncStorage;
+  let cache = {};
 
   beforeAll(() => {
     asyncStorage = asyncUtil.default;
     asyncUtil.default = {
-      clear: (key) => new Promise((resolve, reject) => resolve(cache = {})),
-      getAllKeys: (key) => new Promise((resolve, reject) => resolve(Object.keys(cache))),
-      getItem: (key, value) => new Promise((resolve) => (cache.hasOwnProperty(key)
+      clear: () => new Promise((resolve) => resolve(cache = {})),
+      getAllKeys: () => new Promise((resolve) => resolve(Object.keys(cache))),
+      getItem: (key) => new Promise((resolve) => (cache.hasOwnProperty(key)
         ? resolve(cache[key])
         : resolve(null))),
       removeItem: (key) => new Promise((resolve, reject) => (cache.hasOwnProperty(key)
