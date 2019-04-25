@@ -10,7 +10,7 @@
     "update": "yarn upgradeInteractive --latest"
   },
   "devDependencies": {
-    "lerna": "^3.13.1"
+    "lerna": "^3.13.3"
   },
   "workspaces": [
     "packages/arkhamjs",

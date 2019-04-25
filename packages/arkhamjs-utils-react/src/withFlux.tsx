@@ -10,7 +10,7 @@ import mapValues from 'lodash/mapValues';
 import React, {ComponentType} from 'react';
 
 import {FluxContext} from './FluxProvider';
-import {FluxComponentProps, FluxComponentState} from './types/withFlux';
+import {FluxComponentProps, FluxComponentState} from './withFlux.types';
 
 export const withFlux = (actionTypes: string[], mapStateToProps: any) => (Component: ComponentType<any>) => {
   class FluxComponent extends React.Component<FluxComponentProps, FluxComponentState> {
