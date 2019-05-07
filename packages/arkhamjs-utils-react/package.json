@@ -51,11 +51,11 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.14.0",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^24.0.12",
     "@types/lodash": "^4.14.123",
-    "@types/node": "^11.13.7",
+    "@types/node": "^12.0.0",
     "eslint": "^5.16.0",
-    "eslint-config-styleguidejs": "^1.0.10",
+    "eslint-config-styleguidejs": "^1.0.11",
     "react": "^16.8.6",
     "react-test-renderer": "^16.8.6",
     "typescript": "^3.4.5"

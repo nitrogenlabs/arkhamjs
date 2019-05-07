@@ -7,10 +7,17 @@ import merge from 'lodash/merge';
 import {useState as useReactState} from 'react';
 
 export const useState = (initialState: any) => {
-  const [state, setNewState] = useReactState(initialState);
+  const [state, setNewState] = useReactState(
+    (prevState: any) => {
+      if(isPlainObject(initialState)) {
+        return merge(prevState, initialState);
+      }
+
+      return initialState;
+    });
 
   return [
     state,
-    (newState: any) => setNewState(isPlainObject(initialState) ? merge(state, newState) : newState)
+    setNewState
   ];
 };
