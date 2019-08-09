@@ -43,18 +43,18 @@
     "redux": "^3.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.14.1",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^12.0.0",
+    "@types/jest": "^24.0.17",
+    "@types/node": "^12.7.1",
     "@types/redux": "^3.6.0",
-    "@types/webpack": "^4.4.31",
-    "eslint": "^5.16.0",
-    "eslint-config-styleguidejs": "^1.0.11",
-    "redux": "^4.0.1",
-    "typescript": "^3.4.5"
+    "@types/webpack": "^4.32.1",
+    "eslint": "^6.1.0",
+    "eslint-config-styleguidejs": "^1.0.13",
+    "redux": "^4.0.4",
+    "typescript": "^3.5.3"
   },
   "gitHead": "5b7093d4d353988053957d0229ac9762d8ac5e6a"
 }
