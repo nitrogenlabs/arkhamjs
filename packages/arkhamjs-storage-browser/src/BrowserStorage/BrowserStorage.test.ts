@@ -100,11 +100,11 @@ describe('BrowserStorage', () => {
   });
 
   describe('#getStorageData', () => {
-    it('should get storage data', () => {
+    it('should get storage data', async () => {
       // Method
       BrowserStorage.setSessionData(key, val);
-      const testVal: Promise<string> = storage.getStorageData(key);
-      expect(testVal).resolves.toEqual(val);
+      const testVal: string = await storage.getStorageData(key);
+      expect(testVal).toEqual(val);
     });
   });
 

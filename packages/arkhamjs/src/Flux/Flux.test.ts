@@ -171,7 +171,6 @@ describe('Flux', () => {
   });
 
   describe('#dispatch', () => {
-    let action: Promise<any>;
     let eventSpy;
 
     beforeAll(() => {
@@ -187,9 +186,9 @@ describe('Flux', () => {
       Flux.off('TEST_EVENT', eventSpy);
     });
 
-    it('should return an action', () => {
-      action = Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
-      expect(action).resolves.toEqual({testVar: 'test', type: 'TEST_EVENT'});
+    it('should return an action', async () => {
+      const action: any = await Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+      expect(action).toEqual({testVar: 'test', type: 'TEST_EVENT'});
     });
 
     it('should alter the store data', () => {
