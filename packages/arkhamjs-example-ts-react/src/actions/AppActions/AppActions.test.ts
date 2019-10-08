@@ -1,15 +1,15 @@
 import {AppConstants} from '../../constants/AppConstants';
-import {AppActions} from './AppActions';
+import {updateContent} from './AppActions';
 
 describe('AppActions', () => {
   const content: string = 'test';
 
-  describe('#updateContent', () => {
+  describe('updateContent', () => {
     let action;
 
     beforeAll(async () => {
       // Method
-      action = await AppActions.updateContent(content);
+      action = await updateContent(content);
     });
 
     it('should dispatch AppConstants.UPDATE_CONTENT', () => {

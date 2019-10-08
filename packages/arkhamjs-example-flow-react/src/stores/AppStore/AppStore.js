@@ -1,25 +1,16 @@
-import {Store} from '@nlabs/arkhamjs';
-import set from 'lodash/set';
-
 import {AppConstants} from '../../constants/AppConstants';
 
-export class AppStore extends Store {
-  constructor() {
-    super('app');
-  }
+export const initialState: AppState = {
+  content: 'Hello World'
+};
 
-  initialState(): object {
-    return {
-      content: 'Hello World'
-    };
-  }
-
-  onAction(type: string, data, state): object {
-    switch(type) {
-      case AppConstants.UPDATE_CONTENT:
-        return set(state, 'content', data.content);
-      default:
-        return state;
+export const app = (type: string, data: any, state: AppState = initialState): AppState => {
+  switch(type) {
+    case AppConstants.UPDATE_CONTENT: {
+      const {content} = data;
+      return {...state, content};
     }
+    default:
+      return state;
   }
-}
+};

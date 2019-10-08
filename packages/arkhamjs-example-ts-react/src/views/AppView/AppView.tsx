@@ -1,100 +1,130 @@
 import './appView.css';
 
+import {Flux} from '@nlabs/arkhamjs';
 import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
-import {Flux} from '@nlabs/arkhamjs';
-import * as React from 'react';
+import {useFlux} from '@nlabs/arkhamjs-utils-react';
+import React, {useEffect, useRef, useState} from 'react';
 import {hot} from 'react-hot-loader';
+import {createUseStyles} from 'react-jss';
 
-import {AppActions} from '../../actions/AppActions/AppActions';
+import {updateContent} from '../../actions/AppActions/AppActions';
 import {Icon} from '../../components/Icon/Icon';
 import {Config} from '../../config';
 import {AppConstants} from '../../constants/AppConstants';
 import {StringService} from '../../services/StringService/StringService';
-import {AppStore} from '../../stores/AppStore/AppStore';
+import {app} from '../../stores/appStore/appStore';
 
-export interface AppViewState {
-  content: string;
-}
+const useStyles = createUseStyles({
+  logo: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 100
+  },
+  logoImg: {
+    height: 94,
+    width: 403
+  },
+  helloTxt: {
+    fontSize: 30,
+    fontStyle: 'italic',
+    fontWeight: 100,
+    textAlign: 'center'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  input: {
+    alignSelf: 'stretch',
+    border: '1px solid #ccc',
+    padding: '10px 15px',
+    margin: '30px 0'
+  },
+  button: {
+    alignSelf: 'flex-end',
+    alignContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
 
-export class AppViewBase extends React.Component<{}, AppViewState> {
-  input: HTMLInputElement;
-
-  constructor(props) {
-    super(props);
-
-    // Methods
-    this.onUpdateContent = this.onUpdateContent.bind(this);
-    this.updateContent = this.updateContent.bind(this);
-
-    // ArkhamJS Middleware
-    const env: string = Config.get('environment');
-    const logger: Logger = new Logger({
-      debugLevel: env === 'development' ? LoggerDebugLevel.DISPATCH : LoggerDebugLevel.DISABLED
-    });
-
-    // ArkhamJS Configuration
-    Flux.init({
-      middleware: [logger],
-      name: 'arkhamExampleReact',
-      storage: new BrowserStorage({type: 'session'}),
-      stores: [AppStore]
-    });
-
-    // Initial state
-    this.state = {
-      content: Flux.getState('app.content', '')
-    };
+  },
+  btnIcon: {
+    alignSelf: 'center',
+    marginRight: 5
   }
+});
 
-  componentWillMount(): void {
-    // Add listeners
+export const onChange = (inputRef): void => {
+  if(inputRef.current) {
+    const {value} = inputRef.current;
+    updateContent(value);
+  }
+};
+
+export const onUpdateContent = (setContent) => (): void => {
+  const content = Flux.getState('app.content', '');
+  setContent(content);
+};
+
+export const AppViewBase = (): JSX.Element => {
+  // ArkhamJS Middleware
+  const env: string = Config.get('environment');
+  const logger: Logger = new Logger({
+    debugLevel: env === 'development' ? LoggerDebugLevel.DISPATCH : LoggerDebugLevel.DISABLED
+  });
+
+  // ArkhamJS Configuration
+  Flux.init({
+    middleware: [logger],
+    name: 'arkhamExampleReact',
+    storage: new BrowserStorage({type: 'session'}),
+    stores: [app]
+  });
+
+  // State
+  const [content, setContent] = useState(Flux.getState('app.content', ''));
+  const inputRef = useRef();
+
+  useFlux([
+    {handler: onUpdateContent, type: AppConstants.UPDATE_CONTENT}
+  ]);
+
+  useEffect(() => {
+    const onUpdate = onUpdateContent(setContent);
+
     // When app initializes and gets any data from persistent storage
-    Flux.onInit(this.onUpdateContent);
+    Flux.onInit(onUpdate);
 
-    // Listen for content updates
-    Flux.on(AppConstants.UPDATE_CONTENT, this.onUpdateContent);
-  }
+    return () => {
+      Flux.offInit(onUpdate);
+    };
+  });
 
-  componentWillUnmount(): void {
-    // Remove listeners
-    Flux.offInit(this.onUpdateContent);
-    Flux.off(AppConstants.UPDATE_CONTENT, this.onUpdateContent);
-  }
+  // Styles
+  const classes = useStyles();
 
-  updateContent(): void {
-    const {value} = this.input;
-    AppActions.updateContent(value);
-  }
-
-  onUpdateContent(): void {
-    const content: string = Flux.getState('app.content', '');
-    this.setState({content});
-  }
-
-  render(): JSX.Element {
-    return (
-      <div className="container view-home">
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="logo">
-              <a href="https://arkhamjs.io">
-                <img className="logoImg" src="/img/arkhamjs-logo.png" />
-              </a>
-            </div>
-            <div className="helloTxt">{StringService.uppercaseWords(this.state.content)}</div>
-            <div className="form">
-              <input ref={(ref: HTMLInputElement) => this.input = ref} type="text" name="test" />
-              <button className="btn btn-primary" onClick={this.updateContent}>
-                <Icon name="pencil" className="btnIcon" />
-                UPDATE
-              </button>
-            </div>
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-sm-12">
+          <div className={classes.logo}>
+            <a href="https://arkhamjs.io">
+              <img className={classes.logoImg} src="/img/arkhamjs-logo.png" />
+            </a>
+          </div>
+          <div className={classes.helloTxt}>{StringService.uppercaseWords(content)}</div>
+          <div className={classes.form}>
+            <input className={classes.input} ref={inputRef} type="text" name="test" />
+            <button className={`btn btn-primary ${classes.button}`} onClick={onChange}>
+              <Icon name="pencil" className={classes.btnIcon} />
+              UPDATE
+            </button>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export const AppView = hot(module)(AppViewBase);

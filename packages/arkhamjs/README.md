@@ -74,7 +74,7 @@ Try tinkering with a simplified demo in [JSFiddle](https://jsfiddle.net/nitrog7/
 
 ### React Typescript Example
 
-For a complete example of a React setup using Typescript, feel free to start your project with [arkhamjs-example-ts-react](https://github.com/nitrogenlabs/arkhamjs-example-flow-react).
+For a complete example of a React setup using Typescript, feel free to start your project with [arkhamjs-example-ts-react](https://github.com/nitrogenlabs/arkhamjs-example-ts-react).
 
 ### React Flow Example
 

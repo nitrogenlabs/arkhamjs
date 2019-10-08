@@ -2,84 +2,102 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import set from 'lodash/set';
+import debounce from 'lodash/debounce';
+import cloneDeep from 'lodash/fp/cloneDeep';
+import set from 'lodash/fp/set';
 
-import {Store} from '../Store/Store';
-import {FluxAction, FluxOptions} from '../types/flux';
-import {Flux} from './Flux';
+import {ArkhamConstants} from '../constants/ArkhamConstants';
+import {FluxFramework} from './Flux';
+import {FluxAction, FluxOptions, FluxStore} from './Flux.types';
 
-class TestStore extends Store {
-  constructor() {
-    super('helloWorld');
+jest.mock('lodash/debounce');
+
+const initialState = {
+  falsy: false,
+  item: 'default',
+  testAction: 'default',
+  testUpdate: 'default',
+  zeroValue: 0
+};
+
+const helloStore = (type: string, data, state = initialState): any => {
+  switch(type) {
+    case 'TEST_EVENT':
+      return set('testAction', data.testVar, state);
+    default:
+      return state;
   }
-
-  initialState(): object {
-    return {
-      falsy: false,
-      item: 'default',
-      testAction: 'default',
-      testUpdate: 'default',
-      zeroValue: 0
-    };
-  }
-
-  onAction(type: string, data, state): object {
-    switch(type) {
-      case 'TEST_EVENT':
-        return set(state, 'testAction', data.testVar);
-      default:
-        return state;
-    }
-  }
-}
+};
 
 describe('Flux', () => {
+  const consoleError = console.error;
+  const consoleWarn = console.warn;
   const cfg: FluxOptions = {
     name: 'arkhamjsTest',
-    stores: [TestStore]
+    stores: [helloStore]
   };
+  let Flux;
 
-  beforeAll(async () => {
+  beforeAll(() => {
+    console.error = jest.fn();
+    console.warn = jest.fn();
+  });
+
+  beforeEach(async () => {
+    Flux = new FluxFramework();
+
     // Configure
-    await Flux.init(cfg);
+    await Flux.init(cfg, true);
+  });
+
+  afterAll(() => {
+    console.error = consoleError;
+    console.warn = consoleWarn;
   });
 
   describe('#addMiddleware', () => {
-    describe('should apply object middleware', () => {
+    describe('should apply pre-dispatch middleware', () => {
       const middleTest: string = 'intercept object';
 
-      beforeAll(() => {
-        // Set test data
-        Flux.setState('helloWorld.testAction', 'default');
+      // Add object middleware
+      const objMiddleware = {
+        name: 'objectMiddleware',
+        preDispatch: (action) => ({...action, testVar: middleTest})
+      };
 
-        // Add object middleware
-        const objMiddleware = {
-          name: 'objectMiddleware',
-          preDispatch: (action) => ({...action, testVar: middleTest})
-        };
-
-        Flux.addMiddleware([objMiddleware]);
-
-        // Dispatch an action
-        Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
-      });
-
-      afterAll(() => {
+      afterEach(() => {
         Flux.clearMiddleware();
       });
 
-      it('should alter data before sending to stores', () => {
-        expect(Flux.getState('helloWorld.testAction')).toEqual(middleTest);
+      it('should alter data before sending to stores', async () => {
+        // Method
+        Flux.addMiddleware([objMiddleware]);
+
+        // Set test data
+        Flux.setState('helloStore.testAction', 'default');
+
+        // Dispatch an action
+        const preAction: FluxAction = await Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
+
+        expect(Flux.getState('helloStore.testAction')).toEqual(middleTest);
+        expect(preAction.testVar).toEqual(middleTest);
+      });
+
+      it('should handle error for middleware without a name', () => {
+        const fn = () => Flux.addMiddleware([{preDispatch: objMiddleware.preDispatch}]);
+        expect(fn).toThrowError();
+      });
+
+      it('should handle error for incompatible middleware', () => {
+        const fn = () => Flux.addMiddleware(['incorrect']);
+        expect(fn).toThrowError();
       });
     });
 
-    describe('should apply promise middleware', () => {
+    describe('should apply pre-dispatch middleware as promise', () => {
       const middleTest: string = 'intercept promise';
 
-      beforeAll(() => {
-        // Set test data
-        Flux.setState('helloWorld.testAction', 'default');
-
+      beforeEach(() => {
         // Add object middleware
         const promiseMiddleware = {
           name: 'promiseMiddleware',
@@ -87,28 +105,27 @@ describe('Flux', () => {
         };
 
         Flux.addMiddleware([promiseMiddleware]);
-
-        // Dispatch an action
-        Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
       });
 
-      afterAll(() => {
+      afterEach(() => {
         Flux.clearMiddleware();
       });
 
-      it('should alter data before sending to stores', () => {
-        expect(Flux.getState('helloWorld.testAction')).toEqual(middleTest);
+      it('should alter data before sending to stores', async () => {
+        // Set test data
+        Flux.setState('helloStore.testAction', 'default');
+
+        // Dispatch an action
+        const preAction: FluxAction = await Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
+        expect(Flux.getState('helloStore.testAction')).toEqual(middleTest);
+        expect(preAction.testVar).toEqual(middleTest);
       });
     });
 
     describe('should apply post dispatch middleware', () => {
       const middleTest: string = 'intercept post';
-      let postAction: FluxAction;
 
-      beforeAll(async () => {
-        // Set test data
-        Flux.setState('helloWorld.testAction', 'default');
-
+      beforeEach(() => {
         // Add object middleware
         const postMiddleware = {
           name: 'postMiddleware',
@@ -116,190 +133,347 @@ describe('Flux', () => {
         };
 
         Flux.addMiddleware([postMiddleware]);
-
-        // Dispatch an action
-        postAction = await Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
       });
 
-      afterAll(() => {
+      afterEach(() => {
         Flux.clearMiddleware();
       });
 
-      it('should not alter store data', () => {
-        expect(Flux.getState('helloWorld.testAction')).toEqual('hello world');
-      });
+      it('should alter store data', async () => {
+        // Set test data
+        Flux.setState('helloStore.testAction', 'default');
 
-      it('should emit altered data', () => {
+        // Dispatch an action
+        const postAction: FluxAction = await Flux.dispatch({testVar: 'hello world', type: 'TEST_EVENT'});
+
+        expect(Flux.getState('helloStore.testAction')).toEqual('hello world');
         expect(postAction.testVar).toEqual(middleTest);
       });
+
+      it('should handle no action error', async () => {
+        await expect(Flux.dispatch(null)).rejects.toThrowError();
+      });
+
+      it('should handle pre dispatch error', async () => {
+        const preMiddleware = {
+          name: 'errorMiddleware',
+          preDispatch: () => Promise.reject(new Error('test'))
+        };
+        Flux.addMiddleware([preMiddleware]);
+        await expect(Flux.dispatch({type: 'test'})).rejects.toThrowError();
+      });
+
+      it('should handle post dispatch error', async () => {
+        const postMiddleware = {
+          name: 'errorMiddleware',
+          postDispatch: () => Promise.reject(new Error('test'))
+        };
+        Flux.addMiddleware([postMiddleware]);
+        await expect(Flux.dispatch({type: 'test'})).rejects.toThrowError();
+      });
+    });
+  });
+
+  describe('#addPlugin', () => {
+    it('should add a plugin', () => {
+      const addPluginKey: string = 'addPlugin';
+      const plugin = {method: () => {}, name: 'demoPlugin'};
+      const results = Flux[addPluginKey]('preDispatch', plugin);
+      expect(results).toEqual([plugin]);
+    });
+
+    it('should skip plugin if already exists', () => {
+      const addPluginKey: string = 'addPlugin';
+      const plugin = {method: () => {}, name: 'demoPlugin'};
+      Flux.middleware.preDispatchList = [plugin];
+      const results = Flux[addPluginKey]('preDispatch', plugin);
+      expect(results).toEqual([plugin]);
+    });
+
+    it('should handle undefined function', () => {
+      const addPluginKey: string = 'addPlugin';
+      const fn = () => Flux[addPluginKey]('preDispatch', {method: 'object'});
+      expect(fn).toThrowError();
     });
   });
 
   describe('#clearAppData', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       // Set test data
-      Flux.setState('helloWorld.item', 'clear');
-
-      // Method
-      Flux.clearAppData();
+      Flux.setState('helloStore.item', 'clear');
     });
 
-    it('should reset the store data', () => {
-      expect(Flux.getState(['helloWorld', 'item'])).toEqual('default');
+    it('should reset the store data', async () => {
+      // Method
+      await Flux.clearAppData();
+
+      expect(Flux.getState(['helloStore', 'item'])).toEqual('default');
+    });
+
+    it('should set data in storage', async () => {
+      const retrnedValue = {hello: 'world'};
+      const setStorageData = jest.fn().mockResolvedValue(retrnedValue);
+      Flux.options.storage = {setStorageData};
+
+      // Method
+      const results = await Flux.clearAppData();
+
+      expect(setStorageData.mock.calls.length).toEqual(1);
+      expect(results).toEqual(retrnedValue);
     });
   });
 
-  describe('#removeStores', () => {
-    beforeAll(() => {
-      // Method
-      Flux.removeStores(['test']);
+  describe('#deregister', () => {
+    it('should remove a state and store', () => {
+      Flux.state = {hello: 'world'};
+      Flux.storeActions = {hello: 'world'};
+      Flux.deregister('hello');
+      expect(Flux.state).toEqual({});
+      expect(Flux.storeActions).toEqual({});
     });
 
-    afterAll(() => {
-      Flux.addStores([TestStore]);
-    });
-
-    it('should remove class', () => {
-      const privateProperty: string = 'storeClasses';
-      expect(!!Flux[privateProperty].test).toEqual(false);
-    });
-
-    it('should remove store data', () => {
-      const privateProperty: string = 'state';
-      expect(!!Flux[privateProperty].test).toEqual(false);
+    it('should use empty string as default', () => {
+      const originalState = cloneDeep(Flux.state);
+      Flux.deregister();
+      expect(originalState).toEqual(Flux.state);
     });
   });
 
   describe('#dispatch', () => {
     let eventSpy;
 
-    beforeAll(() => {
+    beforeEach(() => {
       // Spy
       eventSpy = jest.fn();
       Flux.on('TEST_EVENT', eventSpy);
-
-      // Method
-      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
     });
 
-    afterAll(() => {
+    afterEach(() => {
       Flux.off('TEST_EVENT', eventSpy);
     });
 
     it('should return an action', async () => {
+      // Method
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+
       const action: any = await Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
       expect(action).toEqual({testVar: 'test', type: 'TEST_EVENT'});
     });
 
     it('should alter the store data', () => {
-      const item: string = Flux.getState('helloWorld.testAction');
+      // Method
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+
+      const item: string = Flux.getState('helloStore.testAction');
       expect(item).toEqual('test');
     });
 
     it('should dispatch an event', () => {
-      expect(eventSpy.mock.calls.length).toEqual(2);
+      // Method
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+
+      expect(eventSpy.mock.calls.length).toEqual(1);
+    });
+
+    it('should not dispatch if no type', () => {
+      // Method
+      Flux.dispatch({testVar: 'test'});
+
+      expect(eventSpy.mock.calls.length).toEqual(0);
+    });
+
+    it('should not dispatch if silent', () => {
+      // Method
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'}, true);
+
+      expect(eventSpy.mock.calls.length).toEqual(0);
+    });
+
+    it('should update storage', () => {
+      Flux.updateStorage = jest.fn().mockResolvedValue({});
+      Flux.options.storage = {};
+
+      // Method
+      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+
+      expect(Flux.updateStorage.mock.calls.length).toEqual(1);
+    });
+
+    it('should return updated state if action returns null', async () => {
+      // Add null store
+      const nullStore = (type: string, data, state = initialState): any => {
+        switch(type) {
+          case 'TEST_NULL':
+            return null;
+          default:
+            return state;
+        }
+      };
+      await Flux.addStores([nullStore]);
+
+      // Method
+      await Flux.dispatch({testVar: 'test', type: 'TEST_NULL'});
+
+      expect(Flux.state.nullStore).toEqual(initialState);
+    });
+
+    it('should return empty object if store returns null by default', async () => {
+      // Add null store
+      const nullStore = (type: string, data, state): any => {
+        switch(type) {
+          case 'TEST_NULL':
+            return null;
+          default:
+            return state;
+        }
+      };
+      await Flux.addStores([nullStore]);
+      Flux.state.nullStore = null;
+
+      // Method
+      await Flux.dispatch({testVar: 'test', type: 'TEST_NULL'});
+
+      expect(Flux.state.nullStore).toEqual({});
     });
   });
 
-  describe('#getClass', () => {
-    it('should get a store class', () => {
-      const storeCls: Store = Flux.getClass('helloWorld');
-      expect(storeCls.name).toEqual('helloWorld');
+  describe('#getOptions', () => {
+    it('should get a options object', () => {
+      const options = Flux.getOptions();
+      const optionsKey: string = 'options';
+      expect(options).toEqual(Flux[optionsKey]);
     });
   });
 
   describe('#getState', () => {
-    let initialState;
-
-    beforeAll(() => {
-      const storeCls: Store = Flux.getClass('helloWorld');
-      initialState = storeCls.initialState();
-      Flux.setState('helloWorld', initialState);
+    beforeEach(() => {
+      const storeAction = Flux.getStore('helloStore');
+      Flux.setState('helloStore', storeAction.initialState);
     });
 
     it('should get a global store', () => {
       const value = Flux.getState();
-      expect(value.helloWorld.item).toEqual('default');
+      expect(value.helloStore.item).toEqual('default');
     });
 
     it('should get a specific store returning an object', () => {
-      const value = Flux.getState('helloWorld');
+      const value = Flux.getState('helloStore');
       expect(value.item).toEqual('default');
     });
 
     it('should get a specific item within a store using array', () => {
-      const value: string = Flux.getState(['helloWorld', 'item']);
+      const value: string = Flux.getState(['helloStore', 'item']);
       expect(value).toEqual('default');
     });
 
     it('should get a specific item within a store using dot notation', () => {
-      const value: string = Flux.getState('helloWorld.item');
+      const value: string = Flux.getState('helloStore.item');
       expect(value).toEqual('default');
     });
 
     it('should return default value from a null item', () => {
-      const value: string = Flux.getState('helloWorld.notDefault', '');
+      const value: string = Flux.getState('helloStore.notDefault', '');
       expect(value).toEqual('');
     });
 
     it('should return entire store object with empty key', () => {
       const value: string = Flux.getState('');
-      expect(value).toEqual({helloWorld: initialState});
+      expect(value).toEqual({helloStore: initialState});
+    });
+
+    it('should return entire store object with null key', () => {
+      const value: string = Flux.getState(null);
+      expect(value).toEqual({helloStore: initialState});
+    });
+
+    it('should return entire store object with undefined key', () => {
+      const value: string = Flux.getState();
+      expect(value).toEqual({helloStore: initialState});
+    });
+
+    it('should return empty object if state is null', () => {
+      Flux.state = null;
+      const value: string = Flux.getState();
+      expect(value).toEqual({});
     });
 
     it('should return a false value', () => {
-      const value = Flux.getState('helloWorld.falsy');
+      const value = Flux.getState('helloStore.falsy');
       expect(value).toEqual(false);
     });
 
     it('should return a zero value', () => {
-      const value = Flux.getState('helloWorld.zeroValue');
+      const value = Flux.getState('helloStore.zeroValue');
       expect(value).toEqual(0);
     });
   });
 
+  describe('#getStore', () => {
+    it('should get a store function', () => {
+      const storeAction = Flux.getStore('helloStore');
+      expect(storeAction.name).toEqual('helloStore');
+    });
+
+    it('should use empty string as default value', () => {
+      const storeAction = Flux.getStore();
+      expect(storeAction).toBeUndefined();
+    });
+  });
+
   describe('#init', () => {
-    // Vars
-    const opts: FluxOptions = {
-      name: 'demo'
-    };
-
     describe('set app name', () => {
-      beforeEach(() => {
-        const privateProperty: string = 'options';
-        Flux[privateProperty].name = cfg.name;
-      });
+      // Vars
+      const opts: FluxOptions = {
+        name: 'demo'
+      };
 
-      afterAll(() => {
-        const privateInit: string = 'isInit';
-        Flux[privateInit] = true;
-
-        Flux.init(cfg);
-
-        const privateProperty: string = 'options';
-        Flux[privateProperty].name = cfg.name;
-      });
-
-      it('should update app name if initializing for the first time', () => {
+      it('should update app name if initializing for the first time', async () => {
         const privateInit: string = 'isInit';
         Flux[privateInit] = false;
 
         // Method
-        Flux.init(opts);
+        await Flux.init(opts);
 
-        const privateProperty: string = 'options';
-        expect(Flux[privateProperty].name).toEqual('demo');
+        const optionsKey: string = 'options';
+        expect(Flux[optionsKey].name).toEqual('demo');
       });
 
-      it('should not update app name if initializing again', () => {
+      it('should not update app name if initializing again', async () => {
         const privateInit: string = 'isInit';
         Flux[privateInit] = true;
 
         // Method
-        Flux.init(opts);
+        await Flux.init(opts);
 
-        const privateProperty: string = 'options';
-        expect(Flux[privateProperty].name).toEqual('arkhamjsTest');
+        const optionsKey: string = 'options';
+        expect(Flux[optionsKey].name).toEqual('arkhamjsTest');
+      });
+
+      it('should add windows object for debugging', async () => {
+        // Method
+        await Flux.init({...opts, debug: true});
+
+        const debugKey: string = 'arkhamjs';
+        expect(window[debugKey]).toEqual(Flux);
+      });
+
+      it('should use default object if undefined', async () => {
+        // Method
+        await Flux.reset();
+        await Flux.init();
+
+        const optionsKey: string = 'options';
+        const expectedOptions = {
+          name: 'arkhamjs',
+          routerType: 'browser',
+          scrollToTop: true,
+          state: null,
+          storage: null,
+          storageWait: 300,
+          stores: [],
+          title: 'ArkhamJS'
+        };
+        expect(Flux[optionsKey]).toEqual(expectedOptions);
       });
     });
 
@@ -309,18 +483,10 @@ describe('Flux', () => {
         name: 'demo'
       };
 
-      beforeAll(() => {
-        // Method
-        Flux.init(opts);
-      });
-
-      afterAll(() => {
-        Flux.init(cfg, true);
-      });
-
-      it('should set app name', () => {
+      it('should set app name', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'options';
-        expect(Flux[privateProperty].name).toEqual('arkhamjsTest');
+        expect(Flux[privateProperty].name).toEqual('demo');
       });
     });
 
@@ -328,26 +494,19 @@ describe('Flux', () => {
       // Vars
       const opts: FluxOptions = {
         state: {},
-        stores: [TestStore]
+        stores: [helloStore]
       };
 
-      beforeAll(() => {
-        // Method
-        Flux.init(opts, true);
-      });
-
-      afterAll(() => {
-        Flux.init(cfg, true);
-      });
-
-      it('should set state', () => {
+      it('should set state', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
         expect(Object.keys(Flux[privateProperty]).length).toEqual(1);
       });
 
-      it('should set state branch for store', () => {
+      it('should set state branch for store', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
-        expect(Flux[privateProperty].helloWorld.item).toEqual('default');
+        expect(Flux[privateProperty].helloStore.item).toEqual('default');
       });
     });
 
@@ -355,26 +514,19 @@ describe('Flux', () => {
       // Vars
       const opts: FluxOptions = {
         state: null,
-        stores: [TestStore]
+        stores: [helloStore]
       };
 
-      beforeAll(() => {
-        // Method
-        Flux.init(opts, true);
-      });
-
-      afterAll(() => {
-        Flux.init(cfg, true);
-      });
-
-      it('should set state', () => {
+      it('should set state', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
         expect(Object.keys(Flux[privateProperty]).length).toEqual(1);
       });
 
-      it('should set state branch for store', () => {
+      it('should set state branch for store', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
-        expect(Flux[privateProperty].helloWorld.item).toEqual('default');
+        expect(Flux[privateProperty].helloStore.item).toEqual('default');
       });
     });
 
@@ -382,26 +534,52 @@ describe('Flux', () => {
       // Vars
       const opts: FluxOptions = {
         state: {second: 'value', test: {hello: 'world'}},
-        stores: [TestStore]
+        stores: [helloStore]
       };
 
-      beforeAll(() => {
-        // Method
-        Flux.init(opts, true);
-      });
-
-      afterAll(() => {
-        Flux.init(cfg, true);
-      });
-
-      it('should set state', () => {
+      it('should set state', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
         expect(Object.keys(Flux[privateProperty]).length).toEqual(3);
       });
 
-      it('should set state branch for store', () => {
+      it('should set state branch for store', async () => {
+        await Flux.init(opts, true);
         const privateProperty: string = 'state';
         expect(Flux[privateProperty].test.hello).toEqual('world');
+      });
+    });
+
+    describe('middleware', () => {
+      // Middleware object
+      const objMiddleware = {
+        name: 'objectMiddleware',
+        preDispatch: (action) => ({...action})
+      };
+
+      // Vars
+      const opts: FluxOptions = {
+        middleware: [objMiddleware],
+        name: 'demo',
+        stores: [helloStore]
+      };
+
+      it('should add middleware', async () => {
+        await Flux.init(opts, true);
+        const privateProperty: string = 'middleware';
+        expect(Flux[privateProperty].preDispatchList[0].name).toEqual('objectMiddleware');
+      });
+    });
+
+    describe('error handling', () => {
+      it('should handle useStorage error', async () => {
+        Flux.useStorage = Promise.reject(new Error('test'));
+        await expect(Flux.init(cfg, true)).rejects.toThrowError();
+      });
+
+      it('should handle addStores error', async () => {
+        Flux.addStores = Promise.reject(new Error('test'));
+        await expect(Flux.init(cfg, true)).rejects.toThrowError();
       });
     });
   });
@@ -409,7 +587,7 @@ describe('Flux', () => {
   describe('event listeners', () => {
     let eventSpy;
 
-    beforeAll(() => {
+    beforeEach(() => {
       eventSpy = jest.fn();
       Flux.on('test', eventSpy);
     });
@@ -426,78 +604,145 @@ describe('Flux', () => {
         Flux.off('test', eventSpy);
         await Flux.dispatch({type: 'test'});
 
-        expect(eventSpy.mock.calls.length).toEqual(1);
+        expect(eventSpy.mock.calls.length).toEqual(0);
       });
-    });
-  });
-
-  describe('#on', () => {
-    it('should add a listener', () => {
-      const spy = jest.fn();
-      Flux.on('test', spy);
-      Flux.off('test', spy);
-      Flux.dispatch({type: 'test'});
-
-      expect(spy.mock.calls.length).toEqual(0);
     });
   });
 
   describe('#addStores', () => {
-    describe('add classes', () => {
-      it('should save the store class', () => {
-        const privateProperty: string = 'storeClasses';
-        const storeCls: Store = Flux[privateProperty].helloWorld;
-        expect(storeCls.name).toEqual('helloWorld');
-      });
+    const demo = (type, data, state = {helloStore: 'joker'}) => {
+      if(type === 'DEMO_TEST') {
+        state.helloStore = data.helloStore;
+      }
 
-      it('should set the initial value', () => {
-        const privateProperty: string = 'state';
-        const value: string = Flux[privateProperty].helloWorld.item;
-        expect(value).toEqual('default');
-      });
+      return state;
+    };
+
+    it('should create and save a Store class', () => {
+      Flux.addStores([demo]);
+      const privateProperty: string = 'storeActions';
+      const storeAction: FluxStore = Flux[privateProperty].demo;
+      expect(storeAction.name).toEqual('demo');
     });
 
-    describe('add functions', () => {
-      beforeAll(() => {
-        const demo = (type, data, state = {helloWorld: 'joker'}) => {
-          if(type === 'DEMO_TEST') {
-            state.helloWorld = data.helloWorld;
-          }
+    it('should set initial state', () => {
+      Flux.addStores([demo]);
+      const privateProperty: string = 'storeActions';
+      const storeAction: FluxStore = Flux[privateProperty].demo;
+      expect(storeAction.initialState).toEqual({helloStore: 'joker'});
+    });
 
-          return state;
-        };
+    it('should handle unsupported stores', () => {
+      const optionsKey: string = 'options';
+      const setStorageData = new Error('test');
+      Flux[optionsKey].storage = {setStorageData};
 
-        Flux.addStores([demo]);
+      Flux.addStores([demo]);
+      const privateProperty: string = 'storeActions';
+      const storeAction: FluxStore = Flux[privateProperty].demo;
+      expect(storeAction.initialState).toEqual({helloStore: 'joker'});
+    });
+  });
+
+  describe('#offInit', () => {
+    it('should remove listener after initialization', () => {
+      const listener = jest.fn();
+      Flux.off = jest.fn();
+      Flux.offInit(listener);
+      expect(Flux.off.mock.calls.length).toEqual(1);
+      expect(Flux.off.mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
+    });
+  });
+
+  describe('#onInit', () => {
+    it('should add listener after initialization', () => {
+      const listener = jest.fn();
+      Flux.isInit = false;
+      Flux.on = jest.fn();
+      Flux.onInit(listener);
+      expect(Flux.on.mock.calls.length).toEqual(1);
+      expect(Flux.on.mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
+    });
+
+    it('should dispatch instantly if already initialized', () => {
+      const listener = jest.fn();
+      Flux.isInit = true;
+      Flux.onInit(listener);
+      expect(listener.mock.calls.length).toEqual(1);
+    });
+  });
+
+  describe('#register', () => {
+    it('should register a store function', () => {
+      const demoStore = (type: string, data, state = initialState): any => {
+        switch(type) {
+          case 'TEST_EVENT':
+            return set('testAction', data.testVar, state);
+          default:
+            return state;
+        }
+      };
+
+      const registerKey: string = 'register';
+      const storeAction = Flux[registerKey](demoStore);
+      const expectedAction = {
+        action: demoStore,
+        initialState,
+        name: 'demoStore'
+      };
+      expect(storeAction).toEqual(expectedAction);
+    });
+
+    it('should register a store function without an initial value', () => {
+      const demoStore = (type: string, data, state): any => {
+        switch(type) {
+          case 'TEST_EVENT':
+            return set('testAction', data.testVar, state);
+          default:
+            return state;
+        }
+      };
+
+      const registerKey: string = 'register';
+      const storeAction = Flux[registerKey](demoStore);
+      const expectedAction = {
+        action: demoStore,
+        initialState: undefined,
+        name: 'demoStore'
+      };
+      expect(storeAction).toEqual(expectedAction);
+    });
+
+    it('should not save a store function without a name', () => {
+      const registerKey: string = 'register';
+      const storeAction = Flux[registerKey]((type: string, data, state = initialState): any => {
+        switch(type) {
+          case 'TEST_EVENT':
+            return set('testAction', data.testVar, state);
+          default:
+            return state;
+        }
       });
+      expect(storeAction).toBeUndefined();
+    });
 
-      it('should create and save a Store class', () => {
-        const privateProperty: string = 'storeClasses';
-        const storeCls: Store = Flux[privateProperty].demo;
-        expect(storeCls.name).toEqual('demo');
-      });
+    it('should handle undefined function', () => {
+      const registerKey: string = 'register';
 
-      it('should set default state', () => {
-        const privateProperty: string = 'storeClasses';
-        const storeCls: Store = Flux[privateProperty].demo;
-        expect(storeCls.defaultState).toEqual({helloWorld: 'joker'});
-      });
+      const fn = () => Flux[registerKey]();
+      expect(fn).toThrowError();
+    });
 
-      it('should set initial state', () => {
-        const privateProperty: string = 'storeClasses';
-        const storeCls: Store = Flux[privateProperty].demo;
-        expect(storeCls.initialState()).toEqual({helloWorld: 'joker'});
-      });
+    it('should handle argument that is not a function', () => {
+      const registerKey: string = 'register';
 
-      // it('should be able to update on action dispatch', async () => {
-      //   await Flux.dispatch({type: 'DEMO_TEST', helloWorld: 'test'});
-      //   const value: string = Flux.getState('demo.helloWorld');
-      //   expect(value).toEqual('test');
-      // });
+      const fn = () => Flux[registerKey]({});
+      expect(fn).toThrowError();
     });
   });
 
   describe('#removeMiddleware', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       Flux.clearMiddleware();
 
       // Add object middleware
@@ -516,16 +761,121 @@ describe('Flux', () => {
     });
   });
 
-  describe('#setState', () => {
-    let newItem: string;
-
-    beforeAll(async () => {
-      await Flux.setState('helloWorld.testUpdate', 'test');
-      newItem = await Flux.getState('helloWorld.testUpdate');
+  describe('#removePlugin', () => {
+    it('should remove an existing plugin', () => {
+      Flux.middleware.preDispatchList = [{name: 'demoPlugin'}, {name: 'noNotRemovePlugin'}];
+      expect(Flux.removePlugin('preDispatch', 'demoPlugin')).toEqual([{name: 'noNotRemovePlugin'}]);
     });
 
-    it('should update the property within the store', () => {
+    it('should get an undefined list', () => {
+      Flux.middleware.preDispatchList = null;
+      expect(Flux.removePlugin('preDispatch', 'demoPlugin')).toEqual([]);
+    });
+  });
+
+  describe('#removeStores', () => {
+    beforeEach(() => {
+      // Method
+      Flux.removeStores(['helloStore']);
+    });
+
+    afterEach(() => {
+      Flux.addStores([helloStore]);
+    });
+
+    it('should remove class', () => {
+      const privateProperty: string = 'storeActions';
+      expect(!!Flux[privateProperty].helloStore).toEqual(false);
+    });
+
+    it('should remove store data', () => {
+      const privateProperty: string = 'state';
+      expect(!!Flux[privateProperty].helloStore).toEqual(false);
+    });
+  });
+
+  describe('#reset', () => {
+    it('should handle argument that is not a function', async () => {
+      const optionsKey: string = 'options';
+      const setStorageData = new Error('test');
+      Flux[optionsKey].storage = {setStorageData};
+      await expect(Flux.reset()).rejects.toThrowError();
+    });
+  });
+
+  describe('#setState', () => {
+    it('should update the property within the store', async () => {
+      await Flux.setState('helloStore.testUpdate', 'test');
+      const newItem = await Flux.getState('helloStore.testUpdate');
       expect(newItem).toEqual('test');
+    });
+
+    it('should empty string as default path', async () => {
+      await Flux.setState(undefined, 'test');
+      const newItem = await Flux.getState('helloStore');
+      expect(newItem).toEqual(initialState);
+    });
+
+    it('should update storage', async () => {
+      const optionsKey: string = 'options';
+      const updateStorageKey: string = 'updateStorage';
+      const updateStorage = jest.fn();
+      Flux[optionsKey] = {storage: {}};
+      Flux[updateStorageKey] = updateStorage;
+      await Flux.setState('helloStore.testUpdate', 'test');
+      expect(updateStorage.mock.calls.length).toEqual(1);
+    });
+  });
+
+  describe('#useStorage', () => {
+    it('should update storage', async () => {
+      const getStorageData = jest.fn();
+      const optionsKey: string = 'options';
+      Flux[optionsKey].state = null;
+      Flux[optionsKey].storage = {getStorageData};
+
+      const useStorageKey: string = 'useStorage';
+      await Flux[useStorageKey]('helloStore');
+
+      expect(getStorageData.mock.calls.length).toEqual(1);
+    });
+
+    it('without storage', async () => {
+      const optionsKey: string = 'options';
+      Flux[optionsKey].state = {hello: 'world'};
+      Flux[optionsKey].storage = null;
+
+      const useStorageKey: string = 'useStorage';
+      await Flux[useStorageKey]('helloStore');
+
+      const stateKey: string = 'state';
+      expect(Flux[stateKey].hello).toEqual('world');
+    });
+
+    it('should handle storage errors', async () => {
+      const optionsKey: string = 'options';
+      Flux[optionsKey].state = null;
+      Flux[optionsKey].storage = new Error('test');
+
+      const useStorageKey: string = 'useStorage';
+      await expect(Flux[useStorageKey]('helloStore')).rejects.toThrowError();
+    });
+
+    it('should debounce storage', async () => {
+      const value: string = 'test';
+      const optionsKey: string = 'options';
+      Flux[optionsKey].state = {hello: 'world'};
+
+      const setStorageData = jest.fn().mockReturnValue(value);
+      Flux[optionsKey].storage = {setStorageData};
+
+      const debounceMock: any = debounce;
+      debounceMock.mockImplementation((fn) => fn());
+
+      const useStorageKey: string = 'useStorage';
+      await Flux[useStorageKey]('helloStore');
+
+      expect(setStorageData.mock.calls.length).toEqual(1);
     });
   });
 });

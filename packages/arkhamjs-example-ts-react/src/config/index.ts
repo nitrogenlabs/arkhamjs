@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 
-import {EnvConfig} from '../types/config';
+import {EnvConfig} from './config.types';
 
 const {NODE_ENV} = process.env;
 

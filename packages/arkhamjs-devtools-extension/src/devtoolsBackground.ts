@@ -1,5 +1,5 @@
 // import {Flux} from '@nlabs/arkhamjs';
-const panels = chrome && chrome.devtools && chrome.devtools.panels;
+const {devtools: {panels}} = chrome || {};
 
 // Create panel
 if(panels) {

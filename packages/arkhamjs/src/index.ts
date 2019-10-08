@@ -4,7 +4,6 @@
  */
 import {ArkhamConstants} from './constants/ArkhamConstants';
 import {Flux, FluxFramework} from './Flux/Flux';
-import {Store} from './Store/Store';
 
-export * from './types/flux';
-export {ArkhamConstants, Flux, FluxFramework, Store};
+export * from './Flux/Flux.types';
+export {ArkhamConstants, Flux, FluxFramework};

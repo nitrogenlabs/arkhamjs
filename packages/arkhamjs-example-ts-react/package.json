@@ -43,22 +43,24 @@
     "@nlabs/arkhamjs": "^3.14.3",
     "@nlabs/arkhamjs-middleware-logger": "^3.14.3",
     "@nlabs/arkhamjs-storage-browser": "^3.14.3",
+    "@nlabs/arkhamjs-utils-react": "^3.14.3",
     "bootstrap": "^4.3.1",
     "lodash": "^4.17.15",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-hot-loader": "^4.12.10"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-hot-loader": "^4.12.15",
+    "react-jss": "^10.0.0"
   },
   "devDependencies": {
-    "@types/history": "^4.7.2",
-    "@types/jest": "^24.0.17",
-    "@types/node": "^12.7.1",
-    "@types/react": "^16.9.1",
-    "@types/react-dom": "^16.8.5",
-    "eslint": "^6.1.0",
-    "eslint-config-styleguidejs": "^1.0.13",
-    "react-test-renderer": "^16.9.0",
-    "typescript": "^3.5.3"
+    "@types/history": "^4.7.3",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "eslint": "^6.5.1",
+    "eslint-config-styleguidejs": "^1.0.16",
+    "react-test-renderer": "^16.10.2",
+    "typescript": "^3.6.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

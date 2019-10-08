@@ -34,6 +34,12 @@ export interface FluxStorageType {
   readonly setStorageData: (key: string, value: any) => Promise<boolean>;
 }
 
+export interface FluxStore {
+  readonly action: (type: string, data: any, state: any) => any;
+  readonly name: string;
+  readonly initialState: any;
+}
+
 export type FluxPluginMethodType = (action: FluxAction, store: object, appData?: object) => Promise<FluxAction>;
 
 export interface FluxMiddlewareType {

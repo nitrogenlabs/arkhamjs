@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 
-import type {EnvConfig} from '../types/config';
+import type {EnvConfig} from './config.types';
 
 export class Config {
   static values: EnvConfig = {

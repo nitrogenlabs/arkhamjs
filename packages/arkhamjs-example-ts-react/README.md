@@ -86,7 +86,6 @@ The folder structure provided is only meant to serve as a guide, it is by no mea
 │   ├── services     # Helpers and utilities
 │   ├── stores       # ArkhamJS store configurations
 │   ├── styles       # CSS styles
-│   ├── types        # Typescript type definitions
 │   ├── views        # React components/views that live at a route
 │   ├── app.css      # Entry CSS file
 │   ├── index.html   # Entry HTML file

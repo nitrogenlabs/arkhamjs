@@ -1,34 +1,64 @@
-import './icon.css';
+import React from 'react';
+import {createUseStyles} from 'react-jss';
 
-import * as React from 'react';
+import type {IconProps} from './Icon.types';
 
-import {Component} from '../Component/Component';
-import type {IconProps} from '../../types/components';
+const useStyles = createUseStyles({
+  icon: ({iconSize}) => ({
+    backgroundColor: 'transparent',
+    color: 'inherit',
+    display: 'block',
+    fill: 'currentColor',
+    height: iconSize,
+    verticalAlign: 'middle',
+    width: iconSize,
 
-export class Icon extends Component<IconProps> {
-  static defaultProps: object = {
-    ...Component.defaultProps,
-    size: ''
-  };
+    '& svg': {
+      fill: 'inherit',
+      height: '100%',
+      width: '100%',
 
-  constructor(props) {
-    super(props, 'icon');
-  }
-
-  addStyles(): string[] {
-    const styleClasses: string[] = [];
-    const {size: propSize} = this.props;
-    const size = propSize.toLowerCase();
-
-    if(size !== '') {
-      styleClasses.push(`icon-${size}`);
+      '& symbol path': {
+        all: 'inherit'
+      }
     }
+  })
+});
 
-    return styleClasses;
+export const Icon = (props: IconProps): JSX.Element => {
+  const {
+    className = '',
+    size: propSize = ''
+  } = props;
+  const name: string = 'icon';
+  const size = propSize.toLowerCase().trim();
+
+  // Icon sizes
+  let iconSize;
+
+  switch(size) {
+    case 'md':
+      iconSize = 32;
+      break;
+    case 'lg':
+      iconSize = 64;
+      break;
+    case 'xl':
+      iconSize = 128;
+      break;
+    case 'xx':
+      iconSize = 256;
+      break;
+    default:
+      iconSize = 16;
+      break;
   }
 
-  render(): JSX.Element {
-    const useTag: string = `<use xlink:href="/icons/icons.svg#${this.props.name}" />`;
-    return <svg className={this.getStyles()} dangerouslySetInnerHTML={{__html: useTag}} />;
-  }
-}
+  // Styles
+  const classes = useStyles({iconSize});
+  const styleClasses: string[] = [name, classes.icon, className];
+
+  // SVG
+  const useTag: string = `<use xlink:href="/icons/icons.svg#${name}" />`;
+  return <svg className={styleClasses.join(' ')} dangerouslySetInnerHTML={{__html: useTag}} />;
+};
