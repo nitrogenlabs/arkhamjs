@@ -48,7 +48,7 @@
     "lodash": "^4.17.15",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-hot-loader": "^4.12.15"
+    "react-hot-loader": "^4.12.15",
     "react-jss": "^10.0.0"
   },
   "devDependencies": {
