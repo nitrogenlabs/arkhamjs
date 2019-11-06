@@ -4,7 +4,7 @@ import {WindowSize} from './useWindowSize.types';
 
 export const isClient = typeof window === 'object';
 
-export const getSize = () => {
+export const getWindowSize = () => {
   if(isClient) {
     const {innerHeight: height, innerWidth: width} = window;
     return {height, width};
@@ -13,17 +13,16 @@ export const getSize = () => {
   return {height: undefined, width: undefined};
 };
 
-export const useWindowWidth = (): WindowSize => {
-  const [size, setSize] = useState(getSize());
+export const useWindowSize = (): WindowSize => {
+  const [size, setSize] = useState(getWindowSize());
 
   useEffect(() => {
     if(!isClient) {
       return () => {};
     }
 
-    const onResize = () => setSize(getSize());
+    const onResize = () => setSize(getWindowSize());
     window.addEventListener('resize', onResize);
-
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
