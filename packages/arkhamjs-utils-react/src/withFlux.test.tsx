@@ -2,7 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {Flux, Store} from '@nlabs/arkhamjs';
+import {Flux} from '@nlabs/arkhamjs';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 
@@ -12,28 +12,19 @@ import {withFlux} from './withFlux';
 describe('withFlux', () => {
   const TestComponent = ({hello = 'world'}) => <div>{hello}</div>;
 
-  class TestStore extends Store {
-    constructor() {
-      super('test');
+  const test = (actionType: string, data, state = {hello: 'demo'}) => {
+    switch(actionType) {
+      case 'test_action':
+        return {hello: data.hello};
+      default:
+        return state;
     }
+  };
 
-    initialState() {
-      return {hello: 'demo'};
-    }
-
-    onAction(actionType: string, data, state) {
-      switch(actionType) {
-        case 'test_action':
-          return {hello: data.hello};
-        default:
-          return state;
-      }
-    }
-  }
 
   beforeAll(async () => {
     await Flux.init({
-      stores: [TestStore]
+      stores: [test]
     });
   });
 
