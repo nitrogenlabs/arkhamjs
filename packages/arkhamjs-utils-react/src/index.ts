@@ -8,12 +8,10 @@ import {useFlux} from './useFlux';
 import {useRefSize} from './useRefSize';
 import {useState} from './useState';
 import {useWindowSize} from './useWindowSize';
-import {withFlux} from './withFlux';
 
 export * from './FluxProvider.types';
 export * from './useFlux.types';
 export * from './useWindowSize.types';
-export * from './withFlux.types';
 
 export {
   FluxContext,
@@ -22,6 +20,5 @@ export {
   useFlux,
   useRefSize,
   useState,
-  useWindowSize,
-  withFlux
+  useWindowSize
 };

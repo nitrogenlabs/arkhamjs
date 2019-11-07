@@ -15,7 +15,10 @@
     "nitrogenlabs",
     "state",
     "state management",
-    "withFlux"
+    "useFlux",
+    "useComponentSize",
+    "useRefSize",
+    "useWindowSize"
   ],
   "contributors": [
     {
