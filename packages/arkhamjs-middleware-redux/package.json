@@ -47,14 +47,14 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.16.0",
-    "@types/jest": "^24.0.21",
-    "@types/node": "^12.12.5",
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.6",
     "@types/redux": "^3.6.0",
     "@types/webpack": "^4.39.8",
     "eslint": "^6.6.0",
     "eslint-config-styleguidejs": "^1.0.16",
     "redux": "^4.0.4",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
