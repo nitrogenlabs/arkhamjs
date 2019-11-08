@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-logger",
-  "version": "3.17.1",
+  "version": "3.17.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,7 +41,7 @@
     "lodash": "^4.0.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.17.0",
+    "@nlabs/arkhamjs": "^3.17.2",
     "@types/jest": "^24.0.22",
     "@types/node": "^12.12.6",
     "eslint": "^6.6.0",

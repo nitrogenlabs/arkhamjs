@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.17.1",
+  "version": "3.17.2",
   "publishConfig": {
     "access": "public"
   },
@@ -53,7 +53,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.17.0",
+    "@nlabs/arkhamjs": "^3.17.2",
     "@types/jest": "^24.0.22",
     "@types/lodash": "^4.14.145",
     "@types/node": "^12.12.6",
