@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
 import {Flux} from '@nlabs/arkhamjs';
 import isPlainObject from 'lodash/isPlainObject';
 import merge from 'lodash/merge';
@@ -7,10 +11,6 @@ import {arkhamMiddleware} from './middleware/arkhamMiddleware';
 import {ReduxMiddleware} from './middleware/ReduxMiddleware';
 import {ArkhamReduxStoreType} from './types/main';
 
-/**
- * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
- * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
- */
 export const createArkhamStore = (configuration: ArkhamReduxStoreType): Store<any> => {
   const {
     arkhamMiddleware: middleware = [],

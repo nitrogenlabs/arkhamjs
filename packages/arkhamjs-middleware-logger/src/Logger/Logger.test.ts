@@ -2,33 +2,20 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {Flux, FluxAction, Store} from '@nlabs/arkhamjs';
+import {Flux, FluxAction} from '@nlabs/arkhamjs';
 import set from 'lodash/set';
 
 import {LoggerDebugLevel, LoggerOptions} from '../types/main';
 import {Logger} from './Logger';
 
-
-class TestStore extends Store {
-  constructor() {
-    super('test');
+const test = (type: string, data, state = {hello: 'world'}) => {
+  switch(type) {
+    case 'TEST_EVENT':
+      return set(state, 'testAction', data.testVar);
+    default:
+      return state;
   }
-
-  initialState(): object {
-    return {
-      hello: 'world'
-    };
-  }
-
-  onAction(type: string, data, state): object {
-    switch(type) {
-      case 'TEST_EVENT':
-        return set(state, 'testAction', data.testVar);
-      default:
-        return state;
-    }
-  }
-}
+};
 
 describe('Logger', () => {
   const cfg: LoggerOptions = {debugLevel: LoggerDebugLevel.DISPATCH};
@@ -37,7 +24,7 @@ describe('Logger', () => {
 
   beforeAll(async () => {
     await Flux.init({
-      stores: [TestStore]
+      stores: [test]
     });
   });
 

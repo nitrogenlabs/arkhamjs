@@ -240,5 +240,3 @@ interface ResizeObserverEntryBoxSize {
 interface Window {
   ResizeObserver: ResizeObserver;
 }
-
-declare var ResizeObserver: ResizeObserver;

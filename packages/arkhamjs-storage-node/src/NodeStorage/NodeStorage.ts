@@ -2,26 +2,20 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-
-import PersistStorage from 'node-persist';
-
-import {NodeStorageOptions} from '../types/main';
+import PersistStorage, {InitOptions} from 'node-persist';
 
 export class NodeStorage {
-  private options: NodeStorageOptions = {
-    continuous: true,
+  private options: InitOptions = {
     dir: '/tmp',
     encoding: 'utf8',
     expiredInterval: 3 * 60 * 1000,
     forgiveParseErrors: false,
-    interval: false,
     logging: false,
     parse: JSON.parse,
-    stringify: JSON.stringify,
-    ttl: false
+    stringify: JSON.stringify
   };
 
-  constructor(options: NodeStorageOptions = {}) {
+  constructor(options: InitOptions = {}) {
     // Methods
     this.clearStorageData = this.clearStorageData.bind(this);
     this.getStorageData = this.getStorageData.bind(this);
