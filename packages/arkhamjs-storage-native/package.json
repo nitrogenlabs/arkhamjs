@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-native",
-  "version": "3.17.2",
+  "version": "3.17.3",
   "publishConfig": {
     "access": "public"
   },
@@ -44,7 +44,7 @@
     "react": ">=16"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.17.2",
+    "@nlabs/arkhamjs": "^3.17.3",
     "@react-native-community/async-storage": "^1.9.0",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.0",
