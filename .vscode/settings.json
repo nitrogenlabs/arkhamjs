@@ -70,5 +70,8 @@
   "tslint.enable": true,
   "tslint.packageManager": "yarn",
   "tslint.autoFixOnSave": true,
-  "tslint.configFile": "./tslint.json"
+  "tslint.configFile": "./tslint.json",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
