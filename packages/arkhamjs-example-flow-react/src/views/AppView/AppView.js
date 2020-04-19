@@ -12,10 +12,37 @@ import {updateContent} from '../../actions/AppActions/AppActions';
 import {Icon} from '../../components/Icon/Icon';
 import {Config} from '../../config';
 import {AppConstants} from '../../constants/AppConstants';
-import {StringService} from '../../services/StringService/StringService';
+import {uppercaseWords} from '../../services/StringService/StringService';
 import {app} from '../../stores/appStore/appStore';
 
 const useStyles = createUseStyles({
+  btnIcon: {
+    alignSelf: 'center',
+    marginRight: 5
+  },
+  button: {
+    alignContent: 'center',
+    alignSelf: 'flex-end',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  helloTxt: {
+    fontSize: 30,
+    fontStyle: 'italic',
+    fontWeight: 100,
+    textAlign: 'center'
+  },
+  input: {
+    alignSelf: 'stretch',
+    border: '1px solid #ccc',
+    margin: '30px 0',
+    padding: '10px 15px'
+  },
   logo: {
     display: 'flex',
     justifyContent: 'center',
@@ -24,34 +51,6 @@ const useStyles = createUseStyles({
   logoImg: {
     height: 94,
     width: 403
-  },
-  helloTxt: {
-    fontSize: 30,
-    fontStyle: 'italic',
-    fontWeight: 100,
-    textAlign: 'center'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  input: {
-    alignSelf: 'stretch',
-    border: '1px solid #ccc',
-    padding: '10px 15px',
-    margin: '30px 0'
-  },
-  button: {
-    alignSelf: 'flex-end',
-    alignContent: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
-
-  },
-  btnIcon: {
-    alignSelf: 'center',
-    marginRight: 5
   }
 });
 
@@ -113,7 +112,7 @@ export const AppViewBase = (): JSX.Element => {
               <img className={classes.logoImg} src="/img/arkhamjs-logo.png" />
             </a>
           </div>
-          <div className={classes.helloTxt}>{StringService.uppercaseWords(content)}</div>
+          <div className={classes.helloTxt}>{uppercaseWords(content)}</div>
           <div className={classes.form}>
             <input className={classes.input} ref={inputRef} type="text" name="test" />
             <button className={`btn btn-primary ${classes.button}`} onClick={onChange}>

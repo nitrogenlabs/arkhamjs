@@ -34,6 +34,7 @@
     "compile": "NODE_ENV=production tsc && webpack",
     "development": "NODE_ENV=development webpack -w",
     "lint": "eslint ./src --ext .ts,.tsx",
+    "pretest": "yarn lint",
     "start": "yarn development",
     "test": "",
     "update": "lex update -i"

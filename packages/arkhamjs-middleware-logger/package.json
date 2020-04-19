@@ -31,7 +31,6 @@
     "build": "lex compile -r",
     "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "prepublishOnly": "yarn test && yarn build",
     "pretest": "yarn lint",
     "test": "lex test",
     "update": "lex update -i"
@@ -45,7 +44,7 @@
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.0",
     "eslint": "^6.8.0",
-    "eslint-config-styleguidejs": "^1.2.0",
+    "eslint-config-styleguidejs": "^1.2.2",
     "lodash": "^4.17.15",
     "typescript": "^3.8.3"
   },

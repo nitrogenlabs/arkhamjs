@@ -33,7 +33,7 @@
     "clean": "lex clean",
     "dev": "lex dev",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "prepublishOnly": "yarn test",
+    "pretest": "yarn lint",
     "prod": "yarn test && yarn build",
     "start": "lex dev -o",
     "test": "lex test",
@@ -58,7 +58,7 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "eslint": "^6.8.0",
-    "eslint-config-styleguidejs": "^1.2.0",
+    "eslint-config-styleguidejs": "^1.2.2",
     "react-test-renderer": "^16.13.1",
     "typescript": "^3.8.3"
   },

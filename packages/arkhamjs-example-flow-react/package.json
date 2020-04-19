@@ -33,7 +33,7 @@
     "clean": "lex clean",
     "dev": "lex dev",
     "lint": "eslint ./src",
-    "prepublishOnly": "yarn lint && yarn test",
+    "pretest": "yarn lint",
     "prod": "yarn lint && yarn test && yarn build",
     "start": "lex dev -o",
     "test": "lex test",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-styleguidejs": "^1.2.0",
+    "eslint-config-styleguidejs": "^1.2.2",
     "react-test-renderer": "^16.13.1"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"

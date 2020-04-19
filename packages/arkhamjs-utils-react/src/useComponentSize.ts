@@ -2,7 +2,7 @@ import {useCallback, useLayoutEffect, useState} from 'react';
 
 export const getComponentSize = (element) => {
   if(!element) {
-    return {width: undefined, height: undefined};
+    return {height: undefined, width: undefined};
   }
 
   const {offsetHeight: height, offsetWidth: width} = element;
