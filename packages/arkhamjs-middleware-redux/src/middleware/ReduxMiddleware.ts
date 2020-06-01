@@ -19,9 +19,9 @@ export class ReduxMiddleware {
 
   postDispatch(action): Promise<FluxAction> {
     // ... Alter action if needed
-    const {__ARKHAMJS_DISPATCH: isArkhamJS} = action;
+    const {__ARKHAMJS_DISPATCH: isArkhamJs} = action;
 
-    if(!isArkhamJS) {
+    if(!isArkhamJs) {
       action.__ARKHAMJS_DISPATCH = true;
       this.reduxStore.dispatch(action);
     }
