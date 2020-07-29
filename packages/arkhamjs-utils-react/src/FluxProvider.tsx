@@ -1,13 +1,12 @@
-import * as React from 'react';
-
-import {FluxProviderProps} from './FluxProvider.types';
-
 /**
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-export const FluxContext = React.createContext(null);
+import * as React from 'react';
 
-export const FluxProvider = ({Flux, children}: FluxProviderProps) => (
-  <FluxContext.Provider value={Flux}>{children}</FluxContext.Provider>
+import {FluxContext} from './FluxContext';
+import {FluxProviderProps} from './FluxProvider.types';
+
+export const FluxProvider = ({flux, children}: FluxProviderProps) => (
+  <FluxContext.Provider value={flux}>{children}</FluxContext.Provider>
 );

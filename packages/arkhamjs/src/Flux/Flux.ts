@@ -19,6 +19,7 @@ import {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginType, FluxStore} 
  * @type {EventEmitter}
  */
 export class FluxFramework extends EventEmitter {
+  static initFlux: boolean = false;
   isInit: boolean = false;
   // Public properties
   pluginTypes: string[] = ['preDispatch', 'postDispatch'];
@@ -37,7 +38,6 @@ export class FluxFramework extends EventEmitter {
   };
   private middleware: any = {};
   private options: FluxOptions = this.defaultOptions;
-
   /**
    * Create a new instance of Flux.  Note that the Flux object
    * is a Singleton pattern, so only one should ever exist.

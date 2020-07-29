@@ -84,9 +84,7 @@ export const AppViewBase = (): JSX.Element => {
   const [content, setContent] = useState(Flux.getState('app.content', ''));
   const inputRef = useRef();
 
-  useFlux([
-    {handler: onUpdateContent, type: AppConstants.UPDATE_CONTENT}
-  ]);
+  useFlux(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
 
   useEffect(() => {
     const onUpdate = onUpdateContent(setContent);
