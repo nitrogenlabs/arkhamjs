@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-ts-react",
-  "version": "3.18.2",
+  "version": "3.18.3",
   "publishConfig": {
     "access": "public"
   },
