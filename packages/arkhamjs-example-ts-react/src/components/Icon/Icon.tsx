@@ -28,9 +28,9 @@ const useStyles = createUseStyles({
 export const Icon = (props: IconProps): JSX.Element => {
   const {
     className = '',
+    name = 'icon',
     size: propSize = ''
   } = props;
-  const name: string = 'icon';
   const size: IconSize = propSize.toLowerCase().trim() as IconSize;
 
   // Icon sizes

@@ -1,6 +1,3 @@
-export const uppercaseWords = (str: string = ''): string =>
-  (str || '').replace(/\w\S*/g, (txt: string) => StringService.capitalize(txt));
-
 export const capitalize = (str: string = ''): string => {
   if(str.length > 1) {
     return `${str.charAt(0).toUpperCase()}${str.substr(1).toLowerCase()}`;
@@ -8,3 +5,6 @@ export const capitalize = (str: string = ''): string => {
 
   return str.toUpperCase();
 };
+
+export const uppercaseWords = (str: string = ''): string =>
+  (str || '').replace(/\w\S*/g, (txt: string) => capitalize(txt));

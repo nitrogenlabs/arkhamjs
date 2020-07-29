@@ -3,7 +3,7 @@ import './app.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import {AppView} from './views/AppView/AppView';
+import {AppView} from './views/AppView';
 
 const target = document.getElementById('app');
 

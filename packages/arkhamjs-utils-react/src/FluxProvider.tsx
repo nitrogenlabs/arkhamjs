@@ -8,5 +8,5 @@ import {FluxContext} from './FluxContext';
 import {FluxProviderProps} from './FluxProvider.types';
 
 export const FluxProvider = ({flux, children}: FluxProviderProps) => (
-  <FluxContext.Provider value={flux}>{children}</FluxContext.Provider>
+  <FluxContext.Provider value={{flux}}>{children}</FluxContext.Provider>
 );

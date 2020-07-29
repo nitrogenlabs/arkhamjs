@@ -1,17 +1,12 @@
 import {Flux} from '@nlabs/arkhamjs';
-import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
-import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {useFlux} from '@nlabs/arkhamjs-utils-react';
-import React, {useEffect, useRef, useState} from 'react';
-import {hot} from 'react-hot-loader';
+import React, {useRef, useState} from 'react';
 import {createUseStyles} from 'react-jss';
 
-import {updateContent} from '../../actions/AppActions/AppActions';
-import {Icon} from '../../components/Icon/Icon';
-import {Config} from '../../config';
-import {AppConstants} from '../../constants/AppConstants';
-import {StringService} from '../../services/StringService/StringService';
-import {app} from '../../stores/appStore/appStore';
+import {updateContent} from '../actions/AppActions/AppActions';
+import {Icon} from '../components/Icon/Icon';
+import {AppConstants} from '../constants/AppConstants';
+import {uppercaseWords} from '../services/StringService';
 
 const useStyles = createUseStyles({
   logo: {
@@ -53,49 +48,24 @@ const useStyles = createUseStyles({
   }
 });
 
-export const onChange = (inputRef): void => {
+export const onChange = (inputRef) => () => {
   if(inputRef.current) {
     const {value} = inputRef.current;
     updateContent(value);
   }
 };
 
-export const onUpdateContent = (setContent) => (): void => {
+export const onUpdateContent = (setContent) => () => {
   const content = Flux.getState('app.content', '');
   setContent(content);
 };
 
-export const AppViewBase = (): JSX.Element => {
-  // ArkhamJS Middleware
-  const env: string = Config.get('environment');
-  const logger: Logger = new Logger({
-    debugLevel: env === 'development' ? LoggerDebugLevel.DISPATCH : LoggerDebugLevel.DISABLED
-  });
-
-  // ArkhamJS Configuration
-  Flux.init({
-    middleware: [logger],
-    name: 'arkhamExampleReact',
-    storage: new BrowserStorage({type: 'session'}),
-    stores: [app]
-  });
-
+export const HomeView = ({initialContent}) => {
   // State
-  const [content, setContent] = useState(Flux.getState('app.content', ''));
+  const [content, setContent] = useState(initialContent);
   const inputRef = useRef();
 
   useFlux(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
-
-  useEffect(() => {
-    const onUpdate = onUpdateContent(setContent);
-
-    // When app initializes and gets any data from persistent storage
-    Flux.onInit(onUpdate);
-
-    return () => {
-      Flux.offInit(onUpdate);
-    };
-  });
 
   // Styles
   const classes = useStyles();
@@ -109,10 +79,10 @@ export const AppViewBase = (): JSX.Element => {
               <img className={classes.logoImg} src="/img/arkhamjs-logo.png" />
             </a>
           </div>
-          <div className={classes.helloTxt}>{StringService.uppercaseWords(content)}</div>
+          <div className={classes.helloTxt}>{uppercaseWords(content)}</div>
           <div className={classes.form}>
             <input className={classes.input} ref={inputRef} type="text" name="test" />
-            <button className={`btn btn-primary ${classes.button}`} onClick={onChange}>
+            <button className={`btn btn-primary ${classes.button}`} onClick={onChange(inputRef)}>
               <Icon name="pencil" className={classes.btnIcon} />
               UPDATE
             </button>
@@ -122,5 +92,3 @@ export const AppViewBase = (): JSX.Element => {
     </div>
   );
 };
-
-export const AppView = hot(module)(AppViewBase);

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 
-import {AppView} from './AppView';
+import {HomeView} from './HomeView';
 
-describe('AppView', () => {
+describe('HomeView', () => {
   let rendered;
 
   beforeAll(() => {
     // Render
-    rendered = renderer.create(<AppView />);
+    rendered = renderer.create(<HomeView initialContent="" />);
   });
 
   it('should render', () => expect(rendered).toBeDefined());
