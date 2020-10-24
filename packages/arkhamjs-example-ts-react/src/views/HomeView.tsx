@@ -1,5 +1,5 @@
-import {useFluxDispatch} from '@nlabs/arkhamjs-utils-react';
-import React, {useRef, useState} from 'react';
+import {useFluxListener} from '@nlabs/arkhamjs-utils-react';
+import {useRef, useState} from 'react';
 import {createUseStyles} from 'react-jss';
 
 import {updateContent} from '../actions/AppActions/AppActions';
@@ -63,7 +63,7 @@ export const HomeView = ({initialContent}) => {
   const [content, setContent] = useState(initialContent);
   const inputRef = useRef();
 
-  useFluxDispatch(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
+  useFluxListener(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
 
   // Styles
   const classes = useStyles();

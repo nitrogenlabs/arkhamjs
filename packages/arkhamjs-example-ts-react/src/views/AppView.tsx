@@ -2,7 +2,7 @@ import {Flux} from '@nlabs/arkhamjs';
 import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {FluxProvider} from '@nlabs/arkhamjs-utils-react';
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {hot} from 'react-hot-loader';
 
 import {Config} from '../config';

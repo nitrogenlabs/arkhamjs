@@ -6,6 +6,7 @@ import {FluxContext} from './FluxContext';
 import {FluxProvider} from './FluxProvider';
 import {useComponentSize} from './useComponentSize';
 import {useFluxDispatch} from './useFluxDispatch';
+import {useFluxListener} from './useFluxListener';
 import {useFluxState} from './useFluxState';
 import {useRefSize} from './useRefSize';
 import {useState} from './useState';
@@ -19,6 +20,7 @@ export {
   FluxProvider,
   useComponentSize,
   useFluxDispatch,
+  useFluxListener,
   useFluxState,
   useRefSize,
   useState,

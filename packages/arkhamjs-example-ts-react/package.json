@@ -58,7 +58,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "eslint": "^7.12.0",
-    "eslint-config-styleguidejs": "^1.4.0",
+    "eslint-config-styleguidejs": "^1.5.0",
     "react-test-renderer": "^17.0.1",
     "typescript": "^4.0.3"
   },

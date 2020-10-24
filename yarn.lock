@@ -2667,10 +2667,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-styleguidejs@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-styleguidejs/-/eslint-config-styleguidejs-1.4.0.tgz#f2cd6d4f386d3ec52cc6fccecc683f635e5242f4"
-  integrity sha512-yPsuOiS2KRTfUDDUJPDp9QBFgbM7Vh/wvXFb0QCW1KAKqxv52zSrD7Khzl/uL5Dc1VItiBdoxZdGYrv5F39pSw==
+eslint-config-styleguidejs@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-styleguidejs/-/eslint-config-styleguidejs-1.5.0.tgz#01390c737f13c624402628b2f382cd67f61bebab"
+  integrity sha512-mRa3AAT7hpY2pjtSt8XN9kheRptK5gQWePrb58/RHiPNWyoprR9hKVJNcpddRkFrnlJM08sM0ILULNjc59GrEg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.5.0"
     "@typescript-eslint/parser" "^4.5.0"

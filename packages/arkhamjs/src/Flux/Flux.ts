@@ -161,7 +161,7 @@ export class FluxFramework extends EventEmitter {
     let clonedAction: FluxAction = cloneDeep(action);
 
     // Log duration of dispatch
-    const startTime: number = +(new Date());
+    const startTime: number = Date.now();
 
     // Get stack
     let stack = [];
