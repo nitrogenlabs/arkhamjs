@@ -6,7 +6,7 @@ import {useContext, useEffect} from 'react';
 
 import {FluxContext} from './FluxContext';
 
-export const useFlux = (type: string, handler: (data?: any) => any) => {
+export const useFluxDispatch = (type: string, handler: (data?: any) => any) => {
   const {flux} = useContext(FluxContext);
 
   useEffect(() => {

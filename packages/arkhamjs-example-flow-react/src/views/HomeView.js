@@ -1,5 +1,4 @@
-import {Flux} from '@nlabs/arkhamjs';
-import {useFlux} from '@nlabs/arkhamjs-utils-react';
+import {useFluxDispatch} from '@nlabs/arkhamjs-utils-react';
 import React, {useRef, useState} from 'react';
 import {createUseStyles} from 'react-jss';
 
@@ -55,8 +54,7 @@ export const onChange = (inputRef) => () => {
   }
 };
 
-export const onUpdateContent = (setContent) => (): void => {
-  const content = Flux.getState('app.content', '');
+export const onUpdateContent = (setContent) => ({content}): void => {
   setContent(content);
 };
 
@@ -65,7 +63,7 @@ export const HomeView = ({initialContent}): JSX.Element => {
   const [content, setContent] = useState(initialContent);
   const inputRef = useRef();
 
-  useFlux(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
+  useFluxDispatch(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
 
   // Styles
   const classes = useStyles();
