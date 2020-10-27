@@ -8,7 +8,6 @@ import {FluxContext} from './FluxContext';
 
 export const useFluxListener = (type: string, handler: (data?: any) => any) => {
   const {flux} = useContext(FluxContext);
-  flux.dispatch(type, handler);
 
   useEffect(() => {
     flux.on(type, handler);

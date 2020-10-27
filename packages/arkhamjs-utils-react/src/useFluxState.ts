@@ -6,7 +6,7 @@ import {useContext} from 'react';
 
 import {FluxContext} from './FluxContext';
 
-export const useFluxState = (key: string | string[], defaultValue: any) => {
+export const useFluxState = (key: string | string[], defaultValue?: any): any => {
   const {flux} = useContext(FluxContext);
-  flux.getState(key, defaultValue);
+  return flux.getState(key, defaultValue);
 };
