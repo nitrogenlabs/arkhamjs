@@ -54,13 +54,13 @@
   "devDependencies": {
     "@types/history": "^4.7.8",
     "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.2",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
-    "eslint": "^7.12.0",
-    "eslint-config-styleguidejs": "^1.5.0",
+    "@types/node": "^14.14.7",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "eslint": "^7.13.0",
+    "eslint-config-styleguidejs": "^1.5.1",
     "react-test-renderer": "^17.0.1",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
