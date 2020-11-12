@@ -38,9 +38,9 @@
     "update": "lex update -i"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.5.0",
-    "@react-native-community/async-storage": "^1.2.2",
-    "react": ">=16"
+    "@nlabs/arkhamjs": "^3.20.0",
+    "@react-native-community/async-storage": "^1.12.1",
+    "react": ">=17"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.20.2",

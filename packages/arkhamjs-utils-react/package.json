@@ -63,8 +63,8 @@
     "typescript": "^4.0.5"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.11.0",
-    "react": "^16.8.6"
+    "@nlabs/arkhamjs": "^3.20.0",
+    "react": "^17.0.0"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
