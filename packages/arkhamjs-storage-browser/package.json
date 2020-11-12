@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-browser",
-  "version": "3.20.2",
+  "version": "3.20.3",
   "publishConfig": {
     "access": "public"
   },
