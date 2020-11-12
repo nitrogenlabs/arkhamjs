@@ -44,7 +44,7 @@
     "@nlabs/arkhamjs-storage-browser": "^3.11.8",
     "@nlabs/arkhamjs-views-react": "^1.2.2",
     "history": "^4.7.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.20",
     "rc-tabs": "^9.4.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

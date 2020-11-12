@@ -37,7 +37,7 @@
     "update": "lex update -i"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.20.0"
+    "@nlabs/arkhamjs": "^3.20.3"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.20.2",

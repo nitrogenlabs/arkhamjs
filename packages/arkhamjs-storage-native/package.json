@@ -38,7 +38,7 @@
     "update": "lex update -i"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.20.0",
+    "@nlabs/arkhamjs": "^3.20.3",
     "@react-native-community/async-storage": "^1.12.1",
     "react": ">=17"
   },
@@ -47,7 +47,7 @@
     "@react-native-community/async-storage": "^1.12.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
-    "@types/react-native": "^0.63.33",
+    "@types/react-native": "^0.63.34",
     "eslint": "^7.13.0",
     "eslint-config-styleguidejs": "^1.5.1",
     "lodash": "^4.17.20",
