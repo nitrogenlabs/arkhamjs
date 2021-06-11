@@ -44,12 +44,12 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.20.5",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.31",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
     "@types/node-persist": "^3.1.1",
-    "eslint": "^7.20.0",
+    "eslint": "^7.28.0",
     "eslint-config-styleguidejs": "^1.5.3",
-    "typescript": "^4.2.2"
+    "typescript": "^4.3.2"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
