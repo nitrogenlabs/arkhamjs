@@ -8,6 +8,7 @@ import {useComponentSize} from './useComponentSize';
 import {useFluxDispatch} from './useFluxDispatch';
 import {useFluxListener} from './useFluxListener';
 import {useFluxState} from './useFluxState';
+import {useFluxValue} from './useFluxValue';
 import {useRefSize} from './useRefSize';
 import {useState} from './useState';
 import {useWindowSize} from './useWindowSize';
@@ -22,6 +23,7 @@ export {
   useFluxDispatch,
   useFluxListener,
   useFluxState,
+  useFluxValue,
   useRefSize,
   useState,
   useWindowSize

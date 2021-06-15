@@ -247,6 +247,7 @@ export class FluxFramework extends EventEmitter {
 
     if(!silent) {
       this.emit(type, clonedAction);
+      this.emit('arkhamjs', this.state);
     }
 
     return Promise.resolve(clonedAction);

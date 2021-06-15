@@ -6,8 +6,9 @@
   },
   "description": "Javascript Flux Library",
   "license": "MIT",
-  "main": "./lib/index.js",
-  "module": "./lib/index.js",
+  "main": "./index.js",
+  "module": "./index.js",
+  "browser": "./index.js",
   "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",

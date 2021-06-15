@@ -7,4 +7,5 @@ import {FluxFramework} from '@nlabs/arkhamjs';
 export interface FluxProviderProps {
   children?: any;
   flux: FluxFramework;
+  state?: any;
 }

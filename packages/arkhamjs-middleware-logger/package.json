@@ -6,7 +6,9 @@
   },
   "description": "Add console logging for ArkhamJS",
   "license": "MIT",
-  "main": "index.js",
+  "main": "./index.js",
+  "module": "./index.js",
+  "browser": "./index.js",
   "types": "./lib/index.d.ts",
   "keywords": [
     "arkhamjs",
