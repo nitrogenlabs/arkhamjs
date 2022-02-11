@@ -6,9 +6,9 @@
   },
   "description": "Add console logging for ArkhamJS",
   "license": "MIT",
-  "main": "./index.js",
-  "module": "./index.js",
-  "browser": "./index.js",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "browser": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "keywords": [
     "arkhamjs",
@@ -43,12 +43,12 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.22.0",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.2",
-    "eslint": "^7.28.0",
-    "eslint-config-styleguidejs": "^1.5.3",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.17",
+    "eslint": "^7.32.0",
+    "eslint-config-styleguidejs": "^1.5.4",
     "lodash": "^4.17.21",
-    "typescript": "^4.3.2"
+    "typescript": "^4.5.5"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

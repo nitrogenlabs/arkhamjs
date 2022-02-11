@@ -21,7 +21,9 @@ export const FluxProvider = ({children, flux}: FluxProviderProps) => {
     };
     flux.addListener('arkhamjs', updateState);
 
-    return () => flux.removeListener('arkhamjs', updateState);
+    return () => {
+      flux.removeListener('arkhamjs', updateState);
+    };
   }, []);
 
   return (

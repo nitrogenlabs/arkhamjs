@@ -6,9 +6,9 @@
   },
   "description": "Javascript Flux Library",
   "license": "MIT",
-  "main": "./index.js",
-  "module": "./index.js",
-  "browser": "./index.js",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "browser": "./lib/index.js",
   "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://arkhamjs.io",
   "bugs": {
-    "url": "nitrogenlabs/arkhamjs/issues"
+    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile -r",
@@ -41,19 +41,18 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.5",
     "error-stack-parser": "^2.0.6",
     "events": "^3.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/events": "^3.0.0",
-    "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.14.170",
+    "@types/jest": "^27.4.0",
+    "@types/lodash": "^4.14.178",
     "@types/node": "^15.12.2",
-    "eslint": "^7.28.0",
-    "eslint-config-styleguidejs": "^1.5.3",
-    "typescript": "^4.3.2"
+    "eslint": "^7.32.0",
+    "eslint-config-styleguidejs": "^1.5.4",
+    "typescript": "^4.5.5"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
