@@ -41,7 +41,7 @@
     "update": "lex update -i"
   },
   "dependencies": {
-    "error-stack-parser": "^2.0.6",
+    "error-stack-parser": "^2.0.7",
     "events": "^3.3.0",
     "lodash": "^4.17.21"
   },
@@ -49,9 +49,9 @@
     "@types/events": "^3.0.0",
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^15.12.2",
+    "@types/node": "^17.0.18",
     "eslint": "^7.32.0",
-    "eslint-config-styleguidejs": "^1.5.4",
+    "eslint-config-styleguidejs": "^1.5.5",
     "typescript": "^4.5.5"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"

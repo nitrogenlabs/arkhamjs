@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "eslint-config-styleguidejs": "^1.5.4",
+    "eslint-config-styleguidejs": "^1.5.5",
     "react-test-renderer": "^17.0.2"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
