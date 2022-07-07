@@ -6,9 +6,9 @@
   },
   "description": "Javascript Flux Library",
   "license": "MIT",
-  "main": "./lib/index.js",
-  "module": "./lib/index.js",
-  "browser": "./lib/index.js",
+  "main": "./index.js",
+  "module": "./index.js",
+  "browser": "./index.js",
   "types": "./lib/index.d.js",
   "keywords": [
     "arkhamjs",
@@ -47,11 +47,11 @@
   },
   "devDependencies": {
     "@types/events": "^3.0.0",
-    "@types/jest": "^27.4.0",
+    "@types/jest": "^28.1.4",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^17.0.18",
-    "eslint": "^7.32.0",
-    "eslint-config-styleguidejs": "^1.5.5",
+    "@types/node": "^18.0.3",
+    "eslint": "^8.19.0",
+    "eslint-config-styleguidejs": "^2.1.2",
     "typescript": "^4.5.5"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"

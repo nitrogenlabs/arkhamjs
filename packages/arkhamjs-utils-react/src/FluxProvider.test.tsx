@@ -3,7 +3,6 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {Flux} from '@nlabs/arkhamjs';
-import * as React from 'react';
 
 import {FluxProvider} from './FluxProvider';
 

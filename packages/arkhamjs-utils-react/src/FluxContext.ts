@@ -1,3 +1,3 @@
-import * as React from 'react';
+import {createContext} from 'react';
 
-export const FluxContext = React.createContext(null);
+export const FluxContext = createContext(null);

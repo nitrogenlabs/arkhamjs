@@ -7,13 +7,13 @@
     "transpiler"
   ],
   "css.validate": false,
-  "editor.autoClosingBrackets": false,
+  "editor.autoClosingBrackets": "never",
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
   "editor.rulers": [
     120
   ],
-  "editor.tabCompletion": true,
+  "editor.tabCompletion": "onlySnippets",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
   "editor.wordWrapColumn": 120,
@@ -73,5 +73,7 @@
   "tslint.configFile": "./tslint.json",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "editor.autoClosingQuotes": "never",
+  "editor.autoSurround": "never"
 }

@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import isEqual from 'lodash/isEqual';
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import {FluxContext} from './FluxContext';
 import {FluxProviderProps} from './FluxProvider.types';
