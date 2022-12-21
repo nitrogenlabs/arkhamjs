@@ -1,1 +1,0 @@
-Any SVG icons to be imported would be placed in the icons directory. They will be consolidated into one file, icons.svg.
