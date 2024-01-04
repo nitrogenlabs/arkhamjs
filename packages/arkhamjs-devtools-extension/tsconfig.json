@@ -22,11 +22,7 @@
     "outDir": "./dist",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES5",
-    "types": [
-      "chrome",
-      "node"
-    ]
+    "target": "ES5"
   },
   "include": [
     "./src/**/*"

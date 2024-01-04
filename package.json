@@ -1,16 +1,18 @@
 {
-  "private": true,
-  "license": "MIT",
+  "name": "arkhamjs",
   "scripts": {
-    "build": "lerna run build",
-    "clean": "lerna run clean && lex clean",
-    "lint": "lerna run lint",
-    "publishAll": "yarn test && yarn build && lerna publish",
-    "test": "lerna run test",
-    "update": "yarn upgradeInteractive --latest"
+    "build": "npm run workspaces run build",
+    "lint": "npm run workspaces run lint",
+    "clean": "npm run workspaces run clean && npm run clean:root",
+    "clean:root": "rm -rf *.log node_modules *.lock package-lock.json",
+    "publish:major": "npm workspaces run publish:major && npm run publish:tags",
+    "publish:minor": "npm workspaces run publish:minor && npm run publish:tags",
+    "publish:patch": "npm workspaces run publish:patch && npm run publish:tags",
+    "publish:tags": "git push --tags && git push origin HEAD",
+    "test": "jest"
   },
   "devDependencies": {
-    "lerna": "^6.1.0"
+    "npm-check-updates": "^16.14.12"
   },
   "workspaces": [
     "packages/arkhamjs",

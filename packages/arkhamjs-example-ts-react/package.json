@@ -44,22 +44,22 @@
     "@nlabs/arkhamjs-middleware-logger": "^3.25.0",
     "@nlabs/arkhamjs-storage-browser": "^3.25.0",
     "@nlabs/arkhamjs-utils-react": "^3.25.0",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-loader": "^4.13.1",
-    "react-jss": "^10.9.2"
+    "react-jss": "^10.10.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.2.4",
-    "@types/node": "^18.11.17",
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.9",
-    "eslint": "^8.30.0",
-    "eslint-config-styleguidejs": "^3.1.0",
+    "@types/jest": "^29.5.4",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "eslint": "^8.49.0",
+    "eslint-config-styleguidejs": "^3.2.1",
     "react-test-renderer": "^18.2.0",
-    "typescript": "^4.9.4"
+    "typescript": "^5.2.2"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

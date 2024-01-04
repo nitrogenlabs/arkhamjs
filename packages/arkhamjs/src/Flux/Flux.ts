@@ -113,7 +113,7 @@ export class FluxFramework extends EventEmitter {
 
     const {name, storage} = this.options;
 
-    if(storage) {
+    if(storage?.setStorageData) {
       return storage.setStorageData(name, this.state);
     }
 
@@ -219,7 +219,7 @@ export class FluxFramework extends EventEmitter {
     // Save cache in storage
     const {storage} = this.options;
 
-    if(storage) {
+    if(storage && this.updateStorage) {
       try {
         await this.updateStorage();
       } catch(error) {}
@@ -406,7 +406,7 @@ export class FluxFramework extends EventEmitter {
     // Save cache in session storage
     const {name, storage} = this.options;
 
-    if(storage) {
+    if(storage?.setStorageData) {
       try {
         await storage.setStorageData(name, this.state);
       } catch(error) {
@@ -474,7 +474,7 @@ export class FluxFramework extends EventEmitter {
     // Update persistent cache
     const {storage} = this.options;
 
-    if(storage) {
+    if(storage && this.updateStorage) {
       return this.updateStorage();
     }
 

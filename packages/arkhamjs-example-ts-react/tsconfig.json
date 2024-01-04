@@ -22,10 +22,7 @@
     "outDir": "lib",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES5",
-    "types": [
-      "node"
-    ]
+    "target": "ES5"
   },
   "include": [
     "./src/**/*"

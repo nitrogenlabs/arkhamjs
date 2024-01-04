@@ -1,18 +1,10 @@
 {
-  "cSpell.words": [
-    "arkham",
-    "arkhamjs",
-    "nitrogenlabs",
-    "nlabs",
-    "transpiler"
-  ],
+  "cSpell.words": ["arkham", "arkhamjs", "nitrogenlabs", "nlabs", "transpiler"],
   "css.validate": false,
   "editor.autoClosingBrackets": "never",
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
-  "editor.rulers": [
-    120
-  ],
+  "editor.rulers": [120],
   "editor.tabCompletion": "onlySnippets",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
@@ -72,8 +64,9 @@
   "tslint.autoFixOnSave": true,
   "tslint.configFile": "./tslint.json",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.autoClosingQuotes": "never",
-  "editor.autoSurround": "never"
+  "editor.autoSurround": "never",
+  "eslint.workingDirectories": ["./node_modules/@nlabs/lex/"]
 }
