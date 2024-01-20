@@ -2,87 +2,28 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import AsyncStorage from '@react-native-community/async-storage';
-
 import {NativeStorage} from './NativeStorage';
 
 describe('NativeStorage', () => {
-  const asyncUtil = require('@react-native-community/async-storage');
-  let asyncStorage;
-  let cache = {};
+  it('should set async data', async () => {
+    const hasExistingData = await NativeStorage.getAsyncData('test');
+    expect(hasExistingData).toBe(undefined);
 
-  beforeAll(() => {
-    asyncStorage = asyncUtil.default;
-    asyncUtil.default = {
-      clear: () => new Promise((resolve) => resolve(cache = {})),
-      getAllKeys: () => new Promise((resolve) => resolve(Object.keys(cache))),
-      getItem: (key) => new Promise((resolve) => (cache.hasOwnProperty(key)
-        ? resolve(cache[key])
-        : resolve(null))),
-      removeItem: (key) => new Promise((resolve, reject) => (cache.hasOwnProperty(key)
-        ? resolve(delete cache[key])
-        : reject('No such key!'))),
-      setItem: (key, value) => new Promise((resolve, reject) => ((typeof key !== 'string' || typeof value !== 'string')
-        ? reject(new Error('key and value must be string'))
-        : resolve(cache[key] = value)))
-    };
+    const result = await NativeStorage.setAsyncData('test', 'hello world');
+    expect(result).toBe(true);
+
+    const hasNewData = await NativeStorage.getAsyncData('test');
+    expect(hasNewData).toBe('hello world');
   });
 
-  afterEach(() => {
-    asyncUtil.default = asyncStorage;
-  });
+  it('should delete async data', async () => {
+    const hasExistingData = await NativeStorage.getAsyncData('test');
+    expect(hasExistingData).toBe(undefined);
 
-  describe('.delAsyncData', () => {
-    let storageSpy;
+    const result = await NativeStorage.delAsyncData('test');
+    expect(result).toBe(true);
 
-    beforeAll(() => {
-      // Spy
-      storageSpy = jest.spyOn(AsyncStorage, 'removeItem');
-    });
-
-    afterAll(() => {
-      storageSpy.mockRestore();
-    });
-
-    it('should delete async data', async () => {
-      await NativeStorage.delAsyncData('test');
-      expect(storageSpy.mock.calls.length).toBe(1);
-    });
-  });
-
-  describe('.getAsyncData', () => {
-    let storageSpy;
-
-    beforeAll(() => {
-      // Spy
-      storageSpy = jest.spyOn(AsyncStorage, 'getItem');
-    });
-
-    afterAll(() => {
-      storageSpy.mockRestore();
-    });
-
-    it('should delete async data', async () => {
-      await NativeStorage.getAsyncData('test');
-      expect(storageSpy.mock.calls.length).toBe(1);
-    });
-  });
-
-  describe('.setAsyncData', () => {
-    let storageSpy;
-
-    beforeAll(() => {
-      // Spy
-      storageSpy = jest.spyOn(AsyncStorage, 'setItem');
-    });
-
-    afterAll(() => {
-      storageSpy.mockRestore();
-    });
-
-    it('should delete async data', async () => {
-      await NativeStorage.setAsyncData('test', 'hello world');
-      expect(storageSpy.mock.calls.length).toBe(1);
-    });
+    const hasNewData = await NativeStorage.getAsyncData('test');
+    expect(hasNewData).toBe(undefined);
   });
 });

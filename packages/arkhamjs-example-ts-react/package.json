@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-ts-react",
-  "version": "3.25.0",
+  "version": "3.26.0",
   "publishConfig": {
     "access": "public"
   },
@@ -29,37 +29,40 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "lex build -r",
+    "build": "lex build --remove",
     "clean": "lex clean",
     "dev": "lex dev",
     "lint": "eslint ./src --ext .ts,.tsx",
+    "prepublishOnly": "npm run build",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
     "pretest": "yarn lint",
-    "prod": "yarn test && yarn build",
-    "start": "lex dev -o",
+    "prod": "npm run test && npm run build",
+    "start": "lex dev --open",
     "test": "lex test",
-    "update": "lex update -i"
+    "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/arkhamjs": "^3.25.0",
-    "@nlabs/arkhamjs-middleware-logger": "^3.25.0",
-    "@nlabs/arkhamjs-storage-browser": "^3.25.0",
-    "@nlabs/arkhamjs-utils-react": "^3.25.0",
-    "bootstrap": "^5.3.1",
+    "@nlabs/arkhamjs": "^3.26.2",
+    "@nlabs/arkhamjs-middleware-logger": "^3.26.2",
+    "@nlabs/arkhamjs-storage-browser": "^3.26.2",
+    "@nlabs/arkhamjs-utils-react": "^3.26.2",
+    "bootstrap": "^5.3.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hot-loader": "^4.13.1",
     "react-jss": "^10.10.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.4",
-    "@types/node": "^20.6.0",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "eslint": "^8.49.0",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "eslint": "^8.56.0",
     "eslint-config-styleguidejs": "^3.2.1",
     "react-test-renderer": "^18.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

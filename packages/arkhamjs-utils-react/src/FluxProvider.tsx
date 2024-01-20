@@ -3,12 +3,12 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import isEqual from 'lodash/isEqual';
-import {useEffect, useRef, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 
 import {FluxContext} from './FluxContext';
 import {FluxProviderProps} from './FluxProvider.types';
 
-export const FluxProvider = ({children, flux}: FluxProviderProps) => {
+export const FluxProvider: FC<FluxProviderProps> = ({children, flux}) => {
   const [state, setState] = useState(flux.getState());
   const ref = useRef(state);
 
@@ -26,7 +26,5 @@ export const FluxProvider = ({children, flux}: FluxProviderProps) => {
     };
   }, []);
 
-  return (
-    <FluxContext.Provider value={{flux, state}}>{children}</FluxContext.Provider>
-  );
+  return <FluxContext.Provider value={{flux, state}}>{children}</FluxContext.Provider>;
 };

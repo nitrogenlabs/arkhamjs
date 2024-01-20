@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-node",
-  "version": "3.25.0",
+  "version": "3.26.0",
   "publishConfig": {
     "access": "public"
   },
@@ -31,12 +31,16 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "lex compile -r",
+    "build": "lex compile --remove",
     "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
+    "prepublishOnly": "npm run build",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
     "pretest": "yarn lint",
-    "test": "lex test -s ./jest.setup.js",
-    "update": "lex update -i"
+    "test": "lex test --setup ./jest.setup.js",
+    "update": "lex update --interactive"
   },
   "dependencies": {
     "node-persist": "^3.1.3"

@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-browser",
-  "version": "3.25.0",
+  "version": "3.26.0",
   "publishConfig": {
     "access": "public"
   },
@@ -31,23 +31,28 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "lex compile -r",
+    "build": "lex compile --remove",
+    "clean": "lex clean",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "pretest": "yarn lint",
+    "prepublishOnly": "npm run build",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
+    "pretest": "npm run lint",
     "reset": "lex clean",
     "test": "lex test",
-    "update": "lex update -i"
+    "update": "lex update --interactive"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.23"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.25.0",
-    "@types/jest": "^29.5.4",
-    "@types/node": "^20.6.0",
-    "eslint": "^8.49.0",
+    "@nlabs/arkhamjs": "^3.26.2",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.5",
+    "eslint": "^8.56.0",
     "eslint-config-styleguidejs": "^3.2.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

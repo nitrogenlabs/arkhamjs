@@ -17,12 +17,11 @@
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noStrictGenericChecks": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES5",
+    "target": "ES2018",
     "typeRoots": [
       "node_modules/@types",
       "node_modules/json-d-ts"

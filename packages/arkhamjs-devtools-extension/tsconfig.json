@@ -17,12 +17,11 @@
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noStrictGenericChecks": true,
     "noUnusedLocals": true,
     "outDir": "./dist",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES5"
+    "target": "ES2018"
   },
   "include": [
     "./src/**/*"

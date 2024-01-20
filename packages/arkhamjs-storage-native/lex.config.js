@@ -1,5 +1,5 @@
 module.exports = {
   outputPath: 'lib',
-  targetEnvironment: 'node',
+  preset: 'react-native',
   useTypescript: true
 };

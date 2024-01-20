@@ -3,7 +3,6 @@ import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
 import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {FluxProvider} from '@nlabs/arkhamjs-utils-react';
 import {useEffect, useState} from 'react';
-import {hot} from 'react-hot-loader';
 
 import {Config} from '../config';
 import {app} from '../stores/appStore/appStore';
@@ -14,7 +13,7 @@ export const onUpdateContent = (setContent) => (): void => {
   setContent(content);
 };
 
-export const AppViewBase = (): JSX.Element => {
+export const AppView = (): JSX.Element => {
   // ArkhamJS Middleware
   const env: string = Config.get('environment');
   const logger: Logger = new Logger({
@@ -48,5 +47,3 @@ export const AppViewBase = (): JSX.Element => {
     </FluxProvider>
   );
 };
-
-export const AppView = hot(module)(AppViewBase);

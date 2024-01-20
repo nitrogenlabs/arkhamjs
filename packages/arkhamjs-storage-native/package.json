@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-native",
-  "version": "3.25.0",
+  "version": "3.26.0",
   "publishConfig": {
     "access": "public"
   },
@@ -31,30 +31,34 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "lex compile -r",
+    "build": "lex compile --remove",
     "clean": "lex clean",
-    "deploy": "lex build -r && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
+    "deploy": "lex build --remove && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "pretest": "yarn lint",
-    "test": "lex test -s ./jest.setup.js",
-    "update": "lex update -i"
+    "prepublishOnly": "npm run build",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
+    "pretest": "npm run lint",
+    "test": "lex test",
+    "update": "lex update --interactive"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.23",
     "react": "^18.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.25.0",
-    "@types/jest": "^29.5.4",
-    "@types/node": "^20.6.0",
-    "@types/react-native": "^0.72.2",
-    "eslint": "^8.49.0",
+    "@nlabs/arkhamjs": "^3.26.2",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.5",
+    "@types/react-native": "^0.72.8",
+    "eslint": "^8.56.0",
     "eslint-config-styleguidejs": "^3.2.1",
     "lodash": "^4.17.21",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.19.3"
+    "@react-native-async-storage/async-storage": "^1.21.0"
   }
 }

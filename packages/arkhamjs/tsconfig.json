@@ -21,7 +21,7 @@
     "outDir": "lib",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES5",
+    "target": "ES2018",
   },
   "include": [
     "./src/**/*"

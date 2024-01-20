@@ -32,13 +32,16 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
-    "build": "",
+    "build": "lex compile --remove",
     "clean": "lex clean",
-    "compile": "lex compile -r",
     "lint": "eslint ./src --ext .ts,.tsx",
-    "pretest": "yarn lint",
-    "test": "",
-    "update": "lex update -i"
+    "prepublishOnly": "npm run build",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
+    "pretest": "npm run lint",
+    "test": "lex test",
+    "update": "lex update --interactive"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.23",
