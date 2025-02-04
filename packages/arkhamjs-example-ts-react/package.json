@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-example-ts-react",
-  "version": "3.26.0",
+  "version": "3.28.0",
   "publishConfig": {
     "access": "public"
   },
@@ -37,11 +37,11 @@
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "pretest": "yarn lint",
+    "pretest": "npm run lint",
     "prod": "npm run test && npm run build",
     "start": "lex dev --open",
     "test": "lex test",
-    "update": "lex update --interactive"
+    "update": "npm-check-updates --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.26.2",
@@ -50,7 +50,7 @@
     "@nlabs/arkhamjs-utils-react": "^3.26.2",
     "bootstrap": "^5.3.2",
     "lodash": "^4.17.21",
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "react-dom": "^18.2.0",
     "react-jss": "^10.10.0"
   },

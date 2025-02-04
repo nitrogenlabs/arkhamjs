@@ -41,7 +41,7 @@
     "publish:patch": "npm version patch && npm publish",
     "pretest": "npm run lint",
     "test": "lex test",
-    "update": "lex update --interactive"
+    "update": "npm-check-updates --interactive"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.23",

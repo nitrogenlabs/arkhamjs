@@ -15,14 +15,9 @@ ArkhamJS DevTools Middleware
 Using [npm](https://www.npmjs.com/):
 
 ```shell
-npm install --save @nlabs/arkhamjs-middleware-devtools
-```
-
-or
-
-```shell
-yarn add @nlabs/arkhamjs-middleware-devtools
+npm i --save @nlabs/arkhamjs-middleware-devtools
 ```
 
 ## Documentation
+
 For detailed [Documentation](https://arkhamjs.io) and additional options.

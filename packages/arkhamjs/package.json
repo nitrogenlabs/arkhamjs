@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.26.0",
+  "version": "3.28.1",
   "publishConfig": {
     "access": "public"
   },
@@ -42,7 +42,7 @@
     "publish:patch": "npm version patch && npm publish",
     "pretest": "npm run lint",
     "test": "lex test",
-    "update": "lex update --interactive"
+    "update": "npm-check-updates --interactive"
   },
   "dependencies": {
     "error-stack-parser": "^2.1.4",
@@ -51,12 +51,12 @@
   },
   "devDependencies": {
     "@types/events": "^3.0.3",
-    "@types/jest": "^29.5.11",
-    "@types/lodash": "^4.14.202",
-    "@types/node": "^20.11.5",
-    "eslint": "^8.56.0",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.15",
+    "@types/node": "^22.13.1",
+    "eslint": "^9.19.0",
     "eslint-config-styleguidejs": "^3.2.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.7.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

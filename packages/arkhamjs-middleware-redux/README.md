@@ -13,7 +13,7 @@ ArkhamJS Redux middleware integrates ArkhamJS into existing redux applications t
 ## Installation
 
 ```shell
-yarn add @nlabs/arkhamjs-middleware-redux
+npm i @nlabs/arkhamjs-middleware-redux
 ```
 
 ## Usage

@@ -6,5 +6,3 @@ src
 lex.config.js
 package-lock.json
 tsconfig.json
-yarn-error.log
-yarn.lock

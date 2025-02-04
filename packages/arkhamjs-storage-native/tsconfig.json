@@ -9,8 +9,6 @@
     "inlineSourceMap": true,
     "jsx": "react-jsx",
     "lib": [
-      "es6",
-      "es7",
       "esnext",
       "dom"
     ],

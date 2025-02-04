@@ -23,8 +23,8 @@ An ArkhamJS React TypeScript example. A simple base application to start you off
 - Clone the repo and install the necessary node modules:
 
 ```shell
-# Install Yarn and Lex globally
-$ npm install -g yarn @nlabs/lex
+# Install Lex globally
+$ npm install -g @nlabs/lex
 
 # Download example app package and install dependencies (may take awhile the first time)
 $ lex init exampleApp @nlabs/arkhamjs-example-ts-react -i
@@ -34,27 +34,27 @@ $ lex init exampleApp @nlabs/arkhamjs-example-ts-react -i
 
 ---------------
 
-### `yarn start` also `yarn development`
+### `npm run start` also `npm run development`
 
 Runs the webpack build system to compile scripts on the fly. Also runs a local development web server which can be found at `localhost:9000`. The port can be changed in the config.
 
-### `yarn build`
+### `npm run build`
 
 Compile your application and copy static files for a production environment.
 
-### `yarn clean`
+### `npm run clean`
 
-Clean your app directory. Removes *coverage*, *node_modules*, *npm-debug.log*, *package-lock.log*, *yarn.lock*, and *yarn-error.log*.
+Clean your app directory. Removes *coverage*, *node_modules*, *npm-debug.log*, *package-lock.log*.
 
-### `yarn lint`
+### `npm run lint`
 
 Lint your app with tslint.
 
-### `yarn test`
+### `npm run test`
 
 Runs all unit tests within the app with Jest.
 
-### `yarn production`
+### `npm run production`
 
 Run tests and then, on success, compile your application for a production environment.
 

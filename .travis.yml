@@ -1,11 +1,10 @@
 language: node_js
 node_js:
-  - "10"
+  - "20"
 install:
-  - npm install -g lerna yarn @nlabs/lex
+  - npm install
   - lex versions
-  - lerna bootstrap
 script:
-  - yarn lint
-  - yarn build
-  - yarn test
+  - npm run lint
+  - npm run build
+  - npm run test

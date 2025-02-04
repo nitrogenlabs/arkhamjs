@@ -15,14 +15,9 @@ Add console logging for ArkhamJS
 Using [npm](https://www.npmjs.com/):
 
 ```shell
-npm install --save @nlabs/arkhamjs-middleware-logger
-```
-
-or
-
-```shell
-yarn add @nlabs/arkhamjs-middleware-logger
+npm i --save @nlabs/arkhamjs-middleware-logger
 ```
 
 ## Documentation
+
 For detailed [Documentation](https://arkhamjs.io) and additional options.

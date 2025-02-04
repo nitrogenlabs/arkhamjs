@@ -8,7 +8,7 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Chat](https://img.shields.io/discord/446122412715802649.svg)](https://discord.gg/Ttgev58)
 
-### Installation
+## Installation
 
 Using [npm](https://www.npmjs.com/):
 
@@ -16,12 +16,6 @@ Using [npm](https://www.npmjs.com/):
 npm install --save @nlabs/arkhamjs-storage-native
 ```
 
-or
-
-```shell
-yarn add @nlabs/arkhamjs-storage-native
-```
-
-#### Documentation
+## Documentation
 
 For detailed [Documentation](https://arkhamjs.io) and additional options.

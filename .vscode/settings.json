@@ -16,27 +16,14 @@
   "emmet.syntaxProfiles": {
     "postcss": "css"
   },
-  "eslint.autoFixOnSave": true,
-  "eslint.packageManager": "yarn",
+  "eslint.codeActionsOnSave": true,
   "eslint.alwaysShowStatus": true,
   "eslint.enable": true,
   "eslint.validate": [
-    {
-      "language": "javascript",
-      "autoFix": true
-    },
-    {
-      "language": "javascriptreact",
-      "autoFix": true
-    },
-    {
-      "language": "typescript",
-      "autoFix": true
-    },
-    {
-      "language": "typescriptreact",
-      "autoFix": true
-    }
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
   ],
   "explorer.confirmDragAndDrop": false,
   "explorer.decorations.badges": false,
@@ -60,7 +47,7 @@
   "typescriptHero.imports.organizeOnSave": true,
   "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "tslint.enable": true,
-  "tslint.packageManager": "yarn",
+  "tslint.packageManager": "npm",
   "tslint.autoFixOnSave": true,
   "tslint.configFile": "./tslint.json",
   "editor.codeActionsOnSave": {

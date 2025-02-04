@@ -48,14 +48,6 @@ If you plan to persist data, you will need to add a storage to the framework:
 
 ## Installation
 
-Using Yarn:
-
-```shell
-yarn add @nlabs/arkhamjs
-```
-
-or
-
 Using [npm](https://www.npmjs.com/):
 
 ```shell

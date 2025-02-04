@@ -6,4 +6,3 @@ src
 jest.setup.js
 package-lock.json
 tsconfig.json
-yarn.lock

@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.26.0",
+  "version": "3.28.1",
   "publishConfig": {
     "access": "public"
   },
@@ -49,27 +49,27 @@
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "pretest": "yarn lint",
+    "pretest": "npm run lint",
     "test": "lex test",
-    "update": "lex update --interaction"
+    "update": "npm-check-updates --interactive"
   },
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.25.0",
-    "@types/jest": "^29.5.4",
-    "@types/lodash": "^4.14.198",
-    "@types/node": "^20.6.0",
-    "eslint": "^8.49.0",
+    "@nlabs/arkhamjs": "^3.26.2",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.15",
+    "@types/node": "^22.13.1",
+    "eslint": "^9.19.0",
     "eslint-config-styleguidejs": "^3.2.1",
-    "react": "^18.2.0",
-    "react-test-renderer": "^18.2.0",
-    "typescript": "^5.2.2"
+    "react": "^19.0.0",
+    "react-test-renderer": "^19.0.0",
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.23",
-    "react": "^18.0"
+    "react": "^19.0.0"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

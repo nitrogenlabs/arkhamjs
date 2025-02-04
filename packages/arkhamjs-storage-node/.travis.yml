@@ -1,10 +1,9 @@
 language: node_js
 node_js:
-  - "10"
+  - "20"
 install:
-  - npm install -g yarn @nlabs/lex
+  - npm i -g @nlabs/lex
   - lex versions
-  - yarn
 script:
-  - yarn build
-  - yarn test
+  - npm run build
+  - npm run test

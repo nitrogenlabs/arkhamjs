@@ -38,10 +38,10 @@
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "pretest": "yarn lint",
-    "start": "yarn development",
+    "pretest": "npm run lint",
+    "start": "npm run development",
     "test": "",
-    "update": "lex update -i"
+    "update": "npm-check-updates --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.11.8",
@@ -50,8 +50,8 @@
     "history": "^4.7.2",
     "lodash": "^4.17.20",
     "rc-tabs": "^9.4.1",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   },
