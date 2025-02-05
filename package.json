@@ -5,9 +5,9 @@
     "lint": "npm run lint --workspaces",
     "clean": "npm run clean --workspaces && npm run clean:root",
     "clean:root": "rm -rf *.log node_modules *.lock package-lock.json",
-    "publish:major": "npm run publish:major --workspaces && npm run publish:tags --workspaces",
-    "publish:minor": "npm run publish:minor --workspaces && npm run publish:tags --workspaces",
-    "publish:patch": "npm run publish:patch --workspaces && npm run publish:tags --workspaces",
+    "publish:major": "npm run publish:major --workspaces && npm run publish:tags",
+    "publish:minor": "npm run publish:minor --workspaces && npm run publish:tags",
+    "publish:patch": "npm run publish:patch --workspaces && npm run publish:tags",
     "publish:tags": "git push --tags && git push origin HEAD",
     "test": "jest",
     "update": "npm run update --workspaces"
