@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.28.1",
+  "version": "3.28.2",
   "publishConfig": {
     "access": "public"
   },
@@ -57,7 +57,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.26.2",
+    "@nlabs/arkhamjs": "*",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.15",
     "@types/node": "^22.13.1",
@@ -68,8 +68,8 @@
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.23",
-    "react": "^19.0.0"
+    "@nlabs/arkhamjs": "^3.26.0",
+    "react": "^18.0.0"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

@@ -44,14 +44,14 @@
     "update": "npm-check-updates --interactive"
   },
   "dependencies": {
-    "@nlabs/arkhamjs": "^3.26.2",
-    "@nlabs/arkhamjs-middleware-logger": "^3.26.2",
-    "@nlabs/arkhamjs-storage-browser": "^3.26.2",
-    "@nlabs/arkhamjs-utils-react": "^3.26.2",
+    "@nlabs/arkhamjs": "*",
+    "@nlabs/arkhamjs-middleware-logger": "*",
+    "@nlabs/arkhamjs-storage-browser": "*",
+    "@nlabs/arkhamjs-utils-react": "*",
     "bootstrap": "^5.3.2",
     "lodash": "^4.17.21",
     "react": "^19.0.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.0.0",
     "react-jss": "^10.10.0"
   },
   "devDependencies": {
@@ -61,7 +61,7 @@
     "@types/react-dom": "^18.2.18",
     "eslint": "^8.56.0",
     "eslint-config-styleguidejs": "^3.2.1",
-    "react-test-renderer": "^18.2.0",
+    "react-test-renderer": "^19.0.0",
     "typescript": "^5.3.3"
   },
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"

@@ -13,7 +13,7 @@
     "update": "npm run update --workspaces"
   },
   "devDependencies": {
-    "@nlabs/lex": "^1.46.1",
+    "@nlabs/lex": "^1.21.2",
     "npm-check-updates": "^17.1.14"
   },
   "workspaces": [

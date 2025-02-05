@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-logger",
-  "version": "3.28.1",
+  "version": "3.28.4",
   "publishConfig": {
     "access": "public"
   },
@@ -42,11 +42,11 @@
     "update": "npm-check-updates --interactive"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.23",
+    "@nlabs/arkhamjs": "*",
     "lodash": "^4.17"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "^3.26.2",
+    "@nlabs/arkhamjs": "*",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.1",
     "eslint": "^9.19.0",
