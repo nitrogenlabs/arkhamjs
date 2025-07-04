@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Add devtools to ArkhamJS app",
+  "description": "Advanced debugging and state inspection middleware for ArkhamJS applications with time-travel debugging, performance monitoring, and state snapshots",
   "license": "MIT",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
@@ -13,10 +13,13 @@
   "keywords": [
     "arkhamjs",
     "flux",
-    "immutable",
-    "middleware",
-    "nitrogenlabs",
-    "devtools"
+    "state-management",
+    "debugging",
+    "devtools",
+    "time-travel",
+    "performance-monitoring",
+    "state-snapshots",
+    "nitrogenlabs"
   ],
   "author": {
     "name": "Giraldo Rosales",
@@ -44,8 +47,7 @@
     "update": "lex update --interactive"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.23.0",
-    "redux": "^3.0.0"
+    "@nlabs/arkhamjs": "^3.23.0"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "^3.22.0",

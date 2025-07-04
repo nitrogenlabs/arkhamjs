@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArkhamJS DevTools</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #212529;
+      margin: 0;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .status.connected {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.disconnected {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status.connected .status-indicator {
+      background: #28a745;
+    }
+
+    .status.disconnected .status-indicator {
+      background: #dc3545;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #1e7e34;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .metrics {
+      margin-top: 12px;
+      padding: 12px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #e9ecef;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .metric:last-child {
+      margin-bottom: 0;
+    }
+
+    .metric-label {
+      color: #6c757d;
+    }
+
+    .metric-value {
+      font-weight: 500;
+      color: #212529;
+    }
+
+    .footer {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+      font-size: 11px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">A</div>
+    <h1 class="title">ArkhamJS DevTools</h1>
+  </div>
+
+  <div id="status" class="status disconnected">
+    <div class="status-indicator"></div>
+    <span id="status-text">Disconnected</span>
+  </div>
+
+  <div class="actions">
+    <button id="open-devtools" class="btn btn-primary">
+      Open DevTools
+      <span>→</span>
+    </button>
+
+    <button id="export-snapshot" class="btn btn-secondary">
+      Export Snapshot
+      <span>📥</span>
+    </button>
+
+    <button id="import-snapshot" class="btn btn-secondary">
+      Import Snapshot
+      <span>📤</span>
+    </button>
+
+    <button id="clear-history" class="btn btn-secondary">
+      Clear History
+      <span>🗑️</span>
+    </button>
+  </div>
+
+  <div id="metrics" class="metrics" style="display: none;">
+    <div class="metric">
+      <span class="metric-label">Actions:</span>
+      <span id="action-count" class="metric-value">0</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Avg Duration:</span>
+      <span id="avg-duration" class="metric-value">0ms</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">State Size:</span>
+      <span id="state-size" class="metric-value">0 KB</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Version 1.0.0 • <a href="#" id="docs-link">Documentation</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

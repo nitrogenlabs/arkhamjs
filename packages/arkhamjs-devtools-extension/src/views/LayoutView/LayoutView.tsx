@@ -1,28 +1,12 @@
-import {ViewBase, ViewContainer, ViewProps} from '@nlabs/arkhamjs-views-react';
-import * as React from 'react';
-import {RouteProps} from 'react-router';
+import React from 'react';
 
-import {ActionsView, InfoView, StateView} from '../../views';
-
-export interface LayoutProps extends ViewProps {
-  readonly children?: React.ReactNode;
-}
-
-export class LayoutView extends ViewBase<LayoutProps, {}> {
-  routes: RouteProps[];
-
-  constructor(props) {
-    super(props);
-    this.routes = [
-      {component: ActionsView, path: '/'},
-      {component: StateView, path: '/state'},
-      {component: InfoView, path: '/info'}
-    ];
-  }
-
-  render(): JSX.Element {
+export class LayoutView extends React.Component<React.PropsWithChildren<{}>, {}> {
+  render() {
     return (
-      <ViewContainer className="container view-layout" routes={this.routes} />
+      <div className="container view-layout">
+        {/* Render children or a default layout */}
+        {this.props.children}
+      </div>
     );
   }
 }

@@ -1,11 +1,7 @@
-import {ViewBase, ViewProps} from '@nlabs/arkhamjs-views-react';
-import * as React from 'react';
+import React from 'react';
 
-export interface ActionsViewProps extends ViewProps {
-}
-
-export class ActionsView extends ViewBase<ActionsViewProps, {}> {
-  render(): JSX.Element {
+export class ActionsView extends React.Component<{}> {
+  render() {
     return (
       <h2>Actions</h2>
     );

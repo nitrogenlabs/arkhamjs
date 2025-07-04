@@ -1,14 +1,14 @@
-import {Flux, FluxOptions} from '@nlabs/arkhamjs';
-import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
+import { Flux, FluxOptions } from '@nlabs/arkhamjs';
+import { BrowserStorage } from '@nlabs/arkhamjs-storage-browser';
 import * as React from 'react';
-import {HashRouter, Route} from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 
-import {InspectorActions} from '../../actions';
-import {TabBar} from '../../components';
-import {InspectorDispatchType} from '../../types/inspector';
-import {ActionsView} from '../ActionsView/ActionsView';
-import {InfoView} from '../InfoView/InfoView';
-import {StateView} from '../StateView/StateView';
+import { InspectorActions } from '../../actions';
+import { TabBar } from '../../components';
+import { InspectorDispatchType } from '../../types/inspector';
+import { ActionsView } from '../ActionsView/ActionsView';
+import { InfoView } from '../InfoView/InfoView';
+import { StateView } from '../StateView/StateView';
 
 export class InspectorView extends React.Component<{}, {}> {
   constructor(props) {
@@ -47,14 +47,16 @@ export class InspectorView extends React.Component<{}, {}> {
     }
   }
 
-  render(): JSX.Element {
+  render() {
     return (
       <HashRouter>
-        <Route path="/" component={TabBar}>
-          <Route path="/" component={ActionsView} />
-          <Route path="/stateTree" component={StateView} />
-          <Route path="/info" component={InfoView} />
-        </Route>
+        <Routes>
+          <Route path="/" element={<TabBar />}>
+            <Route path="/" element={<ActionsView />} />
+            <Route path="/stateTree" element={<StateView />} />
+            <Route path="/info" element={<InfoView />} />
+          </Route>
+        </Routes>
       </HashRouter>
     );
   }

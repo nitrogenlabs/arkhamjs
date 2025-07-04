@@ -3,14 +3,12 @@
   "description": "Advanced debugging and state inspection for ArkhamJS applications with time-travel debugging, performance monitoring, and state snapshots",
   "devtools_page": "devtoolsBackground.html",
   "version": "1.0.0",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "minimum_chrome_version": "88",
   "permissions": [
     "storage",
     "tabs",
-    "activeTab"
-  ],
-  "host_permissions": [
+    "activeTab",
     "<all_urls>"
   ],
   "content_scripts": [
@@ -25,7 +23,10 @@
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
   },
   "icons": {
     "16": "icons/icon16.png",
@@ -33,21 +34,12 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "action": {
+  "browser_action": {
     "default_title": "ArkhamJS DevTools",
     "default_popup": "popup.html"
   },
   "web_accessible_resources": [
-    {
-      "resources": [
-        "injected.js"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
+    "injected.js"
   ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
-  }
+  "content_security_policy": "script-src 'self'; object-src 'self'"
 }

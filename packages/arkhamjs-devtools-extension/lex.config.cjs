@@ -8,5 +8,19 @@ module.exports = {
   outputPath: 'lib',
   preset: 'web',
   remove: true,
-  useTypescript: true
+  useTypescript: true,
+  copyFiles: [
+    'manifest.json',
+    'manifest-safari.json',
+    'popup.html',
+    'welcome.html',
+    'background.js',
+    'popup.js',
+    'app.html',
+    'devtoolsBackground.html',
+    'icons/icon16.png',
+    'icons/icon32.png',
+    'icons/icon48.png',
+    'icons/icon128.png'
+  ]
 };

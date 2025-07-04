@@ -1,12 +1,10 @@
-import Tabs, {TabPane} from 'rc-tabs';
-import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
-import TabContent from 'rc-tabs/lib/TabContent';
+import Tabs from 'rc-tabs';
 import * as React from 'react';
 
-import {InspectorActions} from '../../actions';
-import {ActionsView, InfoView, StateView} from '../../views';
+import { InspectorActions } from '../../actions';
+import { ActionsView, InfoView, StateView } from '../../views';
 
-export class TabBar extends React.Component {
+export class TabBar extends React.Component<React.PropsWithChildren<{}>> {
   data;
 
   constructor(props) {
@@ -14,9 +12,9 @@ export class TabBar extends React.Component {
 
     // Set tab data
     this.data = [
-      {component: <ActionsView />, key: 'actions'},
-      {component: <StateView />, key: 'stateTree'},
-      {component: <InfoView />, key: 'appDetails'}
+      {label: 'Actions', key: 'actions', children: <ActionsView />},
+      {label: 'State', key: 'stateTree', children: <StateView />},
+      {label: 'Info', key: 'appDetails', children: <InfoView />}
     ];
 
     // Methods
@@ -28,33 +26,26 @@ export class TabBar extends React.Component {
     InspectorActions.goto(key);
   }
 
-  render(): JSX.Element {
+  render() {
     let activeKey: string = 'actions';
     const {children} = this.props;
 
     if(children) {
       this.data.forEach((dataItem) => {
         const typeProp: string = 'type';
-        if(dataItem.component.type === children[typeProp]) {
-          // for demo, better immutable
-          dataItem.component = children;
+        if(dataItem.children.type === children[typeProp]) {
+          dataItem.children = children;
           activeKey = dataItem.key;
         }
       });
     }
 
-    const tabs: TabPane[] = this.data.map(
-      (dataItem) => <TabPane key={dataItem.key} tab={dataItem.key}>{dataItem.component}</TabPane>
-    );
-
     return (
       <Tabs
         activeKey={activeKey}
         onChange={this.onSelect}
-        renderTabBar={() => <ScrollableInkTabBar />}
-        renderTabContent={() => <TabContent />}>
-        {tabs}
-      </Tabs>
+        items={this.data}
+      />
     );
   }
 }

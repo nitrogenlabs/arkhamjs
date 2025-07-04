@@ -1,11 +1,7 @@
-import {ViewBase, ViewProps} from '@nlabs/arkhamjs-views-react';
-import * as React from 'react';
+import React from 'react';
 
-export interface InfoViewProps extends ViewProps {
-}
-
-export class InfoView extends ViewBase<InfoViewProps, {}> {
-  render(): JSX.Element {
+export class InfoView extends React.Component<{}> {
+  render() {
     return (
       <h2>Info</h2>
     );
