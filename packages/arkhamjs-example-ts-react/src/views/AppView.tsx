@@ -8,12 +8,15 @@ import {Config} from '../config';
 import {app} from '../stores/appStore/appStore';
 import {HomeView} from './HomeView';
 
+import type {FC} from 'react';
+
+
 export const onUpdateContent = (setContent) => (): void => {
   const content = Flux.getState('app.content', '');
   setContent(content);
 };
 
-export const AppView = (): JSX.Element => {
+export const AppView = (): FC => {
   // ArkhamJS Middleware
   const env: string = Config.get('environment');
   const logger: Logger = new Logger({

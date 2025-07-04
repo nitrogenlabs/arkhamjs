@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.29.1",
+  "version": "3.29.6",
   "publishConfig": {
     "access": "public"
   },
@@ -58,18 +58,24 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@types/jest": "^29.5.14",
-    "@types/lodash": "^4.17.15",
-    "@types/node": "^22.13.1",
-    "eslint": "^9.19.0",
-    "eslint-config-styleguidejs": "^3.2.1",
-    "react": "^19.0.0",
-    "react-test-renderer": "^19.0.0",
-    "typescript": "^5.7.3"
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.10",
+    "react": "^19.1.0",
+    "react-test-renderer": "^19.1.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0",
-    "react": "^18.0.0 || ^19.0.0"
+    "react": "*"
   },
+  "files": [
+    "lib",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

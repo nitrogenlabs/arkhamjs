@@ -1,11 +1,36 @@
 {
-  "cSpell.words": ["arkham", "arkhamjs", "nitrogenlabs", "nlabs", "transpiler"],
+  "cSpell.words": [
+    "arkham",
+    "arkhamjs",
+    "nitrogenlabs",
+    "nlabs",
+    "transpiler"
+  ],
   "css.validate": false,
   "editor.autoClosingBrackets": "never",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "prettier.enable": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
-  "editor.rulers": [120],
-  "editor.tabCompletion": "onlySnippets",
+  "editor.rulers": [
+    120
+  ],
+  "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.wordWrap": "off",
   "editor.wordWrapColumn": 120,
@@ -16,44 +41,42 @@
   "emmet.syntaxProfiles": {
     "postcss": "css"
   },
-  "eslint.codeActionsOnSave": true,
-  "eslint.alwaysShowStatus": true,
   "eslint.enable": true,
+  "eslint.run": "onType",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
+  "eslint.workingDirectories": [
+    "."
+  ],
+  "eslint.options": {
+    "overrideConfigFile": "node_modules/@nlabs/lex/eslint.config.js"
+  },
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.experimental.useFlatConfig": true,
   "explorer.confirmDragAndDrop": false,
   "explorer.decorations.badges": false,
+  "files.autoSave": "onFocusChange",
   "files.trimTrailingWhitespace": true,
-  "flow.runOnAllFiles": true,
-  "html.format.indentInnerHtml": true,
-  "html.format.indentHandlebars": true,
-  "html.format.extraLiners": "",
+  "html.autoClosingTags": false,
   "html.format.enable": false,
-  "html.format.endWithNewline": true,
-  "javascript.format.enable": false,
+  "html.format.extraLiners": "",
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": true,
+  "html.suggest.html5": false,
   "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-  "javascript.validate.enable": false,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-  "typescriptHero.imports.insertSpaceBeforeAndAfterImportBraces": false,
-  "typescriptHero.imports.multiLineTrailingComma": false,
-  "typescriptHero.imports.multiLineWrapThreshold": 120,
-  "typescriptHero.imports.organizeOnSave": true,
-  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-  "tslint.enable": true,
-  "tslint.packageManager": "npm",
-  "tslint.autoFixOnSave": true,
-  "tslint.configFile": "./tslint.json",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "editor.autoClosingQuotes": "never",
-  "editor.autoSurround": "never",
-  "eslint.workingDirectories": ["./node_modules/@nlabs/lex/"]
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "window.zoomLevel": 0,
 }

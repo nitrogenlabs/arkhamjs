@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-logger",
-  "version": "3.28.6",
+  "version": "3.28.8",
   "publishConfig": {
     "access": "public"
   },
@@ -43,16 +43,22 @@
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "*",
-    "lodash": "^4.17"
+    "lodash": "^4.17.0"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.13.1",
-    "eslint": "^9.19.0",
-    "eslint-config-styleguidejs": "^3.2.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
     "lodash": "^4.17.21",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   },
+  "files": [
+    "lib",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

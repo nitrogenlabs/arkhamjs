@@ -59,10 +59,19 @@
     "@types/node": "^20.11.5",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.3",
-    "eslint": "^8.56.0",
-    "eslint-config-styleguidejs": "^3.2.1",
     "react-test-renderer": "^19.0.0",
     "typescript": "^5.3.3"
   },
+  "files": [
+    "src",
+    ".eslintrc",
+    ".travis.yml",
+    "lex.config.js",
+    "index.js",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "tsconfig.json"
+  ],
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

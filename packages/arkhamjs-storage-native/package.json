@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-native",
-  "version": "3.29.1",
+  "version": "3.29.3",
   "publishConfig": {
     "access": "public"
   },
@@ -45,19 +45,25 @@
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0",
-    "react": "^18.0.0 || ^19.0.0"
+    "react": "*"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.13.1",
-    "eslint": "^9.19.0",
-    "eslint-config-styleguidejs": "^3.2.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
     "lodash": "^4.17.21",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   },
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.1.1"
-  }
+  "files": [
+    "lib",
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }
