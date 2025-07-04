@@ -1,6 +1,6 @@
 # @nlabs/arkhamjs-middleware-redux
 
-ArkhamJS Redux middleware integrates ArkhamJS into existing redux applications to provide access to ArkhamJS features and/or provide a simple migration path to ArkhamJS.
+> **Redux Compatibility Layer for ArkhamJS** - Seamlessly integrate ArkhamJS into existing Redux applications or migrate from Redux to ArkhamJS with zero downtime.
 
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs-middleware-redux.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-redux)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs-middleware-redux.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-redux)
@@ -10,52 +10,43 @@ ArkhamJS Redux middleware integrates ArkhamJS into existing redux applications t
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Chat](https://img.shields.io/discord/446122412715802649.svg)](https://discord.gg/Ttgev58)
 
-## Installation
+## 🚀 Features
 
-```shell
-npm i @nlabs/arkhamjs-middleware-redux
+- **🔄 Two-Way Binding** - Bidirectional state synchronization between Redux and ArkhamJS
+- **🚀 Zero-Downtime Migration** - Migrate from Redux to ArkhamJS gradually
+- **🎯 Selective Integration** - Choose which parts of your Redux store to integrate
+- **⚡ Performance Optimized** - Efficient state synchronization without performance impact
+- **🔧 Flexible Configuration** - Multiple integration patterns for different use cases
+- **📱 Existing Redux Support** - Keep your existing Redux setup while adding ArkhamJS features
+- **🌲 Tree-shakable** - Only include what you need
+
+## 📦 Installation
+
+```bash
+npm install @nlabs/arkhamjs-middleware-redux
 ```
 
-## Usage
+## 🎯 Quick Start
 
-### `createArkhamStore`
+### **Basic Integration**
 
-Create a Redux store that creates a two-way binding with ArkhamJS.
-
-```javascript
-// Create Redux store
-const store = createArkhamStore({
-  arkhamMiddleware,
-  devTools,
-  flux,
-  reducers,
-  reduxMiddleware,
-  statePath
-});
-```
-
-A quick example on usage.
-
-```javascript
-import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
-import {Flux} from '@nlabs/arkhamjs';
-import * as React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import {App} from './components/App';
-import {reducers} from './reducers';
+```js
+import { createArkhamStore } from '@nlabs/arkhamjs-middleware-redux';
+import { Flux } from '@nlabs/arkhamjs';
+import { Provider } from 'react-redux';
+import { reducers } from './reducers';
 
 // Initialize ArkhamJS
-Flux.init({name: 'reduxTodos'});
+Flux.init({ name: 'myApp' });
 
-// Create Redux store
+// Create Redux store with ArkhamJS integration
 const store = createArkhamStore({
   flux: Flux,
   reducers,
-  statePath: 'todos'
+  statePath: 'app' // Sync Redux state to ArkhamJS at 'app' path
 });
 
-// Render root component with store
+// Use with existing Redux Provider
 render(
   <Provider store={store}>
     <App />
@@ -64,99 +55,112 @@ render(
 );
 ```
 
-#### Options
+### **Gradual Migration**
 
-- **flux** - *(Flux)* The Flux object you initialized in your app.
-- **reducers** - *(Reducer)* Redux root reducer. The reducer created by `combineReducers()`.
-- **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
-- **arkhamMiddleware** - *(any[])* (optional) ArkhamJS options. Use only if intending to initialize a new instance.
-- **devTools** - *(boolean)* (optional) Enable/disable Redux dev tools. Default: false.
-- **reduxMiddleware** - *(Middleware[])* (optional) Redux middleware. Any additional Redux middleware used in the app.
+```js
+import { arkhamMiddleware } from '@nlabs/arkhamjs-middleware-redux';
+import { applyMiddleware, createStore } from 'redux';
 
-### `ReduxMiddleware`
+// Add ArkhamJS middleware to existing Redux store
+const store = createStore(
+  reducers,
+  applyMiddleware(arkhamMiddleware('app'))
+);
+
+// Now Redux actions are automatically relayed to ArkhamJS
+// You can gradually migrate components to use ArkhamJS
+```
+
+## 🔧 API Reference
+
+### **`createArkhamStore(options)`**
+
+Create a Redux store with full ArkhamJS integration.
+
+```js
+const store = createArkhamStore({
+  flux: Flux,                    // ArkhamJS Flux instance
+  reducers,                      // Redux root reducer
+  statePath: 'app',              // State tree path for ArkhamJS
+  arkhamMiddleware: [],          // Additional ArkhamJS middleware
+  devTools: false,               // Enable Redux DevTools
+  reduxMiddleware: []            // Additional Redux middleware
+});
+```
+
+**Options:**
+
+- **`flux`** - *(Flux)* The Flux object initialized in your app
+- **`reducers`** - *(Reducer)* Redux root reducer (from `combineReducers()`)
+- **`statePath`** - *(string|string[])* State tree path where to set this branch
+- **`arkhamMiddleware`** - *(any[])* Optional ArkhamJS middleware
+- **`devTools`** - *(boolean)* Enable/disable Redux DevTools (default: false)
+- **`reduxMiddleware`** - *(Middleware[])* Additional Redux middleware
+
+### **`ReduxMiddleware(store, name)`**
 
 ArkhamJS middleware to relay dispatched actions to Redux.
 
-```javascript
-// Create ArkhamJS middleware
-const reduxMiddleware = new ReduxMiddleware(store, name);
-```
-
-A simple usage example:
-
-```javascript
-import {ReduxMiddleware} from '@nlabs/arkhamjs-middleware-redux';
-import {createStore} from 'redux';
-import {reducers} from './reducers';
+```js
+import { ReduxMiddleware } from '@nlabs/arkhamjs-middleware-redux';
 
 const store = createStore(reducers);
 const middleware = [new ReduxMiddleware(store, 'myApp')];
 
-Flux.init({middleware});
+Flux.init({ middleware });
 ```
 
-- **store** - *(Store)* Redux root store. The store created by `createStore()`.
-- **name** - *(string)* (optional) Middleware name. Should be unique if integrating with multiple Redux stores.
+**Parameters:**
 
-### `arkhamMiddleware`
+- **`store`** - *(Store)* Redux root store
+- **`name`** - *(string)* Optional middleware name (should be unique)
+
+### **`arkhamMiddleware(statePath)`**
 
 Redux middleware to relay Redux action dispatches to ArkhamJS.
 
-```javascript
-// Create Redux middleware
-const middleware = arkhamMiddleware(statePath);
+```js
+import { arkhamMiddleware } from '@nlabs/arkhamjs-middleware-redux';
+import { applyMiddleware, createStore } from 'redux';
+
+const store = createStore(
+  reducers,
+  applyMiddleware(arkhamMiddleware('myApp'))
+);
 ```
 
-A simple usage example:
+**Parameters:**
 
-```javascript
-import {arkhamMiddleware} from '@nlabs/arkhamjs-middleware-redux';
-import {applyMiddleware, createStore} from 'redux';
-import {reducers} from './reducers';
+- **`statePath`** - *(string|string[])* State tree path for ArkhamJS
 
-const store = createStore(reducers, applyMiddleware(arkhamMiddleware('myApp')));
-```
+## 🎨 Integration Patterns
 
-- **statePath** - *(string[] | string)* State tree path where to set this branch of the store's state tree.
+### **Pattern 1: Full Integration**
 
-## Additional Documentation
+Replace your Redux store entirely with ArkhamJS integration:
 
-Additional details may be found in the [ArkhamJS Documentation](https://docs.arkhamjs.io).
+```js
+import { createArkhamStore } from '@nlabs/arkhamjs-middleware-redux';
+import { Flux } from '@nlabs/arkhamjs';
+import { Logger } from '@nlabs/arkhamjs-middleware-logger';
+import { BrowserStorage } from '@nlabs/arkhamjs-storage-browser';
 
-## Redux Todo example
-
-The following is a full example using the [Todo example](https://github.com/reactjs/redux/tree/master/examples/todos) within the Redux repository. The middleware will be added using the `Flux.addMiddleware()` automatically via the `createArkhamStore()` function.
-
-```javascript
-import {Logger, LoggerDebugLevel} from '@nlabs/arkhamjs-middleware-logger';
-import {createArkhamStore} from '@nlabs/arkhamjs-middleware-redux';
-import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
-import {Flux} from '@nlabs/arkhamjs';
-import * as React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import App from './components/App';
-import rootReducer from './reducers';
-
-// Add a console logger for Arkham (optional).
-const logger = new Logger({
-  debugLevel: LoggerDebugLevel.DISPATCH
+// Initialize ArkhamJS with full features
+Flux.init({
+  name: 'myApp',
+  storage: BrowserStorage,
+  middleware: [Logger()]
 });
 
-// Initialize ArkhamJS.
-const Flux.init({
-  name: 'reduxDemo', // Optional name of application, defaults to 'arkhamjs'
-  storage: new BrowserStorage(), // Optional persistent storage cache
-  middleware: [logger] // Optional console logger
-});
-
-// Create an ArkhamJS store for Redux
+// Create integrated store
 const store = createArkhamStore({
   flux: Flux,
   reducers: rootReducer,
-  statePath: 'demo'
+  statePath: 'app',
+  devTools: true
 });
 
+// Use with existing Redux components
 render(
   <Provider store={store}>
     <App />
@@ -164,3 +168,228 @@ render(
   document.getElementById('root')
 );
 ```
+
+### **Pattern 2: Gradual Migration**
+
+Keep existing Redux setup and add ArkhamJS features:
+
+```js
+import { arkhamMiddleware } from '@nlabs/arkhamjs-middleware-redux';
+import { applyMiddleware, createStore } from 'redux';
+
+// Existing Redux setup
+const store = createStore(
+  reducers,
+  applyMiddleware(
+    // Existing middleware
+    thunk,
+    logger,
+    // Add ArkhamJS integration
+    arkhamMiddleware('app')
+  )
+);
+
+// Now you can use both Redux and ArkhamJS
+// Redux actions are automatically relayed to ArkhamJS
+// You can gradually migrate components to use ArkhamJS hooks
+```
+
+### **Pattern 3: Selective Integration**
+
+Integrate only specific parts of your Redux store:
+
+```js
+import { createArkhamStore } from '@nlabs/arkhamjs-middleware-redux';
+
+// Create separate stores for different parts
+const userStore = createArkhamStore({
+  flux: Flux,
+  reducers: userReducer,
+  statePath: 'user'
+});
+
+const cartStore = createArkhamStore({
+  flux: Flux,
+  reducers: cartReducer,
+  statePath: 'cart'
+});
+
+// Keep other parts as pure Redux
+const mainStore = createStore(otherReducers);
+```
+
+## 🔄 Migration Strategies
+
+### **Strategy 1: Side-by-Side Migration**
+
+```js
+// Keep existing Redux components
+function OldReduxComponent() {
+  const users = useSelector(state => state.users);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      {users.map(user => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+}
+
+// Create new ArkhamJS components
+function NewArkhamComponent() {
+  const users = useFluxState('user.list', []);
+  const dispatch = useFluxDispatch();
+
+  return (
+    <div>
+      {users.map(user => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+}
+
+// Both work together seamlessly
+function App() {
+  return (
+    <div>
+      <OldReduxComponent />
+      <NewArkhamComponent />
+    </div>
+  );
+}
+```
+
+### **Strategy 2: Feature-by-Feature Migration**
+
+```js
+// Start with one feature
+const userStore = createArkhamStore({
+  flux: Flux,
+  reducers: userReducer,
+  statePath: 'user'
+});
+
+// Migrate user-related components to ArkhamJS
+function UserProfile() {
+  const user = useFluxState('user.current', null);
+  return <div>Welcome, {user?.name}!</div>;
+}
+
+// Keep other features in Redux
+const mainStore = createStore(otherReducers);
+```
+
+### **Strategy 3: Complete Migration**
+
+```js
+// Migrate everything at once
+const store = createArkhamStore({
+  flux: Flux,
+  reducers: rootReducer,
+  statePath: 'app',
+  devTools: true
+});
+
+// All components can now use ArkhamJS features
+function App() {
+  return (
+    <Provider store={store}>
+      <AllComponents />
+    </Provider>
+  );
+}
+```
+
+## 🎯 Use Cases
+
+### **Adding ArkhamJS Features to Redux**
+
+```js
+import { arkhamMiddleware } from '@nlabs/arkhamjs-middleware-redux';
+import { Logger } from '@nlabs/arkhamjs-middleware-logger';
+import { BrowserStorage } from '@nlabs/arkhamjs-storage-browser';
+
+// Initialize ArkhamJS with features
+Flux.init({
+  name: 'myApp',
+  storage: BrowserStorage,
+  middleware: [Logger()]
+});
+
+// Add to existing Redux store
+const store = createStore(
+  reducers,
+  applyMiddleware(arkhamMiddleware('app'))
+);
+
+// Now you have:
+// ✅ Redux DevTools
+// ✅ ArkhamJS logging
+// ✅ State persistence
+// ✅ Event-driven architecture
+// ✅ All existing Redux functionality
+```
+
+### **Gradual Component Migration**
+
+```js
+// Phase 1: Add ArkhamJS integration
+const store = createStore(reducers, applyMiddleware(arkhamMiddleware('app')));
+
+// Phase 2: Migrate one component at a time
+function UserList() {
+  // Old Redux way
+  const users = useSelector(state => state.users);
+
+  // New ArkhamJS way
+  const users = useFluxState('app.users', []);
+
+  return <div>{/* component content */}</div>;
+}
+
+// Phase 3: Remove Redux dependencies
+// Eventually remove useSelector and useDispatch
+```
+
+### **Hybrid Architecture**
+
+```js
+// Use Redux for complex state logic
+const complexReducer = (state, action) => {
+  // Complex Redux logic
+  return newState;
+};
+
+// Use ArkhamJS for simple state and events
+Flux.dispatch({ type: 'USER_CLICKED', userId: 123 });
+
+// Both work together seamlessly
+const store = createArkhamStore({
+  flux: Flux,
+  reducers: { complex: complexReducer },
+  statePath: 'complex'
+});
+```
+
+## 🔗 Related Packages
+
+- **[@nlabs/arkhamjs](./arkhamjs/README.md)** - Core Flux framework
+- **[@nlabs/arkhamjs-middleware-logger](./arkhamjs-middleware-logger/README.md)** - Logging middleware
+- **[@nlabs/arkhamjs-storage-browser](./arkhamjs-storage-browser/README.md)** - Browser storage
+
+## 📚 Documentation
+
+For detailed documentation and examples, visit [arkhamjs.io](https://arkhamjs.io).
+
+## 🤝 Community & Support
+
+- **💬 [Discord Community](https://discord.gg/Ttgev58)** - Chat with other developers
+- **🐛 [GitHub Issues](https://github.com/nitrogenlabs/arkhamjs/issues)** - Report bugs and request features
+- **📖 [Documentation](https://arkhamjs.io)** - Complete API reference
+
+## 📄 License
+
+MIT License - see [LICENSE](../LICENSE) file for details.
