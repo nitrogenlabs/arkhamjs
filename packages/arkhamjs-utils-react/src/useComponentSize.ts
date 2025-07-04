@@ -1,6 +1,10 @@
+/**
+ * Copyright (c) 2020-Present, Nitrogen Labs, Inc.
+ * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
+ */
 import {useCallback, useLayoutEffect, useState} from 'react';
 
-export const getComponentSize = (element) => {
+const getComponentSize = (element: HTMLElement | null) => {
   if(!element) {
     return {height: undefined, width: undefined};
   }
@@ -9,8 +13,9 @@ export const getComponentSize = (element) => {
   return {height, width};
 };
 
-export const useComponentSize = (component) => {
-  const [componentSize, setComponentSize] = useState(getComponentSize(component));
+export const useComponentSize = (component: HTMLElement | null) => {
+  const [componentSize, setComponentSize] = useState(() => getComponentSize(component));
+
   const onResize = useCallback(() => {
     if(component) {
       setComponentSize(getComponentSize(component));
@@ -19,24 +24,25 @@ export const useComponentSize = (component) => {
 
   useLayoutEffect(() => {
     if(!component) {
-      return () => {};
+      return undefined;
     }
 
     onResize();
 
+    // Use ResizeObserver if available (more efficient than window resize)
     if(typeof ResizeObserver === 'function') {
-      let resizeObserver = new ResizeObserver(onResize);
+      const resizeObserver = new ResizeObserver(onResize);
       resizeObserver.observe(component);
 
       return () => {
         resizeObserver.disconnect();
-        resizeObserver = null;
       };
     }
 
+    // Fallback to window resize
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [component]);
+  }, [component, onResize]);
 
   return componentSize;
 };

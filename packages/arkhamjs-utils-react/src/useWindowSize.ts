@@ -2,13 +2,13 @@
  * Copyright (c) 2019-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 import {WindowSize} from './useWindowSize.types';
 
-export const isClient = typeof window === 'object';
+const isClient = typeof window === 'object';
 
-export const getWindowSize = () => {
+const getWindowSize = (): WindowSize => {
   if(isClient) {
     const {innerHeight: height, innerWidth: width} = window;
     return {height, width};
@@ -18,17 +18,20 @@ export const getWindowSize = () => {
 };
 
 export const useWindowSize = (): WindowSize => {
-  const [size, setSize] = useState(getWindowSize());
+  const [size, setSize] = useState(getWindowSize);
+
+  const onResize = useCallback(() => {
+    setSize(getWindowSize());
+  }, []);
 
   useEffect(() => {
     if(!isClient) {
-      return () => {};
+      return undefined;
     }
 
-    const onResize = () => setSize(getWindowSize());
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
+  }, [onResize]);
 
   return size;
 };

@@ -2,11 +2,12 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+import {isEmpty} from '@nlabs/utils/checks/isEmpty';
 import {cloneDeep} from '@nlabs/utils/objects/clone';
 import {debounceCompact} from '@nlabs/utils/objects/debounce-compact';
-import {get, set} from '@nlabs/utils/objects/get-set';
-import {isEmpty} from '@nlabs/utils/objects/isEmpty';
+import {get} from '@nlabs/utils/objects/get';
 import {merge} from '@nlabs/utils/objects/merge';
+import {set} from '@nlabs/utils/objects/set';
 import {parseStack} from '@nlabs/utils/objects/stack-parser';
 import {EventEmitter} from 'events';
 

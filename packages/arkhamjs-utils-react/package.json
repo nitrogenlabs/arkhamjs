@@ -54,12 +54,11 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "@nlabs/utils": "1.5.2"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.20",
     "@types/node": "^24.0.10",
     "react": "^19.1.0",
     "react-test-renderer": "^19.1.0",
