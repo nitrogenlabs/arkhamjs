@@ -42,7 +42,7 @@
     "pretest": "npm run lint",
     "start": "npm run development",
     "test": "",
-    "update": "npm-check-updates --interactive"
+    "update": "lex update --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.11.8",

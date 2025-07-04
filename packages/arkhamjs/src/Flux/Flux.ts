@@ -11,8 +11,8 @@ import isEmpty from 'lodash/fp/isEmpty';
 import merge from 'lodash/fp/merge';
 import set from 'lodash/fp/set';
 
-import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginType, FluxStore} from './Flux.types';
+import {ArkhamConstants} from '../constants/ArkhamConstants';
 
 /**
  * FluxFramework

@@ -121,7 +121,7 @@ interface ResizeObserverObserveOptions {
    *
    * @default "content-box"
    */
-  box?: "content-box" | "border-box";
+  box?: 'content-box' | 'border-box';
 }
 
 /**

@@ -32,7 +32,7 @@
     "build": "lex build --remove",
     "clean": "lex clean",
     "dev": "lex dev",
-    "lint": "eslint ./src --ext .ts,.tsx",
+    "lint": "lex lint --fix",
     "prepublishOnly": "npm run build",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
@@ -41,7 +41,7 @@
     "prod": "npm run test && npm run build",
     "start": "lex dev --open",
     "test": "lex test",
-    "update": "npm-check-updates --interactive"
+    "update": "lex update --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "*",

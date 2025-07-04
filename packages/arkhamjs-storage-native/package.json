@@ -34,14 +34,14 @@
     "build": "lex compile --remove",
     "clean": "lex clean",
     "deploy": "lex build --remove && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
-    "lint": "eslint ./src --ext .ts,.tsx",
+    "lint": "lex lint --fix",
     "prepublishOnly": "npm run build",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
     "pretest": "npm run lint",
     "test": "lex test",
-    "update": "npm-check-updates --interactive"
+    "update": "lex update --interactive"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0",
@@ -65,5 +65,6 @@
     "package.json",
     "README.md"
   ],
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
+  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
+  "type": "module"
 }
