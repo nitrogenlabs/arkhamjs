@@ -6,11 +6,29 @@
   },
   "description": "Javascript Flux Library",
   "type": "module",
+  "sideEffects": false,
   "license": "MIT",
   "main": "./index.js",
   "module": "./index.js",
   "browser": "./index.js",
   "types": "./lib/index.d.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.js",
+      "types": "./lib/index.d.js"
+    },
+    "./Flux": {
+      "import": "./lib/Flux/Flux.js",
+      "require": "./lib/Flux/Flux.js",
+      "types": "./lib/Flux/Flux.d.ts"
+    },
+    "./constants": {
+      "import": "./lib/constants/ArkhamConstants.js",
+      "require": "./lib/constants/ArkhamConstants.js",
+      "types": "./lib/constants/ArkhamConstants.d.ts"
+    }
+  },
   "keywords": [
     "arkhamjs",
     "flux",
@@ -46,15 +64,14 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "error-stack-parser": "^2.1.4",
-    "events": "^3.3.0",
-    "lodash": "^4.17.21"
+    "@nlabs/utils": "1.5.2",
+    "events": "^3.3.0"
   },
   "devDependencies": {
     "@types/events": "^3.0.3",
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.20",
     "@types/node": "^24.0.10",
+    "esbuild": "^0.20.0",
     "typescript": "^5.8.3"
   },
   "files": [

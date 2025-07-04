@@ -6,21 +6,28 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
     "jsx": "react-jsx",
     "lib": [
       "esnext",
       "dom"
     ],
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "outDir": "lib",
-    "pretty": true,
+    "pretty": false,
     "skipLibCheck": true,
-    "target": "ES2018",
+    "importHelpers": false,
+    "isolatedModules": true,
+    "target": "esnext",
+    "paths": {
+      "@nlabs/utils/*": [
+        "../../../utils/lib/*"
+      ]
+    }
   },
   "include": [
     "./src/**/*"
