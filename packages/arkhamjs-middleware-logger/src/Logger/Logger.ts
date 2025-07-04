@@ -4,32 +4,20 @@
  */
 
 import {FluxAction} from '@nlabs/arkhamjs';
-import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
+import {isEqual} from '@nlabs/utils/checks/isEqual';
+import {cloneDeep} from '@nlabs/utils/objects/clone';
 
 import {LoggerDebugLevel, LoggerOptions} from '../types/main';
 
-/**
- * FluxLogger
- * @type {EventEmitter}
- */
 export class Logger {
-  // Public properties
   name: string = 'Logger';
 
-  // Private properties
   private previousStore: any = {};
   private defaultOptions: LoggerOptions = {
     debugLevel: LoggerDebugLevel.DISABLED
   };
   private options: LoggerOptions = this.defaultOptions;
 
-  /**
-   * Create a new instance of the FluxLogger.
-   *
-   * @constructor
-   * @this {FluxLogger}
-   */
   constructor(options: LoggerOptions) {
     // Methods
     this.config = this.config.bind(this);

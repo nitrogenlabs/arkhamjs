@@ -5,6 +5,7 @@
     "access": "public"
   },
   "description": "Add console logging for ArkhamJS",
+  "type": "module",
   "license": "MIT",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
@@ -42,14 +43,12 @@
     "update": "lex update --interactive"
   },
   "peerDependencies": {
-    "@nlabs/arkhamjs": "*",
-    "lodash": "^4.17.0"
+    "@nlabs/arkhamjs": "*"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
-    "lodash": "^4.17.21",
     "typescript": "^5.8.3"
   },
   "files": [
@@ -60,6 +59,5 @@
     "package.json",
     "README.md"
   ],
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
-  "type": "module"
+  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
 }

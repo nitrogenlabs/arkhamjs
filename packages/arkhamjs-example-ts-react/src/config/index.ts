@@ -1,5 +1,5 @@
-import get from 'lodash/get';
-import merge from 'lodash/merge';
+import {get} from '@nlabs/utils/objects/get';
+import {merge} from '@nlabs/utils/objects/merge';
 
 import {EnvConfig} from './config.types';
 

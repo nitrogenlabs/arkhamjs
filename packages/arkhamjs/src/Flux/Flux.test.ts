@@ -2,13 +2,12 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import { cloneDeep, debounce, set } from '@nlabs/utils';
+import {cloneDeep, debounce, set} from '@nlabs/utils';
 
-import { ArkhamConstants } from '../constants/ArkhamConstants';
-import { FluxFramework } from './Flux';
-import { FluxAction, FluxOptions, FluxStore } from './Flux.types';
+import {ArkhamConstants} from '../constants/ArkhamConstants';
+import {FluxFramework} from './Flux';
+import {FluxAction, FluxOptions, FluxStore} from './Flux.types';
 
-jest.mock('lodash/debounce');
 
 const initialState = {
   falsy: false,

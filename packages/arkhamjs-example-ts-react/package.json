@@ -49,7 +49,6 @@
     "@nlabs/arkhamjs-storage-browser": "*",
     "@nlabs/arkhamjs-utils-react": "*",
     "bootstrap": "^5.3.2",
-    "lodash": "^4.17.21",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-jss": "^10.10.0"

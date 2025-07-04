@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {Flux, FluxAction} from '@nlabs/arkhamjs';
-import set from 'lodash/set';
+import {set} from '@nlabs/utils/objects/set';
 
 import {LoggerDebugLevel, LoggerOptions} from '../types/main';
 import {Logger} from './Logger';

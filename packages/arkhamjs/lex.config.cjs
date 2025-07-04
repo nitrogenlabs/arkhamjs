@@ -5,31 +5,30 @@ module.exports = {
     provider: 'cursor',
     temperature: 0.1
   },
-  outputPath: 'lib',
-  preset: 'web',
-  remove: true,
-  useTypescript: true,
   esbuild: {
-    minify: true,
-    treeShaking: true,
-    drop: ['console', 'debugger'],
-    pure: ['console.log', 'console.warn', 'console.error'],
-    target: 'es2020',
-    format: 'esm',
-    platform: 'browser',
-    splitting: true,
-    metafile: true,
-    sourcemap: false,
-    legalComments: 'none',
-    external: ['events', '@nlabs/utils/*'],
-    define: {
-      'process.env.NODE_ENV': '"production"'
-    },
     banner: {
       js: '/* ArkhamJS - Optimized Build */'
     },
+    define: {
+      'process.env.NODE_ENV': '"production"'
+    },
+    drop: ['console', 'debugger'],
+    external: ['events', '@nlabs/utils/*'],
     footer: {
       js: '/* End ArkhamJS */'
-    }
-  }
+    },
+    format: 'esm',
+    legalComments: 'none',
+    metafile: true,
+    minify: true,
+    platform: 'browser',
+    pure: ['console.log', 'console.warn', 'console.error'],
+    sourcemap: false,
+    splitting: true,
+    target: 'es2020'
+  },
+  outputPath: 'lib',
+  preset: 'web',
+  remove: true,
+  useTypescript: true
 };

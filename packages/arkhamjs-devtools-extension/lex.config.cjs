@@ -5,22 +5,22 @@ module.exports = {
     provider: 'cursor',
     temperature: 0.1
   },
-  outputPath: 'lib',
-  preset: 'web',
-  remove: true,
-  useTypescript: true,
   copyFiles: [
-    'manifest.json',
-    'manifest-safari.json',
-    'popup.html',
-    'welcome.html',
-    'background.js',
-    'popup.js',
     'app.html',
+    'background.js',
     'devtoolsBackground.html',
+    'icons/icon128.png',
     'icons/icon16.png',
     'icons/icon32.png',
     'icons/icon48.png',
-    'icons/icon128.png'
-  ]
+    'manifest-safari.json',
+    'manifest.json',
+    'popup.html',
+    'popup.js',
+    'welcome.html'
+  ],
+  outputPath: 'lib',
+  preset: 'web',
+  remove: true,
+  useTypescript: true
 };
