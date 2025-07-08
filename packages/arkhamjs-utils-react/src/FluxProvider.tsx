@@ -7,8 +7,8 @@ import {useEffect, useRef, useState} from 'react';
 
 import {FluxContext} from './FluxContext';
 
-import type {FC} from 'react';
 import type {FluxProviderProps} from './FluxProvider.types';
+import type {FC} from 'react';
 
 export const FluxProvider: FC<FluxProviderProps> = ({children, flux}) => {
   const [state, setState] = useState(flux.getState());
@@ -26,7 +26,7 @@ export const FluxProvider: FC<FluxProviderProps> = ({children, flux}) => {
     return () => {
       flux.removeListener('arkhamjs', updateState);
     };
-  }, []);
+  }, [flux]);
 
   return <FluxContext.Provider value={{flux, state}}>{children}</FluxContext.Provider>;
 };

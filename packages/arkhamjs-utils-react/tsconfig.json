@@ -29,7 +29,6 @@
     "./src/**/*"
   ],
   "exclude": [
-    "**/*.test.*",
     "lib",
     "./node_modules",
     "./test"

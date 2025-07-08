@@ -9,11 +9,12 @@
     "publish:minor": "npm run publish:minor --workspaces && npm run publish:tags",
     "publish:patch": "npm run publish:patch --workspaces && npm run publish:tags",
     "publish:tags": "git push --tags && git push origin HEAD",
-    "test": "jest",
+    "test": "npm run test --workspaces",
     "update": "npm run update --workspaces"
   },
   "devDependencies": {
-    "@nlabs/lex": "^1.46.2"
+    "@nlabs/lex": "^1.47.2",
+    "jest-environment-jsdom": "^30.0.4"
   },
   "workspaces": [
     "packages/arkhamjs",

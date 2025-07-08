@@ -27,6 +27,13 @@ module.exports = {
     splitting: true,
     target: 'es2020'
   },
+  jest: {
+    moduleNameMapper: {
+      '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js',
+      '^@nlabs/utils/(.*)$': '<rootDir>/../../node_modules/@nlabs/utils/lib/$1.js'
+    },
+    testEnvironment: 'jsdom'
+  },
   outputPath: 'lib',
   preset: 'web',
   remove: true,

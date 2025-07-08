@@ -28,7 +28,9 @@ describe('BrowserStorage', () => {
         },
         getItem: (storageGetKey: string) => storage[storageGetKey] || null,
         key: (index: number) => Object.keys(storage)[index] || null,
-        length: 0,
+        get length() {
+          return Object.keys(storage).length;
+        },
         removeItem: (storageRemoveKey: string) => {
           delete storage[storageRemoveKey];
         },
@@ -43,10 +45,15 @@ describe('BrowserStorage', () => {
     mockWindow.localStorage = storageMock();
 
     // Mock window object
-    Object.defineProperty(global, 'window', {
-      value: mockWindow,
-      writable: true
-    });
+    try {
+      Object.defineProperty(global, 'window', {
+        value: mockWindow,
+        writable: true
+      });
+    } catch(_error) {
+      // If window is already defined, just update its value
+      (global as any).window = mockWindow;
+    }
 
     // Update BrowserStorage window reference
     (BrowserStorage as any).window = mockWindow;
@@ -64,6 +71,8 @@ describe('BrowserStorage', () => {
     // Clear storage
     mockWindow.localStorage.clear();
     mockWindow.sessionStorage.clear();
+    // Restore all mocks to prevent persistence
+    jest.restoreAllMocks();
   });
 
   afterAll(() => {
@@ -135,9 +144,15 @@ describe('BrowserStorage', () => {
     it('should use prefix for keys', async () => {
       await storage.setStorageData(key, val);
 
-      // Check that the key was stored with prefix
-      const storedKeys = Object.keys(mockWindow.sessionStorage);
-      expect(storedKeys.some((k) => k.startsWith('arkhamjs_'))).toBe(true);
+      // Check that the key was stored with prefix by getting all keys
+      const keys: string[] = [];
+      for(let i = 0; i < mockWindow.sessionStorage.length; i++) {
+        const key = mockWindow.sessionStorage.key(i);
+        if(key) {
+          keys.push(key);
+        }
+      }
+      expect(keys.some((k) => k.startsWith('arkhamjs_'))).toBe(true);
     });
   });
 

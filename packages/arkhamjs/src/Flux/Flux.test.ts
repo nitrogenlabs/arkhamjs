@@ -2,11 +2,17 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {cloneDeep, debounce, set} from '@nlabs/utils';
 
-import {ArkhamConstants} from '../constants/ArkhamConstants';
-import {FluxFramework} from './Flux';
-import {FluxAction, FluxOptions, FluxStore} from './Flux.types';
+// Mock debounceCompact for testing - must be before any imports
+jest.mock('@nlabs/utils/objects/debounce-compact', () => ({
+  debounceCompact: jest.fn((fn) => fn())
+}));
+
+import { cloneDeep, debounceCompact, set } from '@nlabs/utils';
+
+import { ArkhamConstants } from '../constants/ArkhamConstants';
+import { FluxFramework } from './Flux';
+import { FluxAction, FluxOptions, FluxStore } from './Flux.types';
 
 
 const initialState = {
@@ -20,7 +26,7 @@ const initialState = {
 const helloStore = (type: string, data, state = initialState): any => {
   switch(type) {
     case 'TEST_EVENT':
-      return set('testAction', data.testVar, state);
+      return set(state, 'testAction', data.testVar);
     default:
       return state;
   }
@@ -268,8 +274,8 @@ describe('Flux', () => {
       expect(item).toEqual('test');
     });
 
-    it('should dispatch an event', () => {
-      Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
+    it('should dispatch an event', async () => {
+      await Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
       expect(eventSpy.mock.calls.length).toEqual(1);
     });
 
@@ -876,13 +882,14 @@ describe('Flux', () => {
       const setStorageData = jest.fn().mockReturnValue(value);
       Flux[optionsKey].storage = {getStorageData, setStorageData};
 
-      const debounceMock: any = debounce;
-      debounceMock.mockImplementation((fn) => fn());
-
       const useStorageKey: string = 'useStorage';
       await Flux[useStorageKey]('helloStore');
 
-      expect(setStorageData.mock.calls.length).toEqual(1);
+      // The debounced function should be set up with the correct parameters
+      expect(debounceCompact).toHaveBeenCalledWith(expect.any(Function), 0);
+
+      // Since our mock executes immediately, setStorageData should have been called
+      expect(setStorageData).toHaveBeenCalledWith('helloStore', Flux.state);
     });
   });
 });

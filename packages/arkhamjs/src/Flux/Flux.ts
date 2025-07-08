@@ -74,27 +74,27 @@ export class FluxFramework extends EventEmitter {
    */
   addMiddleware(middleware: FluxMiddlewareType[]): void {
     middleware.forEach((middleObj: FluxMiddlewareType) => {
-      if (!middleObj || (typeof middleObj !== 'function' && typeof middleObj !== 'object')) {
+      if(!middleObj || (typeof middleObj !== 'function' && typeof middleObj !== 'object')) {
         throw Error('Unknown middleware is not configured properly. Cannot add to Flux.');
       }
 
       const middleName: string = middleObj.name || '';
-      if (!middleName) {
+      if(!middleName) {
         throw Error('Unknown middleware is not configured properly. Requires name property. Cannot add to Flux.');
       }
 
       // Check for existing middleware to prevent duplicates
-      const existingMiddleware = this.middleware.preDispatchList?.find(m => m.name === middleName) ||
-                                this.middleware.postDispatchList?.find(m => m.name === middleName);
+      const existingMiddleware = this.middleware.preDispatchList?.find((m) => m.name === middleName) ||
+                                this.middleware.postDispatchList?.find((m) => m.name === middleName);
 
-      if (existingMiddleware) {
+      if(existingMiddleware) {
         console.warn(`Middleware "${middleName}" already exists. Skipping duplicate.`);
         return;
       }
 
       this.pluginTypes.forEach((type: string) => {
         const method = middleObj[type];
-        if (method) {
+        if(method) {
           const plugin: FluxPluginType = {method, name: middleName};
           this.middleware[`${type}List`] = this.addPlugin(type, plugin);
         }
@@ -117,7 +117,7 @@ export class FluxFramework extends EventEmitter {
     this.stateChanged = true;
 
     const {name, storage} = this.options;
-    if (storage?.setStorageData) {
+    if(storage?.setStorageData) {
       return storage.setStorageData(name, this.state);
     }
 
@@ -145,7 +145,7 @@ export class FluxFramework extends EventEmitter {
    * Optimized dispatch method with reduced cloning and better performance
    */
   async dispatch(action: FluxAction, silent: boolean = false): Promise<FluxAction> {
-    if (!action) {
+    if(!action) {
       throw new Error('ArkhamJS Error: Flux.dispatch requires an action.');
     }
 
@@ -156,7 +156,7 @@ export class FluxFramework extends EventEmitter {
 
     // Performance optimization: Only get stack trace in debug mode
     let stack: any[] = [];
-    if (this.options.debug) {
+    if(this.options.debug) {
       stack = this.getCachedStack();
     }
 
@@ -169,13 +169,13 @@ export class FluxFramework extends EventEmitter {
     // Apply pre-dispatch middleware with optimized cloning
     const {postDispatchList = [], preDispatchList = []} = this.middleware;
 
-    if (preDispatchList.length) {
+    if(preDispatchList.length) {
       clonedAction = await this.processMiddleware(preDispatchList, clonedAction, appInfo);
     }
 
     const {type, ...data} = clonedAction;
 
-    if (!type || type === '') {
+    if(!type || type === '') {
       console.warn('ArkhamJS Warning: Flux.dispatch is missing an action type for the payload:', data);
       return Promise.resolve(clonedAction);
     }
@@ -184,11 +184,11 @@ export class FluxFramework extends EventEmitter {
     this.updateStoresState(type, data);
 
     // Save cache in storage only if state changed
-    if (this.stateChanged && this.options.storage && this.updateStorage) {
+    if(this.stateChanged && this.options.storage && this.updateStorage) {
       try {
         await this.updateStorage();
         this.stateChanged = false;
-      } catch (error) {
+      } catch(error) {
         console.error('Storage update failed:', error);
       }
     }
@@ -197,11 +197,11 @@ export class FluxFramework extends EventEmitter {
     appInfo.duration = duration;
 
     // Apply post-dispatch middleware
-    if (postDispatchList.length) {
+    if(postDispatchList.length) {
       clonedAction = await this.processMiddleware(postDispatchList, clonedAction, appInfo);
     }
 
-    if (!silent) {
+    if(!silent) {
       this.emit(type, clonedAction);
       this.emit('arkhamjs', this.state);
     }
@@ -223,12 +223,12 @@ export class FluxFramework extends EventEmitter {
     const pathKey = Array.isArray(path) ? path.join('.') : path;
 
     // Check cache first
-    if (this.stateCache.has(pathKey)) {
+    if(this.stateCache.has(pathKey)) {
       return this.stateCache.get(pathKey);
     }
 
     let storeValue: any;
-    if (!path) {
+    if(!path) {
       storeValue = this.state || {};
     } else {
       storeValue = get(this.state, path);
@@ -254,13 +254,13 @@ export class FluxFramework extends EventEmitter {
    * Initialize and set configuration options with validation
    */
   async init(options: FluxOptions = {}, reset: boolean = false): Promise<FluxFramework> {
-    if (reset) {
+    if(reset) {
       this.isInit = false;
       await this.reset(false);
     }
 
     const updatedOptions = {...options};
-    if (this.isInit) {
+    if(this.isInit) {
       updatedOptions.name = this.options.name;
     }
 
@@ -269,26 +269,26 @@ export class FluxFramework extends EventEmitter {
 
     try {
       await this.useStorage(name);
-    } catch (error) {
+    } catch(error) {
       console.error('Arkham Error: There was an error while using storage.', name);
       throw error;
     }
 
-    if (stores?.length) {
+    if(stores?.length) {
       try {
         await this.addStores(stores);
-      } catch (error) {
+      } catch(error) {
         console.error('Arkham Error: There was an error while adding stores.', stores);
         throw error;
       }
     }
 
-    if (middleware?.length) {
+    if(middleware?.length) {
       this.addMiddleware(middleware);
     }
 
     const windowProperty: string = 'arkhamjs';
-    if (debug) {
+    if(debug) {
       (window as any)[windowProperty] = this;
     } else {
       delete (window as any)[windowProperty];
@@ -306,7 +306,7 @@ export class FluxFramework extends EventEmitter {
   onInit(listener: (...args: any[]) => void): void {
     this.on(ArkhamConstants.INIT, listener);
 
-    if (this.isInit) {
+    if(this.isInit) {
       listener();
     }
   }
@@ -339,10 +339,10 @@ export class FluxFramework extends EventEmitter {
     const registeredStores: FluxStore[] = stores.map((store: FluxStore) => this.register(store));
 
     const {name, storage} = this.options;
-    if (storage?.setStorageData) {
+    if(storage?.setStorageData) {
       try {
         await storage.setStorageData(name, this.state);
-      } catch (error) {
+      } catch(error) {
         throw error;
       }
     }
@@ -367,10 +367,10 @@ export class FluxFramework extends EventEmitter {
   async reset(clearStorage: boolean = true): Promise<void> {
     const {name, storage} = this.options;
 
-    if (storage && clearStorage) {
+    if(storage && clearStorage) {
       try {
         await storage.setStorageData(name, {});
-      } catch (error) {
+      } catch(error) {
         throw error;
       }
     }
@@ -392,8 +392,8 @@ export class FluxFramework extends EventEmitter {
    * Optimized setState with change tracking
    */
   setState(path: string | string[] = '', value: any): Promise<boolean> {
-    if (path) {
-      this.state = set(path, cloneDeep(value), this.state);
+    if(path) {
+      this.state = set(this.state, path, cloneDeep(value));
       this.stateChanged = true;
 
       // Clear relevant cache entries
@@ -401,7 +401,7 @@ export class FluxFramework extends EventEmitter {
       this.stateCache.delete(pathKey);
     }
 
-    if (this.options.storage && this.updateStorage) {
+    if(this.options.storage && this.updateStorage) {
       return this.updateStorage();
     }
 
@@ -443,7 +443,7 @@ export class FluxFramework extends EventEmitter {
 
       // Only clone if the state actually changes
       const newState = storeFn.action(type, data, currentState);
-      if (newState !== currentState) {
+      if(newState !== currentState) {
         this.state[storeName] = cloneDeep(newState) || currentState;
         this.stateChanged = true;
       }
@@ -456,7 +456,7 @@ export class FluxFramework extends EventEmitter {
   private getCachedStack(): any[] {
     const cacheKey = new Error().stack?.split('\n')[2] || '';
 
-    if (STACK_CACHE.has(cacheKey)) {
+    if(STACK_CACHE.has(cacheKey)) {
       return STACK_CACHE.get(cacheKey)!;
     }
 
@@ -469,12 +469,12 @@ export class FluxFramework extends EventEmitter {
       Error[stackProperty] = stackTraceLimit;
 
       // Cache the result
-      if (STACK_CACHE.size >= STACK_CACHE_SIZE) {
+      if(STACK_CACHE.size >= STACK_CACHE_SIZE) {
         const firstKey = STACK_CACHE.keys().next().value;
         STACK_CACHE.delete(firstKey);
       }
       STACK_CACHE.set(cacheKey, stack);
-    } catch (error) {
+    } catch(error) {
       // Fallback to empty stack
     }
 
@@ -485,12 +485,12 @@ export class FluxFramework extends EventEmitter {
     const list = this.middleware[`${type}List`] || [];
     const {method, name} = plugin;
 
-    if (method && typeof method === 'function') {
+    if(method && typeof method === 'function') {
       const exists: boolean = list.some((obj: FluxPluginType) => obj.name === name);
-      if (!exists) {
+      if(!exists) {
         list.push({method, name});
       }
-    } else if (method !== undefined) {
+    } else if(method !== undefined) {
       throw Error(`${plugin.name} middleware is not configured properly. Method is not a function.`);
     }
 
@@ -504,11 +504,11 @@ export class FluxFramework extends EventEmitter {
   }
 
   private register(storeFn: any): FluxStore {
-    if (!storeFn) {
+    if(!storeFn) {
       throw Error('Store is undefined. Cannot register with Flux.');
     }
 
-    if (typeof storeFn !== 'function') {
+    if(typeof storeFn !== 'function') {
       throw Error(`${storeFn} is not a store function. Cannot register with Flux.`);
     }
 
@@ -520,10 +520,10 @@ export class FluxFramework extends EventEmitter {
       name
     };
 
-    if (!isEmpty(name) && !this.storeActions[name]) {
+    if(!isEmpty(name) && !this.storeActions[name]) {
       this.storeActions[name] = storeAction;
 
-      if (!this.state[name]) {
+      if(!this.state[name]) {
         this.state[name] = initialState ? cloneDeep(initialState) : {};
       }
     }
@@ -539,14 +539,14 @@ export class FluxFramework extends EventEmitter {
   private async useStorage(name: string): Promise<void> {
     const {storage, state, storageWait} = this.options;
 
-    if (storage) {
+    if(storage) {
       try {
         this.state = state || await storage.getStorageData(name) || {};
         this.updateStorage = debounceCompact(
           () => storage.setStorageData(name, this.state),
           storageWait
         );
-      } catch (error) {
+      } catch(error) {
         console.error(`ArkhamJS Error: Using storage, "${name}".`);
         throw error;
       }
