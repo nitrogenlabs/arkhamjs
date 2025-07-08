@@ -54,7 +54,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.0.0"
+    "@nlabs/utils": "2.0.1"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",

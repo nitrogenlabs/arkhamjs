@@ -4,18 +4,31 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Browser storage for ArkhamJS",
+  "description": "Browser storage for ArkhamJS with enhanced performance and modern ESNext features",
   "license": "MIT",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
   "browser": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "keywords": [
     "arkhamjs",
     "flux",
     "browser",
     "nitrogenlabs",
-    "storage"
+    "storage",
+    "localStorage",
+    "sessionStorage",
+    "cache",
+    "performance"
   ],
   "author": {
     "name": "Giraldo Rosales",
@@ -41,7 +54,11 @@
     "pretest": "npm run lint",
     "reset": "lex clean",
     "test": "lex test",
-    "update": "lex update --interactive"
+    "test:watch": "lex test --watch",
+    "test:coverage": "lex test --coverage",
+    "update": "lex update --interactive",
+    "type-check": "tsc --noEmit",
+    "size": "npm run build && node -e \"console.log('Bundle size:', require('fs').statSync('./lib/index.js').size, 'bytes')\""
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0"
@@ -50,6 +67,7 @@
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
+    "source-map": "^0.7.4",
     "typescript": "^5.8.3"
   },
   "files": [

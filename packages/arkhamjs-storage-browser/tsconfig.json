@@ -9,9 +9,10 @@
     "jsx": "react-jsx",
     "lib": [
       "esnext",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -19,15 +20,25 @@
     "outDir": "lib",
     "pretty": true,
     "skipLibCheck": true,
-    "target": "ES2018"
+    "target": "ES2022",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "./src/**/*"
   ],
   "exclude": [
-    "**/*.test.*",
     "lib",
-    "./node_modules",
-    "./test"
+    "./node_modules"
   ]
 }
