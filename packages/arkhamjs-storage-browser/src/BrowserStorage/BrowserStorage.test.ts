@@ -2,11 +2,15 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import { BrowserStorage } from './BrowserStorage';
+import {jest} from '@jest/globals';
+
+import {BrowserStorage} from './BrowserStorage';
+
+import type {SpiedFunction} from 'jest-mock';
 
 describe('BrowserStorage', () => {
-  let localSpy: jest.SpyInstance;
-  let sessionSpy: jest.SpyInstance;
+  let localSpy: SpiedFunction;
+  let sessionSpy: SpiedFunction;
   const val: string = 'hello_world';
   const key: string = 'test';
   let storage: BrowserStorage;
@@ -46,10 +50,10 @@ describe('BrowserStorage', () => {
 
     // Mock window object
     try {
-    Object.defineProperty(global, 'window', {
-      value: mockWindow,
-      writable: true
-    });
+      Object.defineProperty(global, 'window', {
+        value: mockWindow,
+        writable: true
+      });
     } catch(_error) {
       // If window is already defined, just update its value
       (global as any).window = mockWindow;

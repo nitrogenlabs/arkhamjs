@@ -33,11 +33,12 @@ module.exports = {
     }
   },
   jest: {
-    moduleNameMapper: {
-      '^@nlabs/utils$': '<rootDir>/node_modules/@nlabs/utils/lib/index.js',
-      '^@nlabs/utils/objects/debounce-compact$': '<rootDir>/node_modules/@nlabs/utils/lib/objects/debounce-compact/debounce-compact.js',
-      '^@nlabs/utils/(.*)$': '<rootDir>/node_modules/@nlabs/utils/lib/$1/index.js'
-    },
+    transformIgnorePatterns: [
+      "/node_modules/(?!@nlabs/utils)"
+    ],
+    // moduleNameMapper: {
+    //   '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js'
+    // },
     setupFilesAfterEnv: ['./jest.setup.js'],
     testEnvironment: 'jsdom',
     transform: {

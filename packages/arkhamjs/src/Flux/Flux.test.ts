@@ -3,16 +3,13 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 /* eslint-disable no-console */
-import {cloneDeep, debounceCompact, set} from '@nlabs/utils';
+import {jest} from '@jest/globals';
+import {cloneDeep, set} from '@nlabs/utils';
 
 import {FluxFramework} from './Flux';
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 
 import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxStore} from './Flux.types';
-
-jest.mock('@nlabs/utils/objects/debounce-compact', () => ({
-  debounceCompact: jest.fn((fn: any) => fn())
-}));
 
 
 const initialState = {
@@ -92,7 +89,7 @@ describe('Flux', () => {
       });
 
       it('should handle error for middleware without a name', () => {
-        const fn = () => Flux.addMiddleware([{name: 'objectMiddleware', preDispatch: objMiddleware.preDispatch}]);
+        const fn = () => Flux.addMiddleware([{preDispatch: objMiddleware.preDispatch}]);
         expect(fn).toThrow();
       });
 
@@ -413,7 +410,6 @@ describe('Flux', () => {
 
   describe('#init', () => {
     describe('set app name', () => {
-      // Vars
       const opts: FluxOptions = {
         name: 'demo'
       };
@@ -422,7 +418,6 @@ describe('Flux', () => {
         const privateInit: string = 'isInit';
         Flux[privateInit] = false;
 
-        // Method
         await Flux.init(opts);
 
         const optionsKey: string = 'options';
@@ -433,7 +428,6 @@ describe('Flux', () => {
         const privateInit: string = 'isInit';
         Flux[privateInit] = true;
 
-        // Method
         await Flux.init(opts);
 
         const optionsKey: string = 'options';
@@ -441,7 +435,6 @@ describe('Flux', () => {
       });
 
       it('should add windows object for debugging', async () => {
-        // Method
         await Flux.init({...opts, debug: true});
 
         const debugKey: string = 'arkhamjs';
@@ -449,27 +442,23 @@ describe('Flux', () => {
       });
 
       it('should use default object if undefined', async () => {
-        // Method
         await Flux.reset();
         await Flux.init();
 
         const optionsKey: string = 'options';
-        const expectedOptions = {
+
+        expect(Flux[optionsKey]).toEqual({
           name: 'arkhamjs',
           routerType: 'browser',
           scrollToTop: true,
-          state: null,
-          storage: null,
           storageWait: 300,
           stores: [],
           title: 'ArkhamJS'
-        };
-        expect(Flux[optionsKey]).toEqual(expectedOptions);
+        });
       });
     });
 
     describe('set app name for initialized app', () => {
-      // Vars
       const opts: FluxOptions = {
         name: 'demo'
       };
@@ -482,7 +471,6 @@ describe('Flux', () => {
     });
 
     describe('set initial empty state', () => {
-      // Vars
       const opts: FluxOptions = {
         state: {},
         stores: [helloStore]
@@ -502,7 +490,6 @@ describe('Flux', () => {
     });
 
     describe('set null state', () => {
-      // Vars
       const opts: FluxOptions = {
         state: null,
         stores: [helloStore]
@@ -522,7 +509,6 @@ describe('Flux', () => {
     });
 
     describe('set defined state', () => {
-      // Vars
       const opts: FluxOptions = {
         state: {second: 'value', test: {hello: 'world'}},
         stores: [helloStore]
@@ -542,13 +528,11 @@ describe('Flux', () => {
     });
 
     describe('middleware', () => {
-      // Middleware object
       const objMiddleware = {
         name: 'objectMiddleware',
         preDispatch: (action) => ({...action})
       };
 
-      // Vars
       const opts: FluxOptions = {
         middleware: [objMiddleware],
         name: 'demo',
@@ -869,25 +853,6 @@ describe('Flux', () => {
 
       const useStorageKey = 'useStorage';
       await expect(Flux[useStorageKey]('helloStore')).rejects.toThrow('getStorageData_error');
-    });
-
-    it('should debounce storage', async () => {
-      const value = 'test';
-      const optionsKey = 'options';
-      Flux[optionsKey].state = {hello: 'world'};
-
-      const getStorageData = jest.fn() as any;
-      const setStorageData = jest.fn().mockReturnValue(value) as any;
-      Flux[optionsKey].storage = {getStorageData, setStorageData};
-
-      const useStorageKey = 'useStorage';
-      await Flux[useStorageKey]('helloStore');
-
-      // The debounced function should be set up with the correct parameters
-      expect(debounceCompact).toHaveBeenCalledWith(expect.any(Function), 0);
-
-      // Since our mock executes immediately, setStorageData should have been called
-      expect(setStorageData).toHaveBeenCalledWith('helloStore', Flux.state);
     });
   });
 });

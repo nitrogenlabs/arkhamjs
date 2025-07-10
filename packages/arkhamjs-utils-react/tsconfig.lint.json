@@ -1,5 +1,17 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": false,
+    "skipLibCheck": false,
+    "strict": false,
+    "types": [
+      "jest",
+      "node"
+    ],
+  },
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",

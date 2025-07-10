@@ -1,7 +1,7 @@
-import {get} from '@nlabs/utils/objects/get';
-import {merge} from '@nlabs/utils/objects/merge';
+import {get} from '@nlabs/utils/lib/objects/get/get.js';
+import {merge} from '@nlabs/utils/lib/objects/merge/merge.js';
 
-import {EnvConfig} from './config.types';
+import type {EnvConfig} from './config.types';
 
 const {NODE_ENV} = process.env;
 
@@ -9,7 +9,7 @@ export class Config {
   static values: EnvConfig = {
     default: {
       appId: 'arkhamjs-skeleton',
-      env: NODE_ENV
+      env: NODE_ENV || 'development'
     },
     development: {
       appName: 'Arkham Skeleton Development'

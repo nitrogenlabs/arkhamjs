@@ -54,7 +54,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.0.1"
+    "@nlabs/utils": "2.1.2"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",

@@ -2,11 +2,14 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {Flux, FluxAction} from '@nlabs/arkhamjs';
-import {set} from '@nlabs/utils/objects/set';
+import {Flux} from '@nlabs/arkhamjs';
+import {set} from '@nlabs/utils/lib/objects/set/set.js';
 
-import {LoggerDebugLevel, LoggerOptions} from '../types/main';
 import {Logger} from './Logger';
+import {LoggerDebugLevel} from '../types/main';
+
+import type {LoggerOptions} from '../types/main';
+import type {FluxAction} from '@nlabs/arkhamjs';
 
 const test = (type: string, data, state = {hello: 'world'}) => {
   switch(type) {

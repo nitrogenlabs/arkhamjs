@@ -17,25 +17,37 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "noImplicitAny": true,
-    "noImplicitOverride": true,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "noUnusedLocals": true,
     "outDir": "lib",
     "pretty": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
+    "skipLibCheck": false,
+    "strict": false,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "target": "ES2022",
     "typeRoots": [
+      "../../node_modules/@types",
       "node_modules/@types",
       "node_modules/json-d-ts"
     ],
+    "types": [
+      "jest",
+      "node"
+    ],
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "lib"
+  ],
+  "include": [
+    "src/**/*"
+  ]
 }

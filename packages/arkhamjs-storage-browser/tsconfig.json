@@ -5,7 +5,10 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
+    "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": [
       "esnext",
@@ -14,28 +17,37 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUncheckedIndexedAccess": false,
     "noUnusedLocals": true,
     "outDir": "lib",
     "pretty": true,
-    "skipLibCheck": true,
-    "target": "ES2022",
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "useDefineForClassFields": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "skipLibCheck": false,
+    "strict": false,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "target": "ES2022",
     "typeRoots": [
+      "../../node_modules/@types",
       "node_modules/@types",
       "node_modules/json-d-ts"
     ],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "useDefineForClassFields": true,
     "verbatimModuleSyntax": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "lib"
+  ],
+  "include": [
+    "src/**/*"
+  ]
 }

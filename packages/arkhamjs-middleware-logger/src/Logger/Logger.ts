@@ -2,12 +2,14 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+/* eslint-disable no-console */
+import {isEqual} from '@nlabs/utils/lib/checks/isEqual.js';
+import {cloneDeep} from '@nlabs/utils/lib/objects/clone/clone.js';
 
-import {FluxAction} from '@nlabs/arkhamjs';
-import {isEqual} from '@nlabs/utils/checks/isEqual';
-import {cloneDeep} from '@nlabs/utils/objects/clone';
+import {LoggerDebugLevel} from '../types/main';
 
-import {LoggerDebugLevel, LoggerOptions} from '../types/main';
+import type {FluxAction} from '@nlabs/arkhamjs';
+import type {LoggerOptions} from '../types/main';
 
 export class Logger {
   name: string = 'Logger';
@@ -56,7 +58,7 @@ export class Logger {
     }
 
     if(debugErrorFnc) {
-      debugErrorFnc(debugLevel, ...obj);
+      debugErrorFnc(debugLevel as LoggerDebugLevel, ...obj);
     }
   }
 
@@ -74,7 +76,7 @@ export class Logger {
     }
 
     if(debugInfoFnc) {
-      debugInfoFnc(debugLevel, ...obj);
+      debugInfoFnc(debugLevel as LoggerDebugLevel, ...obj);
     }
   }
 
@@ -92,7 +94,7 @@ export class Logger {
     }
 
     if(debugLogFnc) {
-      debugLogFnc(debugLevel, ...obj);
+      debugLogFnc(debugLevel as LoggerDebugLevel, ...obj);
     }
   }
 
@@ -125,7 +127,7 @@ export class Logger {
   postDispatch(action: FluxAction, store: object): Promise<FluxAction> {
     const {debugLevel} = this.options;
 
-    if(debugLevel > LoggerDebugLevel.LOGS) {
+    if(debugLevel && debugLevel > LoggerDebugLevel.LOGS) {
       const {type} = action;
       const hasChanged = !isEqual(store, this.previousStore);
       const updatedLabel = hasChanged ? 'Changed State' : 'Unchanged State';

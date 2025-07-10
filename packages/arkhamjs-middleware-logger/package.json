@@ -45,6 +45,9 @@
   "peerDependencies": {
     "@nlabs/arkhamjs": "*"
   },
+  "dependencies": {
+    "@nlabs/utils": "2.1.1"
+  },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
