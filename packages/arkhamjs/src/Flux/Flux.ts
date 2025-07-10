@@ -188,11 +188,11 @@ export class FluxFramework extends EventEmitter {
     return this.options;
   }
 
-  getState(path: string | string[] = '', defaultValue?: unknown): unknown {
+  getState<T = unknown>(path: string | string[] = '', defaultValue?: T): T {
     const pathKey = Array.isArray(path) ? path.join('.') : path;
 
     if(this.stateCache.has(pathKey)) {
-      return this.stateCache.get(pathKey);
+      return this.stateCache.get(pathKey) as T;
     }
 
     let storeValue: unknown;
@@ -207,7 +207,7 @@ export class FluxFramework extends EventEmitter {
 
     this.stateCache.set(pathKey, result);
 
-    return result;
+    return result as T;
   }
 
   getStore(name: string = ''): FluxStore | undefined {
