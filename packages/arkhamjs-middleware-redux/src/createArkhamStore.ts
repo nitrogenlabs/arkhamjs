@@ -3,8 +3,8 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {Flux} from '@nlabs/arkhamjs';
-import {isPlainObject} from '@nlabs/utils/checks/isPlainObject';
-import {merge} from '@nlabs/utils/objects/merge';
+import {isPlainObject} from '@nlabs/utils/lib/checks/isPlainObject/isPlainObject.js';
+import {merge} from '@nlabs/utils/lib/objects/merge/merge.js';
 import {applyMiddleware, createStore, Store} from 'redux';
 
 import {arkhamMiddleware} from './middleware/arkhamMiddleware';

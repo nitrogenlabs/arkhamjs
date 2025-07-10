@@ -4,10 +4,11 @@
  */
 /* eslint-disable no-console */
 import {jest} from '@jest/globals';
-import {cloneDeep, set} from '@nlabs/utils';
+import {cloneDeep} from '@nlabs/utils/lib/objects/clone/clone.js';
+import {set} from '@nlabs/utils/lib/objects/set/set.js';
 
-import {FluxFramework} from './Flux';
 import {ArkhamConstants} from '../constants/ArkhamConstants';
+import {FluxFramework} from './Flux';
 
 import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxStore} from './Flux.types';
 

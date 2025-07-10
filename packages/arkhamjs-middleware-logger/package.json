@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-logger",
-  "version": "3.29.1",
+  "version": "3.30.0",
   "publishConfig": {
     "access": "public"
   },
