@@ -6,14 +6,16 @@ import {useContext, useEffect} from 'react';
 
 import {FluxContext} from './FluxContext';
 
+import type {FluxFramework} from '@nlabs/arkhamjs';
+
 export const useFluxListener = (type: string, handler: (data?: any) => any) => {
-  const {flux} = useContext(FluxContext);
+  const {flux} = useContext<{flux?: FluxFramework}>(FluxContext);
 
   useEffect(() => {
-    flux.on(type, handler);
+    flux?.on(type, handler);
 
     return () => {
-      flux.off(type, handler);
+      flux?.off(type, handler);
     };
   }, []);
 

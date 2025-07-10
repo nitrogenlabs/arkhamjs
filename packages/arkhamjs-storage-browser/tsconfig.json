@@ -32,13 +32,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/json-d-ts"
+    ],
     "verbatimModuleSyntax": true
-  },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "lib",
-    "./node_modules"
-  ]
+  }
 }

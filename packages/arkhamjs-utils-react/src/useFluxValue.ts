@@ -4,9 +4,11 @@
  */
 import {useContext} from 'react';
 
+import type {FluxFramework} from '@nlabs/arkhamjs';
+
 import {FluxContext} from './FluxContext';
 
 export const useFluxValue = (key: string | string[], defaultValue?: any): any => {
-  const {flux} = useContext(FluxContext);
-  return flux.getState(key, defaultValue);
+  const {flux} = useContext<{flux?: FluxFramework}>(FluxContext);
+  return flux?.getState(key, defaultValue);
 };

@@ -4,7 +4,9 @@
  */
 import {useComponentSize} from './useComponentSize';
 
-export const useRefSize = (ref) => {
-  const {current: component = {}} = ref;
+import type {RefObject} from 'react';
+
+export const useRefSize = (ref: RefObject<HTMLElement>) => {
+  const {current: component = null} = ref;
   return useComponentSize(component);
 };

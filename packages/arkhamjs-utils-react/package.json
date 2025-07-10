@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.30.0",
+  "version": "3.31.0",
   "publishConfig": {
     "access": "public"
   },
@@ -57,9 +57,11 @@
     "@nlabs/utils": "2.0.1"
   },
   "devDependencies": {
+    "@jest/globals": "^30.0.4",
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.0.12",
+    "@types/react": "^19.1.8",
     "react": "^19.1.0",
     "typescript": "^5.8.3"
   },

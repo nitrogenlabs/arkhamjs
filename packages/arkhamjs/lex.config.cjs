@@ -27,15 +27,27 @@ module.exports = {
     splitting: true,
     target: 'es2020'
   },
+  eslint: {
+    parserOptions: {
+      project: './tsconfig.lint.json'
+    }
+  },
   jest: {
     moduleNameMapper: {
-      '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js',
-      '^@nlabs/utils/(.*)$': '<rootDir>/../../node_modules/@nlabs/utils/lib/$1.js'
+      '^@nlabs/utils$': '<rootDir>/node_modules/@nlabs/utils/lib/index.js',
+      '^@nlabs/utils/objects/debounce-compact$': '<rootDir>/node_modules/@nlabs/utils/lib/objects/debounce-compact/debounce-compact.js',
+      '^@nlabs/utils/(.*)$': '<rootDir>/node_modules/@nlabs/utils/lib/$1/index.js'
     },
-    testEnvironment: 'jsdom'
+    setupFilesAfterEnv: ['./jest.setup.js'],
+    testEnvironment: 'jsdom',
+    transform: {
+      '^.+\\.tsx?$': ['ts-jest', {
+        tsconfig: './tsconfig.test.json'
+      }]
+    }
   },
   outputPath: 'lib',
-  preset: 'web',
+  preset: 'node',
   remove: true,
   useTypescript: true
 };

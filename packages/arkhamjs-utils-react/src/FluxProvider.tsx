@@ -15,7 +15,7 @@ export const FluxProvider: FC<FluxProviderProps> = ({children, flux}) => {
   const ref = useRef(state);
 
   useEffect(() => {
-    const updateState = (newState) => {
+    const updateState = (newState: any) => {
       if(!isEqual(newState, ref.current)) {
         ref.current = newState;
         setState(newState);

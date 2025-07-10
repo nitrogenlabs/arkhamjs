@@ -30,8 +30,8 @@ export interface FluxAction {
 }
 
 export interface FluxStorageType {
-  readonly getStorageData: (key: string) => Promise<any>;
-  readonly setStorageData: (key: string, value: any) => Promise<boolean>;
+  readonly getStorageData?: (key: string) => Promise<any>;
+  readonly setStorageData?: (key: string, value: any) => Promise<boolean>;
 }
 
 export interface FluxStore {

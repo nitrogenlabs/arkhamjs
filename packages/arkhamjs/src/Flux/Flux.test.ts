@@ -2,17 +2,17 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+/* eslint-disable no-console */
+import {cloneDeep, debounceCompact, set} from '@nlabs/utils';
 
-// Mock debounceCompact for testing - must be before any imports
+import {FluxFramework} from './Flux';
+import {ArkhamConstants} from '../constants/ArkhamConstants';
+
+import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxStore} from './Flux.types';
+
 jest.mock('@nlabs/utils/objects/debounce-compact', () => ({
-  debounceCompact: jest.fn((fn) => fn())
+  debounceCompact: jest.fn((fn: any) => fn())
 }));
-
-import { cloneDeep, debounceCompact, set } from '@nlabs/utils';
-
-import { ArkhamConstants } from '../constants/ArkhamConstants';
-import { FluxFramework } from './Flux';
-import { FluxAction, FluxOptions, FluxStore } from './Flux.types';
 
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   zeroValue: 0
 };
 
-const helloStore = (type: string, data, state = initialState): any => {
+const helloStore = (type: string, data: any, state = initialState): any => {
   switch(type) {
     case 'TEST_EVENT':
       return set(state, 'testAction', data.testVar);
@@ -37,14 +37,14 @@ describe('Flux', () => {
   const consoleWarn = console.warn;
   const cfg: FluxOptions = {
     name: 'arkhamjsTest',
-    stores: [helloStore],
     storage: {
-      getStorageData: jest.fn(),
-      setStorageData: jest.fn()
+      getStorageData: jest.fn() as any,
+      setStorageData: jest.fn() as any
     },
-    storageWait: 0
+    storageWait: 0,
+    stores: [helloStore]
   };
-  let Flux;
+  let Flux: any;
 
   beforeAll(() => {
     console.error = jest.fn();
@@ -70,7 +70,7 @@ describe('Flux', () => {
       // Add object middleware
       const objMiddleware = {
         name: 'objectMiddleware',
-        preDispatch: (action) => ({...action, testVar: middleTest})
+        preDispatch: (action: FluxAction) => Promise.resolve({...action, testVar: middleTest})
       };
 
       afterEach(() => {
@@ -92,12 +92,12 @@ describe('Flux', () => {
       });
 
       it('should handle error for middleware without a name', () => {
-        const fn = () => Flux.addMiddleware([{preDispatch: objMiddleware.preDispatch}]);
+        const fn = () => Flux.addMiddleware([{name: 'objectMiddleware', preDispatch: objMiddleware.preDispatch}]);
         expect(fn).toThrow();
       });
 
       it('should handle error for incompatible middleware', () => {
-        const fn = () => Flux.addMiddleware(['incorrect']);
+        const fn = () => Flux.addMiddleware(['incorrect' as any]);
         expect(fn).toThrow();
       });
     });
@@ -109,7 +109,7 @@ describe('Flux', () => {
         // Add object middleware
         const promiseMiddleware = {
           name: 'promiseMiddleware',
-          preDispatch: (action) => Promise.resolve({...action, testVar: middleTest})
+          preDispatch: (action: FluxAction) => Promise.resolve({...action, testVar: middleTest})
         };
 
         Flux.addMiddleware([promiseMiddleware]);
@@ -137,7 +137,7 @@ describe('Flux', () => {
         // Add object middleware
         const postMiddleware = {
           name: 'postMiddleware',
-          postDispatch: (action) => Promise.resolve({...action, testVar: middleTest})
+          postDispatch: (action: FluxAction) => Promise.resolve({...action, testVar: middleTest})
         };
 
         Flux.addMiddleware([postMiddleware]);
@@ -159,7 +159,7 @@ describe('Flux', () => {
       });
 
       it('should handle no action error', async () => {
-        await expect(Flux.dispatch(null)).rejects.toThrow();
+        await expect(Flux.dispatch(null as any)).rejects.toThrow();
       });
 
       it('should handle pre dispatch error', async () => {
@@ -224,7 +224,7 @@ describe('Flux', () => {
     it('should set data in storage', async () => {
       const returnedValue = {hello: 'world'};
       const getStorageData = jest.fn();
-      const setStorageData = jest.fn().mockResolvedValue(returnedValue);
+      const setStorageData = jest.fn().mockResolvedValue(returnedValue as unknown as never);
       Flux.options.storage = {getStorageData, setStorageData};
 
       const results = await Flux.clearAppData();
@@ -290,7 +290,7 @@ describe('Flux', () => {
     });
 
     it('should update storage', () => {
-      Flux.updateStorage = jest.fn().mockResolvedValue({});
+      Flux.updateStorage = jest.fn().mockResolvedValue({} as unknown as never);
       const getStorageData = jest.fn();
       const setStorageData = jest.fn();
       Flux.options.storage = {getStorageData, setStorageData};
@@ -647,10 +647,10 @@ describe('Flux', () => {
   describe('#offInit', () => {
     it('should remove listener after initialization', () => {
       const listener = jest.fn();
-      Flux.off = jest.fn();
+      Flux.off = jest.fn() as any;
       Flux.offInit(listener);
-      expect(Flux.off.mock.calls.length).toEqual(1);
-      expect(Flux.off.mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
+      expect((Flux.off as any).mock.calls.length).toEqual(1);
+      expect((Flux.off as any).mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
     });
   });
 
@@ -683,7 +683,7 @@ describe('Flux', () => {
         }
       };
 
-      const registerKey: string = 'register';
+      const registerKey = 'register';
       const storeAction = Flux[registerKey](demoStore);
       const expectedAction = {
         action: demoStore,
@@ -703,7 +703,7 @@ describe('Flux', () => {
         }
       };
 
-      const registerKey: string = 'register';
+      const registerKey = 'register';
       const storeAction = Flux[registerKey](demoStore);
       const expectedAction = {
         action: demoStore,
@@ -714,7 +714,7 @@ describe('Flux', () => {
     });
 
     it('should not save a store function without a name', () => {
-      const registerKey: string = 'register';
+      const registerKey = 'register';
       const storeAction = Flux[registerKey]((type: string, data, state = initialState): any => {
         switch(type) {
           case 'TEST_EVENT':
@@ -727,14 +727,14 @@ describe('Flux', () => {
     });
 
     it('should handle undefined function', () => {
-      const registerKey: string = 'register';
+      const registerKey = 'register';
 
       const fn = () => Flux[registerKey]();
       expect(fn).toThrow();
     });
 
     it('should handle argument that is not a function', () => {
-      const registerKey: string = 'register';
+      const registerKey = 'register';
 
       const fn = () => Flux[registerKey]({});
       expect(fn).toThrow();
@@ -745,10 +745,9 @@ describe('Flux', () => {
     beforeEach(() => {
       Flux.clearMiddleware();
 
-      // Add object middleware
-      const objMiddleware = {
+      const objMiddleware: FluxMiddlewareType = {
         name: 'objectMiddleware',
-        preDispatch: (action) => ({...action})
+        preDispatch: (action: FluxAction) => Promise.resolve({...action})
       };
 
       Flux.addMiddleware([objMiddleware]);
@@ -768,14 +767,13 @@ describe('Flux', () => {
     });
 
     it('should get an undefined list', () => {
-      Flux.middleware.preDispatchList = null;
+      Flux.middleware.preDispatchList = null as any;
       expect(Flux.removePlugin('preDispatch', 'demoPlugin')).toEqual([]);
     });
   });
 
   describe('#removeStores', () => {
     beforeEach(() => {
-      // Method
       Flux.removeStores(['helloStore']);
     });
 
@@ -784,21 +782,21 @@ describe('Flux', () => {
     });
 
     it('should remove class', () => {
-      const privateProperty: string = 'storeActions';
+      const privateProperty = 'storeActions';
       expect(!!Flux[privateProperty].helloStore).toEqual(false);
     });
 
     it('should remove store data', () => {
-      const privateProperty: string = 'state';
+      const privateProperty = 'state';
       expect(!!Flux[privateProperty].helloStore).toEqual(false);
     });
   });
 
   describe('#reset', () => {
     it('should handle argument that is not a function', async () => {
-      const optionsKey: string = 'options';
-      const getStorageData = jest.fn();
-      const setStorageData = () => Promise.reject(new Error('setStorageData_error'));
+      const optionsKey = 'options';
+      const getStorageData = jest.fn() as any;
+      const setStorageData = () => Promise.reject(new Error('setStorageData_error')) as any;
       Flux[optionsKey].storage = {getStorageData, setStorageData};
       await expect(Flux.reset()).rejects.toThrow('setStorageData_error');
     });
@@ -806,7 +804,7 @@ describe('Flux', () => {
 
   describe('#setState', () => {
     it('should update the property within the store', async () => {
-      Flux.updateStorage = jest.fn();
+      Flux.updateStorage = jest.fn() as any;
       await Flux.setState('helloStore.testUpdate', 'test');
       const newItem = await Flux.getState('helloStore.testUpdate');
       expect(Flux.updateStorage).toHaveBeenCalled();
@@ -814,7 +812,7 @@ describe('Flux', () => {
     });
 
     it('should empty string as default path', async () => {
-      Flux.updateStorage = jest.fn();
+      Flux.updateStorage = jest.fn() as any;
       await Flux.setState(undefined, 'test');
       const newItem = await Flux.getState('helloStore');
       expect(Flux.updateStorage).toHaveBeenCalled();
@@ -822,67 +820,67 @@ describe('Flux', () => {
     });
 
     it('should update storage', async () => {
-      const optionsKey: string = 'options';
-      Flux.updateStorage = jest.fn();
+      const optionsKey = 'options';
+      Flux.updateStorage = jest.fn() as any;
       Flux[optionsKey] = {
         storage: {
-          getStorageData: jest.fn(),
-          setStorageData: jest.fn()
+          getStorageData: jest.fn() as any,
+          setStorageData: jest.fn() as any
         }
       };
       await Flux.setState('helloStore.testUpdate', 'test');
-      expect(Flux.updateStorage.mock.calls.length).toEqual(1);
+      expect((Flux.updateStorage as jest.Mock).mock.calls.length).toEqual(1);
     });
   });
 
   describe('#useStorage', () => {
     it('should update storage', async () => {
-      const getStorageData = jest.fn();
-      const setStorageData = jest.fn();
-      const optionsKey: string = 'options';
+      const getStorageData = jest.fn() as any;
+      const setStorageData = jest.fn() as any;
+      const optionsKey = 'options';
       Flux[optionsKey].state = null;
       Flux[optionsKey].storage = {getStorageData, setStorageData};
 
-      const useStorageKey: string = 'useStorage';
+      const useStorageKey = 'useStorage';
       await Flux[useStorageKey]('helloStore');
 
       expect(getStorageData.mock.calls.length).toEqual(1);
     });
 
     it('without storage', async () => {
-      const optionsKey: string = 'options';
+      const optionsKey = 'options';
       Flux[optionsKey].state = {hello: 'world'};
-      Flux[optionsKey].storage = null;
+      Flux[optionsKey].storage = null as any;
 
-      const useStorageKey: string = 'useStorage';
+      const useStorageKey = 'useStorage';
       await Flux[useStorageKey]('helloStore');
 
-      const stateKey: string = 'state';
+      const stateKey = 'state';
       expect(Flux[stateKey].hello).toEqual('world');
     });
 
     it('should handle storage errors', async () => {
-      const optionsKey: string = 'options';
+      const optionsKey = 'options';
       Flux[optionsKey].state = null;
       Flux[optionsKey].storage = {
         getStorageData: () => Promise.reject(new Error('getStorageData_error')),
         setStorageData: () => Promise.reject(new Error('setStorageData_error'))
       };
 
-      const useStorageKey: string = 'useStorage';
+      const useStorageKey = 'useStorage';
       await expect(Flux[useStorageKey]('helloStore')).rejects.toThrow('getStorageData_error');
     });
 
     it('should debounce storage', async () => {
-      const value: string = 'test';
-      const optionsKey: string = 'options';
+      const value = 'test';
+      const optionsKey = 'options';
       Flux[optionsKey].state = {hello: 'world'};
 
-      const getStorageData = jest.fn();
-      const setStorageData = jest.fn().mockReturnValue(value);
+      const getStorageData = jest.fn() as any;
+      const setStorageData = jest.fn().mockReturnValue(value) as any;
       Flux[optionsKey].storage = {getStorageData, setStorageData};
 
-      const useStorageKey: string = 'useStorage';
+      const useStorageKey = 'useStorage';
       await Flux[useStorageKey]('helloStore');
 
       // The debounced function should be set up with the correct parameters

@@ -14,7 +14,11 @@
   },
   "devDependencies": {
     "@nlabs/lex": "^1.47.2",
-    "jest-environment-jsdom": "^30.0.4"
+    "@types/events": "^3.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.12",
+    "jest-environment-jsdom": "^30.0.4",
+    "typescript": "^5.8.3"
   },
   "workspaces": [
     "packages/arkhamjs",

@@ -9,8 +9,8 @@ import {FluxContext} from './FluxContext';
 
 export const useFluxState = (key: string | string[], defaultValue?: any): any => {
   const {flux, state} = useContext(FluxContext);
-  const ref = useRef();
-  const value = flux.getState(key, defaultValue);
+  const ref = useRef(null);
+  const value = flux?.getState(key, defaultValue);
   const [updatedValue, setValue] = useState(value);
 
   useEffect(() => {

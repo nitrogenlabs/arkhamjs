@@ -4,7 +4,7 @@
  */
 import {useCallback, useEffect, useState} from 'react';
 
-import {WindowSize} from './useWindowSize.types';
+import type {WindowSize} from './useWindowSize.types';
 
 const isClient = typeof window === 'object';
 
@@ -14,7 +14,7 @@ const getWindowSize = (): WindowSize => {
     return {height, width};
   }
 
-  return {height: undefined, width: undefined};
+  return {height: 0, width: 0};
 };
 
 export const useWindowSize = (): WindowSize => {

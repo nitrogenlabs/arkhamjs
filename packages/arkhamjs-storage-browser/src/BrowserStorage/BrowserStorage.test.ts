@@ -2,7 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {BrowserStorage} from './BrowserStorage';
+import { BrowserStorage } from './BrowserStorage';
 
 describe('BrowserStorage', () => {
   let localSpy: jest.SpyInstance;
@@ -46,10 +46,10 @@ describe('BrowserStorage', () => {
 
     // Mock window object
     try {
-      Object.defineProperty(global, 'window', {
-        value: mockWindow,
-        writable: true
-      });
+    Object.defineProperty(global, 'window', {
+      value: mockWindow,
+      writable: true
+    });
     } catch(_error) {
       // If window is already defined, just update its value
       (global as any).window = mockWindow;
