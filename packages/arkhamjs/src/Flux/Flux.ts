@@ -2,13 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {isEmpty} from '@nlabs/utils/lib/checks/isEmpty/isEmpty.js';
-import {cloneDeep} from '@nlabs/utils/lib/objects/clone/clone.js';
-import {debounceCompact} from '@nlabs/utils/lib/objects/debounce-compact/debounce-compact.js';
-import {get} from '@nlabs/utils/lib/objects/get/get.js';
-import {merge} from '@nlabs/utils/lib/objects/merge/merge.js';
-import {set} from '@nlabs/utils/lib/objects/set/set.js';
-import {parseStack} from '@nlabs/utils/lib/objects/stack-parser/stack-parser.js';
+import {cloneDeep, debounceCompact, get, isEmpty, merge, parseStack, set} from '@nlabs/utils';
 import {EventEmitter} from 'events';
 
 import {ArkhamConstants} from '../constants/ArkhamConstants';

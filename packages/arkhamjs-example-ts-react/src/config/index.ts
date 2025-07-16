@@ -1,5 +1,4 @@
-import {get} from '@nlabs/utils/lib/objects/get/get.js';
-import {merge} from '@nlabs/utils/lib/objects/merge/merge.js';
+import {get, merge} from '@nlabs/utils';
 
 import type {EnvConfig} from './config.types';
 

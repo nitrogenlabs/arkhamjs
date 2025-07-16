@@ -3,13 +3,13 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 import {Flux} from '@nlabs/arkhamjs';
-import {set} from '@nlabs/utils/lib/objects/set/set.js';
+import {set} from '@nlabs/utils';
 
-import {Logger} from './Logger';
 import {LoggerDebugLevel} from '../types/main';
+import {Logger} from './Logger';
 
-import type {LoggerOptions} from '../types/main';
 import type {FluxAction} from '@nlabs/arkhamjs';
+import type {LoggerOptions} from '../types/main';
 
 const test = (type: string, data, state = {hello: 'world'}) => {
   switch(type) {

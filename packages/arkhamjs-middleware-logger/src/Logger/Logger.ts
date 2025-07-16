@@ -3,8 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 /* eslint-disable no-console */
-import {isEqual} from '@nlabs/utils/lib/checks/isEqual.js';
-import {cloneDeep} from '@nlabs/utils/lib/objects/clone/clone.js';
+import {cloneDeep, isEqual} from '@nlabs/utils';
 
 import {LoggerDebugLevel} from '../types/main';
 

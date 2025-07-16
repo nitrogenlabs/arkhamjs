@@ -4,8 +4,7 @@
  */
 /* eslint-disable no-console */
 import {jest} from '@jest/globals';
-import {cloneDeep} from '@nlabs/utils/lib/objects/clone/clone.js';
-import {set} from '@nlabs/utils/lib/objects/set/set.js';
+import {cloneDeep, set} from '@nlabs/utils';
 
 import {ArkhamConstants} from '../constants/ArkhamConstants';
 import {FluxFramework} from './Flux';

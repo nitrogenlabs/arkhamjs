@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.32.0",
+  "version": "3.32.1",
   "publishConfig": {
     "access": "public"
   },
@@ -54,7 +54,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.1.2"
+    "@nlabs/utils": "2.6.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",

@@ -47,6 +47,9 @@
     "@nlabs/arkhamjs": "^3.23.0",
     "redux": "^3.0.0"
   },
+  "dependencies": {
+    "@nlabs/utils": "2.6.0"
+  },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",

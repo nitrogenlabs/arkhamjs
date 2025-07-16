@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.31.0",
+  "version": "3.31.2",
   "publishConfig": {
     "access": "public"
   },
@@ -64,7 +64,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.1.2",
+    "@nlabs/utils": "2.6.0",
     "events": "^3.3.0"
   },
   "devDependencies": {
