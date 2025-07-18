@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-node",
-  "version": "3.29.1",
+  "version": "3.29.2",
   "publishConfig": {
     "access": "public"
   },
@@ -10,6 +10,14 @@
   "module": "./lib/index.js",
   "browser": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "keywords": [
     "arkhamjs",
     "flux",

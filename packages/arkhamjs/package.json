@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.31.2",
+  "version": "3.31.3",
   "publishConfig": {
     "access": "public"
   },
@@ -11,12 +11,12 @@
   "main": "./index.js",
   "module": "./index.js",
   "browser": "./index.js",
-  "types": "./lib/index.d.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
       "import": "./index.js",
       "require": "./index.js",
-      "types": "./lib/index.d.js"
+      "types": "./lib/index.d.ts"
     },
     "./Flux": {
       "import": "./lib/Flux/Flux.js",

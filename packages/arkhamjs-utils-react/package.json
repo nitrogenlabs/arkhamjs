@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.32.1",
+  "version": "3.32.2",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,15 @@
   "license": "MIT",
   "main": "./lib/index.js",
   "browser": "./lib/index.js",
-  "types": "./lib/index.d.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "keywords": [
     "arkhamjs",
     "flux",
