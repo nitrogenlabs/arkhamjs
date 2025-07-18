@@ -54,7 +54,7 @@
     "@nlabs/arkhamjs": "*"
   },
   "dependencies": {
-    "@nlabs/utils": "2.6.0"
+    "@nlabs/utils": "2.7.0"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",

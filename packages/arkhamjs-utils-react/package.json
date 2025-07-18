@@ -62,13 +62,13 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.6.0"
+    "@nlabs/utils": "2.7.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",
     "@nlabs/arkhamjs": "*",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.12",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "react": "^19.1.0",
     "typescript": "^5.8.3"

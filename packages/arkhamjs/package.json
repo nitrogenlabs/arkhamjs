@@ -64,7 +64,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.6.0",
+    "@nlabs/utils": "2.7.0",
     "events": "^3.3.0"
   },
   "devDependencies": {
