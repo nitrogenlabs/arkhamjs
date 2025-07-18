@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-middleware-redux",
-  "version": "3.29.2",
+  "version": "3.29.3",
   "publishConfig": {
     "access": "public"
   },
@@ -60,12 +60,7 @@
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.14",
-    "@types/redux": "^3.6.31",
-    "@types/webpack": "^5.28.5",
-    "redux": "^5.0.1",
-    "typescript": "^5.8.3"
+    "redux": "^5.0.1"
   },
   "files": [
     "lib",

@@ -10,14 +10,12 @@ import {HomeView} from './HomeView';
 
 import type {FC} from 'react';
 
-
 export const onUpdateContent = (setContent) => (): void => {
   const content = Flux.getState('app.content', '');
   setContent(content);
 };
 
-export const AppView = (): FC => {
-  // ArkhamJS Middleware
+export const AppView: FC = () => {
   const env: string = Config.get('environment');
   const logger: Logger = new Logger({
     debugLevel: env === 'development' ? LoggerDebugLevel.DISPATCH : LoggerDebugLevel.DISABLED
@@ -25,7 +23,6 @@ export const AppView = (): FC => {
 
   const [content, setContent] = useState(Flux.getState('app.content', ''));
 
-  // ArkhamJS Configuration
   Flux.init({
     middleware: [logger],
     name: 'arkhamExampleReact',
@@ -36,7 +33,6 @@ export const AppView = (): FC => {
   useEffect(() => {
     const onUpdate = onUpdateContent(setContent);
 
-    // When app initializes and gets any data from persistent storage
     Flux.onInit(onUpdate);
 
     return () => {

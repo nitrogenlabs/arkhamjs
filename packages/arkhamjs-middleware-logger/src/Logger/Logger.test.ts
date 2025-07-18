@@ -5,11 +5,10 @@
 import {Flux} from '@nlabs/arkhamjs';
 import {set} from '@nlabs/utils';
 
-import {LoggerDebugLevel} from '../types/main';
-import {Logger} from './Logger';
+import {Logger, LoggerDebugLevel} from './Logger';
 
 import type {FluxAction} from '@nlabs/arkhamjs';
-import type {LoggerOptions} from '../types/main';
+import type {LoggerOptions} from './Logger';
 
 const test = (type: string, data, state = {hello: 'world'}) => {
   switch(type) {

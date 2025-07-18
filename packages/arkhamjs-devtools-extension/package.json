@@ -57,14 +57,6 @@
     "react-router": "^6.8.0",
     "react-router-dom": "^6.8.0"
   },
-  "devDependencies": {
-    "@types/chrome": "^0.0.73",
-    "@types/jest": "^23.3.2",
-    "@types/node": "^10.9.4",
-    "@types/react": "^19.0.3",
-    "@types/react-dom": "^19.0.3",
-    "typescript": "^5.4.5"
-  },
   "files": [
     "lib",
     "index.js",

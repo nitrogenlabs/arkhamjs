@@ -10,20 +10,11 @@ export class NativeStorage {
   private options: NativeStorageOptions = {};
 
   constructor(options: NativeStorageOptions = {}) {
-    // Methods
     this.getStorageData = this.getStorageData.bind(this);
     this.setStorageData = this.setStorageData.bind(this);
-
-    // Configuration
     this.options = {...this.options, ...options};
   }
 
-  /**
-   * Removes a key from AsyncStorage.
-   *
-   * @param {string} key Key associated with the data to remove.
-   * @returns {Promise<boolean>} Whether data was successfully removed.
-   */
   static delAsyncData(key: string): Promise<boolean> {
     try {
       return AsyncStorage.removeItem(key)
@@ -34,34 +25,18 @@ export class NativeStorage {
     }
   }
 
-  /**
-   * Get a key value from AsyncStorage.
-   *
-   * @param {string} key The key for data.
-   * @returns {Promise<any>} the data object associated with the key.
-   */
   static getAsyncData(key: string): Promise<any> {
     try {
       return AsyncStorage.getItem(key)
-        .then((value: string) => {
-          const updatedValue = value ? JSON.parse(value) : null;
-          return updatedValue;
-        })
+        .then((value: string | null) => value ? JSON.parse(value) : null)
         .catch(() => Promise.resolve(null));
     } catch(error) {
       return Promise.resolve(null);
     }
   }
 
-  /**
-   * Saves data to AsyncStorage.
-   *
-   * @param {string} key Key to store data.
-   * @param {any} value Data to store.
-   * @returns {Promise<boolean>} Whether data was successfully saved.
-   */
   static setAsyncData(key: string, value): Promise<boolean> {
-    const updatedValue = value !== undefined && JSON.stringify(value);
+    const updatedValue = value !== undefined ? typeof value === 'string' ? value : JSON.stringify(value) || '' : '';
 
     try {
       return AsyncStorage.setItem(key, updatedValue)
@@ -72,23 +47,10 @@ export class NativeStorage {
     }
   }
 
-  /**
-   * Get a key value from storage.
-   *
-   * @param {string} key The key for data.
-   * @returns {Promise<any>} the data object associated with the key.
-   */
   getStorageData(key: string): Promise<any> {
     return NativeStorage.getAsyncData(key);
   }
 
-  /**
-   * Saves data to storage.
-   *
-   * @param {string} key Key to store data.
-   * @param {any} value Data to store.
-   * @returns {Promise<boolean>} Whether data was successfully saved.
-   */
   setStorageData(key: string, value): Promise<boolean> {
     return NativeStorage.setAsyncData(key, value);
   }

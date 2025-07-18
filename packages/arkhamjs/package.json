@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs",
-  "version": "3.31.3",
+  "version": "3.31.4",
   "publishConfig": {
     "access": "public"
   },
@@ -22,6 +22,11 @@
       "import": "./lib/Flux/Flux.js",
       "require": "./lib/Flux/Flux.js",
       "types": "./lib/Flux/Flux.d.ts"
+    },
+    "./Flux/types": {
+      "import": "./lib/Flux/Flux.types.js",
+      "require": "./lib/Flux/Flux.types.js",
+      "types": "./lib/Flux/Flux.types.d.ts"
     },
     "./constants": {
       "import": "./lib/constants/ArkhamConstants.js",
@@ -66,10 +71,6 @@
   "dependencies": {
     "@nlabs/utils": "2.7.0",
     "events": "^3.3.0"
-  },
-  "devDependencies": {
-    "@jest/globals": "^30.0.4",
-    "typescript": "^5.8.3"
   },
   "files": [
     "lib",

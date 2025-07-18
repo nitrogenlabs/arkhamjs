@@ -5,10 +5,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
-    "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": [
       "esnext",
@@ -16,7 +14,7 @@
       "dom.iterable"
     ],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noImplicitAny": false,
     "noImplicitOverride": false,
     "noImplicitReturns": true,
@@ -30,7 +28,7 @@
     "strict": false,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
-    "target": "ES2022",
+    "target": "esnext",
     "typeRoots": [
       "../../node_modules/@types",
       "node_modules/@types",
@@ -41,7 +39,7 @@
       "node"
     ],
     "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false
   },
   "exclude": [
     "node_modules",

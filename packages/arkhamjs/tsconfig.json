@@ -5,10 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "exactOptionalPropertyTypes": true,
-    "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
-    "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": [
       "esnext",
@@ -40,8 +37,7 @@
       "jest",
       "node"
     ],
-    "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
+    "useDefineForClassFields": true
   },
   "exclude": [
     "node_modules",

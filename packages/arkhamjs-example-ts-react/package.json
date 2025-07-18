@@ -53,14 +53,6 @@
     "react-dom": "^19.0.0",
     "react-jss": "^10.10.0"
   },
-  "devDependencies": {
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.11.5",
-    "@types/react": "^19.0.3",
-    "@types/react-dom": "^19.0.3",
-    "react-test-renderer": "^19.0.0",
-    "typescript": "^5.3.3"
-  },
   "files": [
     "src",
     ".eslintrc",

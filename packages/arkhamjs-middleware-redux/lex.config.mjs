@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ai: {
     maxTokens: 4000,
     model: 'cursor-code',

@@ -5,10 +5,22 @@
 /* eslint-disable no-console */
 import {cloneDeep, isEqual} from '@nlabs/utils';
 
-import {LoggerDebugLevel} from '../types/main';
-
 import type {FluxAction} from '@nlabs/arkhamjs';
-import type {LoggerOptions} from '../types/main';
+
+export const LoggerDebugLevel = {
+  DISABLED: 0,
+  LOGS: 1,
+  DISPATCH: 2
+} as const;
+
+export type LoggerDebugLevelType = typeof LoggerDebugLevel[keyof typeof LoggerDebugLevel];
+
+export interface LoggerOptions {
+  readonly debugLevel?: LoggerDebugLevelType;
+  readonly debugErrorFnc?: (debugLevel: number, ...args: any[]) => void;
+  readonly debugInfoFnc?: (debugLevel: number, ...args: any[]) => void;
+  readonly debugLogFnc?: (debugLevel: number, ...args: any[]) => void;
+}
 
 export class Logger {
   name: string = 'Logger';
@@ -49,7 +61,7 @@ export class Logger {
    * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
    * are appended together in the order listed and output.
    */
-  debugError(...obj): void {
+  debugError(...obj: any[]): void {
     const {debugErrorFnc, debugLevel} = this.options;
 
     if(debugLevel) {
@@ -57,7 +69,7 @@ export class Logger {
     }
 
     if(debugErrorFnc) {
-      debugErrorFnc(debugLevel as LoggerDebugLevel, ...obj);
+      debugErrorFnc(debugLevel as number, ...obj);
     }
   }
 
@@ -67,7 +79,7 @@ export class Logger {
    * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
    * are appended together in the order listed and output.
    */
-  debugInfo(...obj): void {
+  debugInfo(...obj: any[]): void {
     const {debugInfoFnc, debugLevel} = this.options;
 
     if(debugLevel) {
@@ -75,7 +87,7 @@ export class Logger {
     }
 
     if(debugInfoFnc) {
-      debugInfoFnc(debugLevel as LoggerDebugLevel, ...obj);
+      debugInfoFnc(debugLevel as number, ...obj);
     }
   }
 
@@ -85,7 +97,7 @@ export class Logger {
    * @param {object} obj A list of JavaScript objects to output. The string representations of each of these objects
    * are appended together in the order listed and output.
    */
-  debugLog(...obj): void {
+  debugLog(...obj: any[]): void {
     const {debugLogFnc, debugLevel} = this.options;
 
     if(debugLevel) {
@@ -93,7 +105,7 @@ export class Logger {
     }
 
     if(debugLogFnc) {
-      debugLogFnc(debugLevel as LoggerDebugLevel, ...obj);
+      debugLogFnc(debugLevel as number, ...obj);
     }
   }
 
@@ -105,7 +117,7 @@ export class Logger {
    *   LoggerDebugLevel.LOGS (1) - Enable console logs.
    *   LoggerDebugLevel.DISPATCH (2) - Enable console logs and dispatch action data (default).
    */
-  enableDebugger(level: number = LoggerDebugLevel.DISPATCH): void {
+  enableDebugger(level: LoggerDebugLevelType = LoggerDebugLevel.DISPATCH): void {
     this.options = {...this.options, debugLevel: level};
   }
 

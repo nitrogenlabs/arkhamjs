@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-node",
-  "version": "3.29.2",
+  "version": "3.29.3",
   "publishConfig": {
     "access": "public"
   },
@@ -57,11 +57,7 @@
     "@nlabs/arkhamjs": "^3.26.0"
   },
   "devDependencies": {
-    "@nlabs/arkhamjs": "*",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.14",
-    "@types/node-persist": "^3.1.8",
-    "typescript": "^5.8.3"
+    "@nlabs/arkhamjs": "*"
   },
   "files": [
     "lib",

@@ -13,11 +13,18 @@
     "update": "npm run update --workspaces"
   },
   "devDependencies": {
-    "@nlabs/lex": "^1.47.2",
+    "@nlabs/lex": "^1.48.6",
+    "@types/chrome": "^0.0.73",
     "@types/events": "^3.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.12",
+    "@types/react": "^19.1.8",
+    "@types/redux": "^3.6.31",
+    "@types/webpack": "^5.28.5",
+    "@types/node-persist": "^3.1.8",
+    "@types/react-dom": "^19.0.3",
     "jest-environment-jsdom": "^30.0.4",
+    "react-test-renderer": "^19.0.0",
     "typescript": "^5.8.3"
   },
   "workspaces": [
