@@ -1,6 +1,4 @@
-# ArkhamJS: Predictable State Container for JavaScript Apps
-
-> A lightweight, isomorphic data state management library for JavaScript applications
+# ArkhamJS: A lightweight, isomorphic data state management library
 
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
