@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ai: {
     maxTokens: 4000,
     model: 'cursor-code',
@@ -33,19 +33,15 @@ module.exports = {
     }
   },
   jest: {
-    transformIgnorePatterns: [
-      "/node_modules/(?!@nlabs/utils)"
-    ],
-    // moduleNameMapper: {
-    //   '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js'
-    // },
-    setupFilesAfterEnv: ['./jest.setup.js'],
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
+    moduleNameMapper: {
+      '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js',
+      '^@nlabs/utils/(.*)$': '<rootDir>/../../node_modules/@nlabs/utils/lib/$1'
+    },
     testEnvironment: 'jsdom',
-    transform: {
-      '^.+\\.tsx?$': ['ts-jest', {
-        tsconfig: './tsconfig.test.json'
-      }]
-    }
+    transformIgnorePatterns: [
+      '/node_modules/(?!@nlabs/utils)'
+    ]
   },
   outputPath: 'lib',
   preset: 'node',

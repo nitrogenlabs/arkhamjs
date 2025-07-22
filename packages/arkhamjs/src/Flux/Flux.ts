@@ -2,7 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {cloneDeep, debounceCompact, get, isEmpty, merge, parseStack, set} from '@nlabs/utils';
+import {cloneDeep, debounceCompact, get, merge, parseStack, set} from '@nlabs/utils';
 import {EventEmitter} from 'events';
 
 import {ArkhamConstants} from '../constants/ArkhamConstants';
@@ -279,8 +279,8 @@ export class FluxFramework extends EventEmitter {
 
   async addStores(stores: FluxStore[]): Promise<FluxStore[]> {
     const registeredStores: FluxStore[] = stores.map((store: FluxStore) => this.register(store));
-
     const {name, storage} = this.options;
+
     if(storage?.setStorageData) {
       try {
         await storage.setStorageData(name ?? 'arkhamjs', this.state);
@@ -425,32 +425,49 @@ export class FluxFramework extends EventEmitter {
     this.stateCache.clear(); // Clear cache when stores change
   }
 
-  private register(storeFn: unknown): FluxStore {
-    if(!storeFn) {
+  private register(store: any): FluxStore {
+    if(!store) {
       throw Error('Store is undefined. Cannot register with Flux.');
     }
 
-    if(typeof storeFn !== 'function') {
-      throw Error(`${storeFn} is not a store function. Cannot register with Flux.`);
+    let storeName: string;
+    let storeAction: (type: string, data: unknown, state: unknown) => unknown;
+    let initialState: unknown;
+
+    if(typeof store === 'function') {
+      // Function store - extract name from function.name
+      storeName = store.name || 'anonymous';
+      storeAction = store;
+      initialState = store();
+    } else if(typeof store?.action === 'function') {
+      // Object store with action method
+      storeName = store.name || 'anonymous';
+      storeAction = store.action;
+      initialState = store.initialState || store.action();
+    } else {
+      throw Error(`${store} is not a valid store. Must be a function or object with action method.`);
     }
 
-    const {name} = storeFn;
-    const initialState: unknown = (storeFn as () => unknown)();
-    const storeAction: FluxStore = {
-      action: storeFn as (type: string, data: unknown, state: unknown) => unknown,
+    if(!storeName || storeName === 'anonymous') {
+      // Silently ignore anonymous stores - return undefined
+      return undefined as any;
+    }
+
+    const fluxStore: FluxStore = {
+      action: storeAction,
       initialState,
-      name
+      name: storeName
     };
 
-    if(!isEmpty(name) && !this.storeActions[name]) {
-      this.storeActions[name] = storeAction;
+    if(!this.storeActions[storeName]) {
+      this.storeActions[storeName] = fluxStore;
 
-      if(!this.state[name]) {
-        this.state[name] = initialState ? cloneDeep(initialState) : {};
+      if(!this.state[storeName]) {
+        this.state[storeName] = cloneDeep(initialState || {});
       }
     }
 
-    return this.storeActions[name]!;
+    return this.storeActions[storeName]!;
   }
 
   private removePlugin(type: string, name: string): FluxPluginType[] {

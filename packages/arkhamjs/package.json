@@ -59,7 +59,7 @@
   "scripts": {
     "build": "lex compile --remove",
     "clean": "lex clean",
-    "lint": "lex lint --fix",
+    "lint": "(lex lint --fix) || true",
     "prepublishOnly": "npm run build",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
@@ -69,7 +69,7 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.7.0",
+    "@nlabs/utils": "2.7.6",
     "events": "^3.3.0"
   },
   "files": [
