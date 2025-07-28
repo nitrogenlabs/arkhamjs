@@ -62,11 +62,11 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.7.0"
+    "@nlabs/utils": "2.8.3"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "react": "^19.1.0"
+    "react": "^19.1.1"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0",

@@ -54,13 +54,13 @@
     "@nlabs/arkhamjs": "*"
   },
   "dependencies": {
-    "@nlabs/utils": "2.7.0"
+    "@nlabs/utils": "2.8.3"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@nlabs/lex": "^1.48.6",
+    "@nlabs/lex": "^1.48.7",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.1.0",
     "typescript": "^5.8.3"
   },
   "files": [
