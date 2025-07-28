@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.32.4",
+  "version": "3.32.5",
   "publishConfig": {
     "access": "public"
   },

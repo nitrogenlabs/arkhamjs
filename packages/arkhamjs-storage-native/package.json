@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-storage-native",
-  "version": "3.30.4",
+  "version": "3.30.5",
   "publishConfig": {
     "access": "public"
   },
