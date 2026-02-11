@@ -1,5 +1,5 @@
-import {AppConstants} from '../../constants/AppConstants';
-import {updateContent} from './AppActions';
+import {AppConstants} from '../../constants/AppConstants.js';
+import {updateContent} from './AppActions.js';
 
 describe('AppActions', () => {
   const content: string = 'test';
@@ -8,7 +8,6 @@ describe('AppActions', () => {
     let action;
 
     beforeAll(async () => {
-      // Method
       action = await updateContent(content);
     });
 

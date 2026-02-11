@@ -4,7 +4,7 @@
  */
 import {useContext} from 'react';
 
-import {FluxContext} from './FluxContext';
+import {FluxContext} from './FluxContext.js';
 
 export const useFluxDispatch = (type: string, data: any = {}, silent: boolean = false) => {
   const {flux} = useContext(FluxContext);

@@ -2,12 +2,17 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {cloneDeep, debounceCompact, get, merge, parseStack, set} from '@nlabs/utils';
+import {cloneDeep} from '@nlabs/utils/objects/clone';
+import {debounceCompact} from '@nlabs/utils/objects/debounce-compact';
+import {get} from '@nlabs/utils/objects/get';
+import {merge} from '@nlabs/utils/objects/merge';
+import {set} from '@nlabs/utils/objects/set';
+import {parseStack} from '@nlabs/utils/objects/stack-parser';
 import {EventEmitter} from 'events';
 
-import {ArkhamConstants} from '../constants/ArkhamConstants';
+import {ArkhamConstants} from '../constants/ArkhamConstants.js';
 
-import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginType, FluxStore} from './Flux.types';
+import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxPluginType, FluxStore} from './Flux.types.js';
 
 const STACK_CACHE = new Map<string, any[]>();
 const STACK_CACHE_SIZE = 100;

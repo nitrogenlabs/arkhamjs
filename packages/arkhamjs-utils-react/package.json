@@ -1,6 +1,6 @@
 {
   "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.32.5",
+  "version": "3.32.7",
   "publishConfig": {
     "access": "public"
   },
@@ -62,11 +62,11 @@
     "update": "lex update --interactive"
   },
   "dependencies": {
-    "@nlabs/utils": "2.8.3"
+    "@nlabs/utils": "2.8.6"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "react": "^19.1.1"
+    "react": "^19.2.1"
   },
   "peerDependencies": {
     "@nlabs/arkhamjs": "^3.26.0",

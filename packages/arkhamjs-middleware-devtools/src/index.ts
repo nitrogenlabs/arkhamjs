@@ -4,4 +4,4 @@
  */
 
 // Middleware for ArkhamJS
-export {DevTools} from './middleware/DevTools';
+export {DevTools} from './middleware/DevTools.js';

@@ -34,10 +34,6 @@ export default {
   },
   jest: {
     extensionsToTreatAsEsm: ['.ts', '.tsx'],
-    moduleNameMapper: {
-      '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js',
-      '^@nlabs/utils/(.*)$': '<rootDir>/../../node_modules/@nlabs/utils/lib/$1'
-    },
     testEnvironment: 'jsdom',
     transformIgnorePatterns: [
       '/node_modules/(?!@nlabs/utils)'
@@ -46,5 +42,6 @@ export default {
   outputPath: 'lib',
   preset: 'node',
   remove: true,
+  tsconfig: 'tsconfig.build.json',
   useTypescript: true
 };

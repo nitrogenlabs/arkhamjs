@@ -1,5 +1,5 @@
-import {AppConstants} from '../../constants/AppConstants';
-import {AppState} from './appStore.types';
+import {AppConstants} from '../../constants/AppConstants.js';
+import {AppState} from './appStore.types.js';
 
 export const initialState: AppState = {
   content: 'Hello World'

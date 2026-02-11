@@ -3,7 +3,8 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 /* eslint-disable no-console */
-import {cloneDeep, isEqual} from '@nlabs/utils';
+import {cloneDeep} from '@nlabs/utils/objects/clone';
+import {isEqual} from '@nlabs/utils/checks/isEqual';
 
 import type {FluxAction} from '@nlabs/arkhamjs';
 

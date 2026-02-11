@@ -4,7 +4,7 @@
  */
 import {useCallback, useEffect, useState} from 'react';
 
-import type {WindowSize} from './useWindowSize.types';
+import type {WindowSize} from './useWindowSize.types.js';
 
 const isClient = typeof window === 'object';
 

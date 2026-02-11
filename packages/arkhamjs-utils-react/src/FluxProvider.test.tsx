@@ -6,7 +6,7 @@
 import {beforeAll, describe, expect, it} from '@jest/globals';
 import {Flux} from '@nlabs/arkhamjs';
 
-import {FluxProvider} from './FluxProvider';
+import {FluxProvider} from './FluxProvider.js';
 
 describe('FluxProvider', () => {
   let children: any[];
@@ -15,12 +15,12 @@ describe('FluxProvider', () => {
   beforeAll(() => {
     Flux.init();
     children = [];
-    const props = {Flux, children};
+    const props = {flux: Flux, children};
     provider = <FluxProvider {...props} />;
   });
 
   it('should create a provider with Flux', () => {
-    expect(provider.props.Flux).toEqual(Flux);
+    expect(provider.props.flux).toEqual(Flux);
   });
 
   it('should create a provider with children', () => {

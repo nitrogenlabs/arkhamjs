@@ -1,6 +1,7 @@
-import {get, merge} from '@nlabs/utils';
+import { get } from '@nlabs/utils/objects/get';
+import { merge } from '@nlabs/utils/objects/merge';
 
-import type {EnvConfig} from './config.types';
+import type { EnvConfig } from './config.types.js';
 
 const {NODE_ENV} = process.env;
 

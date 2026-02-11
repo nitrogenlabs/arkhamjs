@@ -6,14 +6,12 @@ import type {
   BrowserStorageOptions,
   StorageData,
   StorageInterface
-} from '../types/main';
+} from '../types/main.js';
 
-// Constants for optimization
 const DEFAULT_PREFIX = 'arkhamjs_';
 const DEFAULT_MAX_SIZE = 5 * 1024 * 1024; // 5MB
 const DEFAULT_TTL = 24 * 60 * 60 * 1000; // 24 hours
 
-// Utility functions
 const isExpired = (data: StorageData): boolean => {
   if(!data.ttl) {
     return false;
@@ -24,11 +22,8 @@ const isExpired = (data: StorageData): boolean => {
 const getStorageSize = (data: string): number => new Blob([data]).size;
 
 const compressData = (data: any): string => {
-  // Simple compression for large objects
   const jsonString = JSON.stringify(data);
   if(jsonString.length > 1000) {
-    // For large data, we could implement actual compression here
-    // For now, we'll use a simple approach
     return jsonString;
   }
   return jsonString;
@@ -63,7 +58,6 @@ export class BrowserStorage {
     this.storage = this.getStorage();
   }
 
-  // Static methods for backward compatibility
   static delLocalData(key: string): boolean {
     try {
       const storage = BrowserStorage.window.localStorage;
@@ -158,7 +152,6 @@ export class BrowserStorage {
     }
   }
 
-  // Public instance methods
   async getStorageData(key: string): Promise<any> {
     if(!this.isStorageAvailable()) {
       return null;
@@ -166,7 +159,6 @@ export class BrowserStorage {
 
     const prefixedKey = this.getPrefixedKey(key);
 
-    // Check cache first
     if(this.storageCache.has(prefixedKey)) {
       return this.storageCache.get(prefixedKey);
     }
@@ -182,14 +174,12 @@ export class BrowserStorage {
         return null;
       }
 
-      // Check if data is expired
       if(isExpired(data)) {
         this.storage!.removeItem(prefixedKey);
         this.storageCache.delete(prefixedKey);
         return null;
       }
 
-      // Cache the result
       this.storageCache.set(prefixedKey, data.value);
       return data.value;
     } catch{
@@ -220,7 +210,6 @@ export class BrowserStorage {
         ? compressData(storageData)
         : JSON.stringify(storageData);
 
-      // Validate size
       if(!this.validateSize(jsonString)) {
         // eslint-disable-next-line no-console
         console.warn(`Storage data exceeds maximum size for key: ${key}`);
@@ -229,7 +218,6 @@ export class BrowserStorage {
 
       this.storage!.setItem(prefixedKey, jsonString);
 
-      // Update cache
       this.storageCache.set(prefixedKey, value);
 
       return true;
@@ -307,7 +295,6 @@ export class BrowserStorage {
     };
   }
 
-  // Private helper methods
   private getStorage(): StorageInterface | null {
     try {
       const {type} = this.options;
@@ -358,7 +345,6 @@ export class BrowserStorage {
           }
         }
       } catch{
-        // Remove corrupted data
         this.storage!.removeItem(key);
         this.storageCache.delete(key);
       }

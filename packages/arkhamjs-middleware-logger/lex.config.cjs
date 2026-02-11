@@ -5,6 +5,10 @@ module.exports = {
     provider: 'cursor',
     temperature: 0.1
   },
+  jest: {
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
+    testEnvironment: 'jsdom'
+  },
   outputPath: 'lib',
   preset: 'web',
   remove: true,

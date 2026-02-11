@@ -1,1 +1,1 @@
-export {InspectorConstants} from './InspectorConstants';
+export {InspectorConstants} from './InspectorConstants.js';

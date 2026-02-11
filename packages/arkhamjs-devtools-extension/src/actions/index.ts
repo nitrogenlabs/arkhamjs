@@ -1,1 +1,1 @@
-export {InspectorActions} from './InspectorActions';
+export {InspectorActions} from './InspectorActions.js';

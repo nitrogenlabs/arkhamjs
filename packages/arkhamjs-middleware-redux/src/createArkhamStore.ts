@@ -2,14 +2,15 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {Flux} from '@nlabs/arkhamjs';
-import {isPlainObject, merge} from '@nlabs/utils';
-import {applyMiddleware, createStore, Store} from 'redux';
+import { Flux } from '@nlabs/arkhamjs';
+import { isPlainObject } from '@nlabs/utils/checks/isPlainObject';
+import { merge } from '@nlabs/utils/objects/merge';
+import { applyMiddleware, createStore, Store } from 'redux';
 
-import {arkhamMiddleware} from './middleware/arkhamMiddleware';
-import {ReduxMiddleware} from './middleware/ReduxMiddleware';
+import { arkhamMiddleware } from './middleware/arkhamMiddleware.js';
+import { ReduxMiddleware } from './middleware/ReduxMiddleware.js';
 
-import type {ArkhamReduxStoreType} from './types/main';
+import type { ArkhamReduxStoreType } from './types/main.js';
 
 export const createArkhamStore = (configuration: ArkhamReduxStoreType): Store<any> => {
   const {

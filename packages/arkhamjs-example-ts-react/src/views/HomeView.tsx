@@ -2,10 +2,10 @@ import {useFluxListener} from '@nlabs/arkhamjs-utils-react';
 import {useRef, useState} from 'react';
 import {createUseStyles} from 'react-jss';
 
-import {updateContent} from '../actions/AppActions/AppActions';
-import {Icon} from '../components/Icon/Icon';
-import {AppConstants} from '../constants/AppConstants';
-import {uppercaseWords} from '../services/StringService';
+import {updateContent} from '../actions/AppActions/AppActions.js';
+import {Icon} from '../components/Icon/Icon.js';
+import {AppConstants} from '../constants/AppConstants.js';
+import {uppercaseWords} from '../services/StringService.js';
 
 const useStyles = createUseStyles({
   logo: {
@@ -61,7 +61,7 @@ export const onUpdateContent = (setContent) => ({content}) => {
 export const HomeView = ({initialContent}) => {
   // State
   const [content, setContent] = useState(initialContent);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useFluxListener(AppConstants.UPDATE_CONTENT, onUpdateContent(setContent));
 

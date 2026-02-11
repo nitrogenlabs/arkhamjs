@@ -4,12 +4,13 @@
  */
 /* eslint-disable no-console */
 import {jest} from '@jest/globals';
-import {cloneDeep, set} from '@nlabs/utils';
+import {cloneDeep} from '@nlabs/utils/objects/clone';
+import {set} from '@nlabs/utils/objects/set';
 
-import {ArkhamConstants} from '../constants/ArkhamConstants';
-import {FluxFramework} from './Flux';
+import {ArkhamConstants} from '../constants/ArkhamConstants.js';
+import {FluxFramework} from './Flux.js';
 
-import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxStore} from './Flux.types';
+import type {FluxAction, FluxMiddlewareType, FluxOptions, FluxStore} from './Flux.types.js';
 
 
 const initialState = {

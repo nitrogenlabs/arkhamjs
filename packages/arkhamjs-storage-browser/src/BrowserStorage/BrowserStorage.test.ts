@@ -4,7 +4,7 @@
  */
 import {jest} from '@jest/globals';
 
-import {BrowserStorage} from './BrowserStorage';
+import {BrowserStorage} from './BrowserStorage.js';
 
 import type {SpiedFunction} from 'jest-mock';
 

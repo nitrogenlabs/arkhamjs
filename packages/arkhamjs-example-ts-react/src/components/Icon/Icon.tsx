@@ -1,6 +1,6 @@
 import {createUseStyles} from 'react-jss';
 
-import {IconProps, IconSize} from './Icon.types';
+import {IconProps, IconSize} from './Icon.types.js';
 
 const useStyles = createUseStyles({
   icon: ({iconSize}) => ({
@@ -24,7 +24,7 @@ const useStyles = createUseStyles({
   })
 });
 
-export const Icon = (props: IconProps): JSX.Element => {
+export const Icon = (props: IconProps): React.ReactElement => {
   const {
     className = '',
     name = 'icon',

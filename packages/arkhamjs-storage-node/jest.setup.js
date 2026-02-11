@@ -1,6 +1,5 @@
-jest.mock('node-persist', () => ({
-  init: (options) => jest.fn(),
-  getItem: (key) => Promise.resolve(jest.fn()),
-  removeItem: (key) => Promise.resolve(jest.fn()),
-  setItem: (key, val) => Promise.resolve(jest.fn())
-}));
+// Jest setup for TypeScript support
+import {jest} from '@jest/globals';
+
+// Make Jest globals available globally
+global.jest = jest;

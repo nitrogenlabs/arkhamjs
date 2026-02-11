@@ -2,9 +2,13 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import type {AsyncStorageStatic} from '@react-native-async-storage/async-storage';
+import AsyncStorageModule from '@react-native-async-storage/async-storage';
 
-import {NativeStorageOptions} from './NativeStorage.types';
+import {NativeStorageOptions} from './NativeStorage.types.js';
+
+// Type assertion needed for NodeNext module resolution with AsyncStorage
+const AsyncStorage = AsyncStorageModule as unknown as AsyncStorageStatic;
 
 export class NativeStorage {
   private options: NativeStorageOptions = {};
@@ -28,7 +32,17 @@ export class NativeStorage {
   static getAsyncData(key: string): Promise<any> {
     try {
       return AsyncStorage.getItem(key)
-        .then((value: string | null) => value ? JSON.parse(value) : null)
+        .then((value: string | null) => {
+          if(value === null) {
+            return null;
+          }
+          try {
+            return JSON.parse(value);
+          } catch {
+            // If parsing fails, return the value as-is (backward compatibility)
+            return value;
+          }
+        })
         .catch(() => Promise.resolve(null));
     } catch(error) {
       return Promise.resolve(null);
@@ -36,7 +50,7 @@ export class NativeStorage {
   }
 
   static setAsyncData(key: string, value): Promise<boolean> {
-    const updatedValue = value !== undefined ? typeof value === 'string' ? value : JSON.stringify(value) || '' : '';
+    const updatedValue = value !== undefined ? JSON.stringify(value) : '';
 
     try {
       return AsyncStorage.setItem(key, updatedValue)

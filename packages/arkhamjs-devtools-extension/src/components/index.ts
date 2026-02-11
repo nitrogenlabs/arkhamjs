@@ -1,1 +1,1 @@
-export {TabBar} from './TabBar/TabBar';
+export {TabBar} from './TabBar/TabBar.js';

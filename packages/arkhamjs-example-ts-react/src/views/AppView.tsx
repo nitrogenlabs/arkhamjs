@@ -4,9 +4,9 @@ import {BrowserStorage} from '@nlabs/arkhamjs-storage-browser';
 import {FluxProvider} from '@nlabs/arkhamjs-utils-react';
 import {useEffect, useState} from 'react';
 
-import {Config} from '../config';
-import {app} from '../stores/appStore/appStore';
-import {HomeView} from './HomeView';
+import {Config} from '../config/index.js';
+import {app} from '../stores/appStore/appStore.js';
+import {HomeView} from './HomeView.js';
 
 import type {FC} from 'react';
 

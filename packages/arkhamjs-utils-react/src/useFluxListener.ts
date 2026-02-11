@@ -4,7 +4,7 @@
  */
 import {useContext, useEffect} from 'react';
 
-import {FluxContext} from './FluxContext';
+import {FluxContext} from './FluxContext.js';
 
 import type {FluxFramework} from '@nlabs/arkhamjs';
 

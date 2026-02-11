@@ -1,5 +1,5 @@
-import {AppConstants} from '../../constants/AppConstants';
-import {app, initialState} from './appStore';
+import {AppConstants} from '../../constants/AppConstants.js';
+import {app, initialState} from './appStore.js';
 
 describe('app', () => {
   describe('action', () => {

@@ -1,8 +1,7 @@
 import {FluxProvider} from '@nlabs/arkhamjs-utils-react';
-import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 
-import {HomeView} from './HomeView';
+import {HomeView} from './HomeView.js';
 
 describe('HomeView', () => {
   let rendered;

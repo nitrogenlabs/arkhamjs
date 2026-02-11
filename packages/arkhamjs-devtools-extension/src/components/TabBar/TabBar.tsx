@@ -1,8 +1,8 @@
 import Tabs from 'rc-tabs';
 import * as React from 'react';
 
-import { InspectorActions } from '../../actions';
-import { ActionsView, InfoView, StateView } from '../../views';
+import { InspectorActions } from '../../actions/index.js';
+import { ActionsView, InfoView, StateView } from '../../views/index.js';
 
 export class TabBar extends React.Component<React.PropsWithChildren<{}>> {
   data;
@@ -10,14 +10,12 @@ export class TabBar extends React.Component<React.PropsWithChildren<{}>> {
   constructor(props) {
     super(props);
 
-    // Set tab data
     this.data = [
       {label: 'Actions', key: 'actions', children: <ActionsView />},
       {label: 'State', key: 'stateTree', children: <StateView />},
       {label: 'Info', key: 'appDetails', children: <InfoView />}
     ];
 
-    // Methods
     this.onSelect = this.onSelect.bind(this);
   }
 

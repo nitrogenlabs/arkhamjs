@@ -2,13 +2,15 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
+import {jest} from '@jest/globals';
 import {Flux} from '@nlabs/arkhamjs';
-import {set} from '@nlabs/utils';
+import {set} from '@nlabs/utils/objects/set';
 
-import {Logger, LoggerDebugLevel} from './Logger';
+import {Logger, LoggerDebugLevel} from './Logger.js';
 
-import type {FluxAction} from '@nlabs/arkhamjs';
-import type {LoggerOptions} from './Logger';
+
+type FluxAction = import('@nlabs/arkhamjs').FluxAction;
+type LoggerOptions = import('./Logger.js').LoggerOptions;
 
 const test = (type: string, data, state = {hello: 'world'}) => {
   switch(type) {
@@ -56,10 +58,8 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      // Spy
       consoleSpy = jest.spyOn(console, 'error');
 
-      // Method
       logger.debugError(msg);
     });
 
@@ -77,10 +77,8 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      // Spy
       consoleSpy = jest.spyOn(console, 'info');
 
-      // Method
       logger.debugInfo(msg);
     });
 
@@ -98,10 +96,8 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      // Spy
       consoleSpy = jest.spyOn(console, 'log');
 
-      // Method
       logger.debugLog(msg);
     });
 
@@ -149,7 +145,6 @@ describe('Logger', () => {
     const nextStore = {test: 'next'};
 
     beforeEach(() => {
-      // Spy
       consoleSpy = jest.spyOn(console, 'log');
     });
 
@@ -158,29 +153,11 @@ describe('Logger', () => {
     });
 
     it('should dispatch logs for a changed state', () => {
-      // Method
       logger.preDispatch(testAction, prevStore);
       logger.postDispatch(testAction, nextStore);
 
-      // expect(consoleSpy.mock.calls[0][0]).toEqual('%c Action: ');
-      // expect(consoleSpy.mock.calls[0][2]).toEqual(testAction);
-      // expect(consoleSpy.mock.calls[1][0]).toEqual('%c Last State: ');
-      // expect(consoleSpy.mock.calls[1][2]).toEqual(prevStore);
       expect(consoleSpy.mock.calls[2][0]).toEqual('%c Changed State: ');
       expect(consoleSpy.mock.calls[2][2]).toEqual(nextStore);
     });
-
-    // it('should dispatch logs for an unchanged state', () => {
-    //   // Method
-    //   logger.preDispatch(testAction, prevStore);
-    //   logger.postDispatch(testAction, prevStore);
-
-    //   expect(consoleSpy.mock.calls[0][0]).toEqual('%c Action: ');
-    //   expect(consoleSpy.mock.calls[0][2]).toEqual(testAction);
-    //   expect(consoleSpy.mock.calls[1][0]).toEqual('%c Last State: ');
-    //   expect(consoleSpy.mock.calls[1][2]).toEqual(prevStore);
-    //   expect(consoleSpy.mock.calls[2][0]).toEqual('%c Unchanged State: ');
-    //   expect(consoleSpy.mock.calls[2][2]).toEqual(prevStore);
-    // });
   });
 });

@@ -1,4 +1,4 @@
-import {capitalize, uppercaseWords} from './StringService';
+import {capitalize, uppercaseWords} from './StringService.js';
 
 describe('StringService', () => {
   describe('.uppercaseWords', () => {

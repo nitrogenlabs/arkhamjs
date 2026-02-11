@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 
-import {AppView} from './AppView';
+import {AppView} from './AppView.js';
 
 describe('AppView', () => {
   let rendered;

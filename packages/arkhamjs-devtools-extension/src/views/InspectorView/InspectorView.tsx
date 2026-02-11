@@ -3,12 +3,12 @@ import { BrowserStorage } from '@nlabs/arkhamjs-storage-browser';
 import * as React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
-import { InspectorActions } from '../../actions';
-import { TabBar } from '../../components';
-import { InspectorDispatchType } from '../../types/inspector';
-import { ActionsView } from '../ActionsView/ActionsView';
-import { InfoView } from '../InfoView/InfoView';
-import { StateView } from '../StateView/StateView';
+import { InspectorActions } from '../../actions/index.js';
+import { TabBar } from '../../components/index.js';
+import { InspectorDispatchType } from '../../types/inspector.js';
+import { ActionsView } from '../ActionsView/ActionsView.js';
+import { InfoView } from '../InfoView/InfoView.js';
+import { StateView } from '../StateView/StateView.js';
 
 export class InspectorView extends React.Component<{}, {}> {
   constructor(props) {
@@ -25,11 +25,15 @@ export class InspectorView extends React.Component<{}, {}> {
   }
 
   componentDidMount(): void {
-    chrome.runtime.onMessage.addListener(this.onData);
+    if (typeof window !== 'undefined' && typeof (window as any).chrome !== 'undefined' && (window as any).chrome.runtime && (window as any).chrome.runtime.onMessage) {
+      (window as any).chrome.runtime.onMessage.addListener(this.onData);
+    }
   }
 
   componentWillUnmount(): void {
-    chrome.runtime.onMessage.removeListener(this.onData);
+    if (typeof window !== 'undefined' && typeof (window as any).chrome !== 'undefined' && (window as any).chrome.runtime && (window as any).chrome.runtime.onMessage) {
+      (window as any).chrome.runtime.onMessage.removeListener(this.onData);
+    }
   }
 
   onData(eventData): void {

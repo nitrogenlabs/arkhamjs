@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
-export {Logger, LoggerDebugLevel} from './Logger/Logger';
+export { Logger, LoggerDebugLevel } from './Logger/Logger.js';
 
-export type {LoggerDebugLevelType, LoggerOptions} from './Logger/Logger';
+export type { LoggerDebugLevelType, LoggerOptions } from './Logger/Logger.js';
 
