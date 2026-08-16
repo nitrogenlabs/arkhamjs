@@ -9,3 +9,9 @@ export interface ArkhamReduxStoreType {
   sagas: any;
   statePath: string;
 }
+
+export interface ArkhamReduxAction {
+  [key: string]: any;
+  __ARKHAMJS_DISPATCH?: boolean;
+  type: string;
+}

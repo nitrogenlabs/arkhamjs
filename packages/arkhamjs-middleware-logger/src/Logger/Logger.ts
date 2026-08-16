@@ -131,7 +131,7 @@ export class Logger {
     return this.options;
   }
 
-  preDispatch(action: FluxAction, store): Promise<FluxAction> {
+  preDispatch(action: FluxAction, store: object): Promise<FluxAction> {
     this.previousStore = store;
     return Promise.resolve(action);
   }

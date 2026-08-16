@@ -2,13 +2,13 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import type {AsyncStorageStatic} from '@react-native-async-storage/async-storage';
+import type {AsyncStorage as AsyncStorageType} from '@react-native-async-storage/async-storage';
 import AsyncStorageModule from '@react-native-async-storage/async-storage';
 
 import {NativeStorageOptions} from './NativeStorage.types.js';
 
 // Type assertion needed for NodeNext module resolution with AsyncStorage
-const AsyncStorage = AsyncStorageModule as unknown as AsyncStorageStatic;
+const AsyncStorage = AsyncStorageModule as AsyncStorageType;
 
 export class NativeStorage {
   private options: NativeStorageOptions = {};
@@ -49,7 +49,7 @@ export class NativeStorage {
     }
   }
 
-  static setAsyncData(key: string, value): Promise<boolean> {
+  static setAsyncData(key: string, value: unknown): Promise<boolean> {
     const updatedValue = value !== undefined ? JSON.stringify(value) : '';
 
     try {
@@ -65,7 +65,7 @@ export class NativeStorage {
     return NativeStorage.getAsyncData(key);
   }
 
-  setStorageData(key: string, value): Promise<boolean> {
+  setStorageData(key: string, value: unknown): Promise<boolean> {
     return NativeStorage.setAsyncData(key, value);
   }
 }

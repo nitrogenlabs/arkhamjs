@@ -86,10 +86,10 @@ export class NodeStorage {
    * Saves data to persistent data.
    *
    * @param {string} key Key to store data.
-   * @param {any} value Data to store.
+   * @param {unknown} value Data to store.
    * @returns {Promise<boolean>} Whether data was successfully saved.
    */
-  static setPersistData(key: string, value): Promise<boolean> {
+  static setPersistData(key: string, value: unknown): Promise<boolean> {
     try {
       return new Promise((resolve) => {
         PersistStorage.setItem(key, value)
@@ -124,10 +124,10 @@ export class NodeStorage {
    * Saves data to storage.
    *
    * @param {string} key Key to store data.
-   * @param {any} value Data to store.
+   * @param {unknown} value Data to store.
    * @returns {Promise<boolean>} Whether data was successfully saved.
    */
-  setStorageData(key: string, value): Promise<boolean> {
+  setStorageData(key: string, value: unknown): Promise<boolean> {
     return NodeStorage.setPersistData(key, value);
   }
 }

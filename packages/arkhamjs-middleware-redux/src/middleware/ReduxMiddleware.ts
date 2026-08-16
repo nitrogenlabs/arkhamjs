@@ -2,8 +2,10 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {FluxAction} from '@nlabs/arkhamjs';
-import {Store} from 'redux';
+import type {FluxAction} from '@nlabs/arkhamjs';
+import type {Store} from 'redux';
+
+import type {ArkhamReduxAction} from '../types/main.js';
 
 export class ReduxMiddleware {
   name: string;
@@ -17,7 +19,7 @@ export class ReduxMiddleware {
     this.postDispatch = this.postDispatch.bind(this);
   }
 
-  postDispatch(action): Promise<FluxAction> {
+  postDispatch(action: ArkhamReduxAction): Promise<FluxAction> {
     // ... Alter action if needed
     const {__ARKHAMJS_DISPATCH: isArkhamJs} = action;
 
