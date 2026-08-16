@@ -56,7 +56,7 @@
     "redux": "^3.0.0"
   },
   "dependencies": {
-    "@nlabs/utils": "2.8.6"
+    "@nlabs/utils": "2.10.5"
   },
   "devDependencies": {
     "@nlabs/arkhamjs": "*",

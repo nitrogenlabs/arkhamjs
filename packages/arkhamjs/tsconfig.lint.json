@@ -8,7 +8,7 @@
     "skipLibCheck": false,
     "strict": false,
     "types": [
-      "jest",
+      "vitest/globals",
       "node"
     ],
   },

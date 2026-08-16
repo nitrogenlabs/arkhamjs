@@ -10,8 +10,8 @@ module.exports = {
       project: './tsconfig.lint.json'
     }
   },
-  jest: {
-    testEnvironment: 'jsdom'
+  vitest: {
+    environment: 'jsdom'
   },
   outputPath: 'lib',
   preset: 'web',

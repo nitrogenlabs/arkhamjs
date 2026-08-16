@@ -5,17 +5,11 @@ module.exports = {
     provider: 'cursor',
     temperature: 0.1
   },
-  jest: {
-    extensionsToTreatAsEsm: ['.ts', '.tsx'],
-    moduleNameMapper: {
-      '^@nlabs/arkhamjs$': '<rootDir>/../../node_modules/@nlabs/arkhamjs/index.js',
-      '^@nlabs/utils$': '<rootDir>/../../node_modules/@nlabs/utils/lib/index.js',
-      '^@nlabs/utils/(.*)$': '<rootDir>/../../node_modules/@nlabs/utils/lib/$1'
+  vitest: {
+    alias: {
+      '@nlabs/arkhamjs': require.resolve('../arkhamjs/src/index.ts')
     },
-    testEnvironment: 'jsdom',
-    transformIgnorePatterns: [
-      '/node_modules/(?!@nlabs/(arkhamjs|utils))'
-    ]
+    environment: 'jsdom'
   },
   outputPath: 'lib',
   preset: 'node',

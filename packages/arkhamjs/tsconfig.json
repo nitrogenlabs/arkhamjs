@@ -34,7 +34,7 @@
       "node_modules/json-d-ts"
     ],
     "types": [
-      "jest",
+      "vitest/globals",
       "node"
     ],
     "useDefineForClassFields": true

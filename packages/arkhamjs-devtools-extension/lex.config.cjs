@@ -22,5 +22,8 @@ module.exports = {
   outputPath: 'lib',
   preset: 'web',
   remove: true,
-  useTypescript: true
+  useTypescript: true,
+  vitest: {
+    setupFiles: ['./vitest.setup.js']
+  }
 };

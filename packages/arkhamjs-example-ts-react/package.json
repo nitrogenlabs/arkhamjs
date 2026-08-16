@@ -53,6 +53,10 @@
     "react-dom": "^19.0.0",
     "react-jss": "^10.10.0"
   },
+  "devDependencies": {
+    "happy-dom": "^20.11.2",
+    "react-test-renderer": "^19.0.0"
+  },
   "files": [
     "src",
     ".eslintrc",

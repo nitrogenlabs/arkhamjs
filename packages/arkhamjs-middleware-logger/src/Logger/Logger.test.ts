@@ -2,7 +2,7 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {jest} from '@jest/globals';
+import {vi} from 'vitest';
 import {Flux} from '@nlabs/arkhamjs';
 import {set} from '@nlabs/utils/objects/set';
 
@@ -58,7 +58,7 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      consoleSpy = jest.spyOn(console, 'error');
+      consoleSpy = vi.spyOn(console, 'error');
 
       logger.debugError(msg);
     });
@@ -77,7 +77,7 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      consoleSpy = jest.spyOn(console, 'info');
+      consoleSpy = vi.spyOn(console, 'info');
 
       logger.debugInfo(msg);
     });
@@ -96,7 +96,7 @@ describe('Logger', () => {
     const msg: string = 'test';
 
     beforeAll(() => {
-      consoleSpy = jest.spyOn(console, 'log');
+      consoleSpy = vi.spyOn(console, 'log');
 
       logger.debugLog(msg);
     });
@@ -145,7 +145,7 @@ describe('Logger', () => {
     const nextStore = {test: 'next'};
 
     beforeEach(() => {
-      consoleSpy = jest.spyOn(console, 'log');
+      consoleSpy = vi.spyOn(console, 'log');
     });
 
     afterEach(() => {
@@ -156,8 +156,7 @@ describe('Logger', () => {
       logger.preDispatch(testAction, prevStore);
       logger.postDispatch(testAction, nextStore);
 
-      expect(consoleSpy.mock.calls[2][0]).toEqual('%c Changed State: ');
-      expect(consoleSpy.mock.calls[2][2]).toEqual(nextStore);
+      expect(consoleSpy).toHaveBeenCalledWith('%c Changed State: ', 'color: #00d484', nextStore);
     });
   });
 });

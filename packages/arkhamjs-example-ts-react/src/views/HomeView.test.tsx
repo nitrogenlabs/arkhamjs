@@ -1,3 +1,4 @@
+import {Flux} from '@nlabs/arkhamjs';
 import {FluxProvider} from '@nlabs/arkhamjs-utils-react';
 import * as renderer from 'react-test-renderer';
 
@@ -7,10 +8,10 @@ describe('HomeView', () => {
   let rendered;
 
   beforeAll(() => {
-    const fluxMock: any = jest.fn();
+    Flux.init();
 
     // Render
-    rendered = renderer.create(<FluxProvider flux={fluxMock}><HomeView initialContent="" /></FluxProvider>);
+    rendered = renderer.create(<FluxProvider flux={Flux}><HomeView initialContent="" /></FluxProvider>);
   });
 
   it('should render', () => expect(rendered).toBeDefined());

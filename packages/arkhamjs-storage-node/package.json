@@ -47,7 +47,7 @@
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
     "pretest": "npm run lint",
-    "test": "lex test --setup ./jest.setup.js",
+    "test": "lex test",
     "update": "lex update --interactive"
   },
   "dependencies": {

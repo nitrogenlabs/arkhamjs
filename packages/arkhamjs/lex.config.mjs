@@ -32,12 +32,8 @@ export default {
       project: './tsconfig.lint.json'
     }
   },
-  jest: {
-    extensionsToTreatAsEsm: ['.ts', '.tsx'],
-    testEnvironment: 'jsdom',
-    transformIgnorePatterns: [
-      '/node_modules/(?!@nlabs/utils)'
-    ]
+  vitest: {
+    environment: 'jsdom'
   },
   outputPath: 'lib',
   preset: 'node',

@@ -5,9 +5,11 @@ module.exports = {
     provider: 'cursor',
     temperature: 0.1
   },
-  jest: {
-    extensionsToTreatAsEsm: ['.ts', '.tsx'],
-    testEnvironment: 'jsdom'
+  vitest: {
+    alias: {
+      '@nlabs/arkhamjs': require.resolve('../arkhamjs/src/index.ts')
+    },
+    environment: 'jsdom'
   },
   outputPath: 'lib',
   preset: 'web',

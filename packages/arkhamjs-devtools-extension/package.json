@@ -42,20 +42,20 @@
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
     "pretest": "npm run lint",
-    "test": "lex test",
+    "test": "lex test --passWithNoTests",
     "start": "lex compile --watch",
     "update": "lex update --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.11.8",
     "@nlabs/arkhamjs-utils-react": "^3.11.8",
-    "@nlabs/utils": "2.6.0",
+    "@nlabs/utils": "2.10.5",
     "history": "^5.3.0",
     "rc-tabs": "^12.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^6.8.0",
-    "react-router-dom": "^6.8.0"
+    "react-router": "^7.18.2",
+    "react-router-dom": "^7.18.2"
   },
   "files": [
     "lib",

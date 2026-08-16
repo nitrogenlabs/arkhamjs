@@ -2,16 +2,16 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {jest} from '@jest/globals';
+import {vi} from 'vitest';
 
 // Mock node-persist before importing
-jest.mock('node-persist', () => ({
+vi.mock('node-persist', () => ({
   __esModule: true,
   default: {
-    init: jest.fn(() => Promise.resolve()),
-    getItem: jest.fn(() => Promise.resolve(null)),
-    removeItem: jest.fn(() => Promise.resolve()),
-    setItem: jest.fn(() => Promise.resolve())
+    init: vi.fn(() => Promise.resolve()),
+    getItem: vi.fn(() => Promise.resolve(null)),
+    removeItem: vi.fn(() => Promise.resolve()),
+    setItem: vi.fn(() => Promise.resolve())
   }
 }));
 
@@ -28,7 +28,7 @@ describe('NodeStorage', () => {
     let storageSpy;
 
     beforeAll(() => {
-      storageSpy = jest.spyOn(PersistStorage, 'removeItem');
+      storageSpy = vi.spyOn(PersistStorage, 'removeItem');
     });
 
     afterAll(() => {
@@ -45,7 +45,7 @@ describe('NodeStorage', () => {
     let storageSpy;
 
     beforeAll(() => {
-      storageSpy = jest.spyOn(PersistStorage, 'getItem');
+      storageSpy = vi.spyOn(PersistStorage, 'getItem');
     });
 
     afterAll(() => {
@@ -62,7 +62,7 @@ describe('NodeStorage', () => {
     let storageSpy;
 
     beforeAll(() => {
-      storageSpy = jest.spyOn(PersistStorage, 'setItem');
+      storageSpy = vi.spyOn(PersistStorage, 'setItem');
     });
 
     afterAll(() => {

@@ -2,15 +2,13 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {jest} from '@jest/globals';
+import {vi, type MockInstance} from 'vitest';
 
 import {BrowserStorage} from './BrowserStorage.js';
 
-import type {SpiedFunction} from 'jest-mock';
-
 describe('BrowserStorage', () => {
-  let localSpy: SpiedFunction;
-  let sessionSpy: SpiedFunction;
+  let localSpy: MockInstance;
+  let sessionSpy: MockInstance;
   const val: string = 'hello_world';
   const key: string = 'test';
   let storage: BrowserStorage;
@@ -65,8 +63,8 @@ describe('BrowserStorage', () => {
 
   beforeEach(() => {
     storage = new BrowserStorage({type: 'session'});
-    localSpy = jest.spyOn(mockWindow.localStorage, 'setItem');
-    sessionSpy = jest.spyOn(mockWindow.sessionStorage, 'setItem');
+    localSpy = vi.spyOn(mockWindow.localStorage, 'setItem');
+    sessionSpy = vi.spyOn(mockWindow.sessionStorage, 'setItem');
   });
 
   afterEach(() => {
@@ -76,7 +74,7 @@ describe('BrowserStorage', () => {
     mockWindow.localStorage.clear();
     mockWindow.sessionStorage.clear();
     // Restore all mocks to prevent persistence
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   afterAll(() => {
@@ -119,7 +117,7 @@ describe('BrowserStorage', () => {
 
     it('should handle storage errors gracefully', async () => {
       // Mock storage to throw error
-      jest.spyOn(mockWindow.sessionStorage, 'getItem').mockImplementation(() => {
+      vi.spyOn(mockWindow.sessionStorage, 'getItem').mockImplementation(() => {
         throw new Error('Storage error');
       });
 
@@ -137,7 +135,7 @@ describe('BrowserStorage', () => {
 
     it('should handle storage errors gracefully', async () => {
       // Mock storage to throw error
-      jest.spyOn(mockWindow.sessionStorage, 'setItem').mockImplementation(() => {
+      vi.spyOn(mockWindow.sessionStorage, 'setItem').mockImplementation(() => {
         throw new Error('Storage error');
       });
 
@@ -304,7 +302,7 @@ describe('BrowserStorage', () => {
 
     it('should handle storage quota exceeded', async () => {
       // Mock storage to throw quota exceeded error
-      jest.spyOn(mockWindow.sessionStorage, 'setItem').mockImplementation(() => {
+      vi.spyOn(mockWindow.sessionStorage, 'setItem').mockImplementation(() => {
         throw new DOMException('QuotaExceededError');
       });
 

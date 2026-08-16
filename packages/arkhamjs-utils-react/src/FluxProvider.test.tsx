@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 
-import {beforeAll, describe, expect, it} from '@jest/globals';
+import {beforeAll, describe, expect, it} from 'vitest';
 import {Flux} from '@nlabs/arkhamjs';
 
 import {FluxProvider} from './FluxProvider.js';

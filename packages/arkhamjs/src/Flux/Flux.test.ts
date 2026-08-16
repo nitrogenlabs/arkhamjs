@@ -3,7 +3,7 @@
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
 /* eslint-disable no-console */
-import {jest} from '@jest/globals';
+import {vi, type Mock} from 'vitest';
 import {cloneDeep} from '@nlabs/utils/objects/clone';
 import {set} from '@nlabs/utils/objects/set';
 
@@ -36,8 +36,8 @@ describe('Flux', () => {
   const cfg: FluxOptions = {
     name: 'arkhamjsTest',
     storage: {
-      getStorageData: jest.fn() as any,
-      setStorageData: jest.fn() as any
+      getStorageData: vi.fn() as any,
+      setStorageData: vi.fn() as any
     },
     storageWait: 0,
     stores: [helloStore]
@@ -45,8 +45,8 @@ describe('Flux', () => {
   let Flux: any;
 
   beforeAll(() => {
-    console.error = jest.fn();
-    console.warn = jest.fn();
+    console.error = vi.fn();
+    console.warn = vi.fn();
   });
 
   beforeEach(async () => {
@@ -221,8 +221,8 @@ describe('Flux', () => {
 
     it('should set data in storage', async () => {
       const returnedValue = {hello: 'world'};
-      const getStorageData = jest.fn();
-      const setStorageData = jest.fn().mockResolvedValue(returnedValue as unknown as never);
+      const getStorageData = vi.fn();
+      const setStorageData = vi.fn().mockResolvedValue(returnedValue as unknown as never);
       Flux.options.storage = {getStorageData, setStorageData};
 
       const results = await Flux.clearAppData();
@@ -252,7 +252,7 @@ describe('Flux', () => {
     let eventSpy;
 
     beforeEach(() => {
-      eventSpy = jest.fn();
+      eventSpy = vi.fn();
       Flux.on('TEST_EVENT', eventSpy);
     });
 
@@ -288,9 +288,9 @@ describe('Flux', () => {
     });
 
     it('should update storage', () => {
-      Flux.updateStorage = jest.fn().mockResolvedValue({} as unknown as never);
-      const getStorageData = jest.fn();
-      const setStorageData = jest.fn();
+      Flux.updateStorage = vi.fn().mockResolvedValue({} as unknown as never);
+      const getStorageData = vi.fn();
+      const setStorageData = vi.fn();
       Flux.options.storage = {getStorageData, setStorageData};
       Flux.dispatch({testVar: 'test', type: 'TEST_EVENT'});
       expect(Flux.updateStorage.mock.calls.length).toEqual(1);
@@ -564,7 +564,7 @@ describe('Flux', () => {
     let eventSpy;
 
     beforeEach(() => {
-      eventSpy = jest.fn();
+      eventSpy = vi.fn();
       Flux.on('test', eventSpy);
     });
 
@@ -610,8 +610,8 @@ describe('Flux', () => {
 
     it('should handle unsupported stores', () => {
       const optionsKey: string = 'options';
-      const getStorageData = jest.fn();
-      const setStorageData = jest.fn();
+      const getStorageData = vi.fn();
+      const setStorageData = vi.fn();
       Flux[optionsKey].storage = {getStorageData, setStorageData};
 
       Flux.addStores([demo]);
@@ -622,7 +622,7 @@ describe('Flux', () => {
 
     it('should handle errors', async () => {
       const optionsKey: string = 'options';
-      const getStorageData = jest.fn();
+      const getStorageData = vi.fn();
       const setStorageData = () => Promise.reject(new Error('setStorageData_error'));
       Flux[optionsKey].storage = {getStorageData, setStorageData};
       await expect(Flux.addStores([demo])).rejects.toThrow('setStorageData_error');
@@ -631,8 +631,8 @@ describe('Flux', () => {
 
   describe('#offInit', () => {
     it('should remove listener after initialization', () => {
-      const listener = jest.fn();
-      Flux.off = jest.fn() as any;
+      const listener = vi.fn();
+      Flux.off = vi.fn() as any;
       Flux.offInit(listener);
       expect((Flux.off as any).mock.calls.length).toEqual(1);
       expect((Flux.off as any).mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
@@ -641,16 +641,16 @@ describe('Flux', () => {
 
   describe('#onInit', () => {
     it('should add listener after initialization', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       Flux.isInit = false;
-      Flux.on = jest.fn();
+      Flux.on = vi.fn();
       Flux.onInit(listener);
       expect(Flux.on.mock.calls.length).toEqual(1);
       expect(Flux.on.mock.calls[0][0]).toEqual(ArkhamConstants.INIT);
     });
 
     it('should dispatch instantly if already initialized', () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
       Flux.isInit = true;
       Flux.onInit(listener);
       expect(listener.mock.calls.length).toEqual(1);
@@ -780,7 +780,7 @@ describe('Flux', () => {
   describe('#reset', () => {
     it('should handle argument that is not a function', async () => {
       const optionsKey = 'options';
-      const getStorageData = jest.fn() as any;
+      const getStorageData = vi.fn() as any;
       const setStorageData = () => Promise.reject(new Error('setStorageData_error')) as any;
       Flux[optionsKey].storage = {getStorageData, setStorageData};
       await expect(Flux.reset()).rejects.toThrow('setStorageData_error');
@@ -789,7 +789,7 @@ describe('Flux', () => {
 
   describe('#setState', () => {
     it('should update the property within the store', async () => {
-      Flux.updateStorage = jest.fn() as any;
+      Flux.updateStorage = vi.fn() as any;
       await Flux.setState('helloStore.testUpdate', 'test');
       const newItem = await Flux.getState('helloStore.testUpdate');
       expect(Flux.updateStorage).toHaveBeenCalled();
@@ -797,7 +797,7 @@ describe('Flux', () => {
     });
 
     it('should empty string as default path', async () => {
-      Flux.updateStorage = jest.fn() as any;
+      Flux.updateStorage = vi.fn() as any;
       await Flux.setState(undefined, 'test');
       const newItem = await Flux.getState('helloStore');
       expect(Flux.updateStorage).toHaveBeenCalled();
@@ -806,22 +806,22 @@ describe('Flux', () => {
 
     it('should update storage', async () => {
       const optionsKey = 'options';
-      Flux.updateStorage = jest.fn() as any;
+      Flux.updateStorage = vi.fn() as any;
       Flux[optionsKey] = {
         storage: {
-          getStorageData: jest.fn() as any,
-          setStorageData: jest.fn() as any
+          getStorageData: vi.fn() as any,
+          setStorageData: vi.fn() as any
         }
       };
       await Flux.setState('helloStore.testUpdate', 'test');
-      expect((Flux.updateStorage as jest.Mock).mock.calls.length).toEqual(1);
+      expect((Flux.updateStorage as Mock).mock.calls.length).toEqual(1);
     });
   });
 
   describe('#useStorage', () => {
     it('should update storage', async () => {
-      const getStorageData = jest.fn() as any;
-      const setStorageData = jest.fn() as any;
+      const getStorageData = vi.fn() as any;
+      const setStorageData = vi.fn() as any;
       const optionsKey = 'options';
       Flux[optionsKey].state = null;
       Flux[optionsKey].storage = {getStorageData, setStorageData};

@@ -2,21 +2,21 @@
  * Copyright (c) 2018-Present, Nitrogen Labs, Inc.
  * Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms.
  */
-import {jest} from '@jest/globals';
+import {vi} from 'vitest';
 
 // Mock AsyncStorage before importing NativeStorage
 const mockStorage: Record<string, string> = {};
 
-jest.mock('@react-native-async-storage/async-storage', () => {
+vi.mock('@react-native-async-storage/async-storage', () => {
   return {
     __esModule: true,
     default: {
-      getItem: jest.fn((key: string) => Promise.resolve(mockStorage[key] || null)),
-      setItem: jest.fn((key: string, value: string) => {
+      getItem: vi.fn((key: string) => Promise.resolve(mockStorage[key] || null)),
+      setItem: vi.fn((key: string, value: string) => {
         mockStorage[key] = value;
         return Promise.resolve();
       }),
-      removeItem: jest.fn((key: string) => {
+      removeItem: vi.fn((key: string) => {
         delete mockStorage[key];
         return Promise.resolve();
       })

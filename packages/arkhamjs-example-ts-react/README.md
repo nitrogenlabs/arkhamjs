@@ -4,7 +4,7 @@ An ArkhamJS React TypeScript example. A simple base application to start you off
 
 - [react](https://www.npmjs.com/package/react) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
 - [@nlabs/arkhamjs](https://www.npmjs.com/package/arkhamjs) - A clean, simple Flux framework.
-- [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Jest](https://facebook.github.io/jest/), [Webpack](https://webpack.js.org/), and [Typescript](http://www.typescriptlang.org/).
+- [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Vitest](https://vitest.dev/), [Webpack](https://webpack.js.org/), and [TypeScript](https://www.typescriptlang.org/).
 - [@nlabs/arkhamjs-storage-browser](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-browser) - ArkhamJS browser storage. Caches state in session or local storage.
 - [@nlabs/arkhamjs-middleware-logger](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-logger) - ArkhamJS console log middleware.
 
@@ -52,7 +52,7 @@ Lint your app with tslint.
 
 ### `npm run test`
 
-Runs all unit tests within the app with Jest.
+Runs all unit tests within the app with Vitest.
 
 ### `npm run production`
 
@@ -120,7 +120,7 @@ import `./component.css`;
 
 ---------------
 
-To add a unit test, simply create a `*.test.ts` or `*.test.tsx` file within the `/src` directory. Jest will look for these for and test these files.
+To add a unit test, simply create a `*.test.ts` or `*.test.tsx` file within the `/src` directory. Vitest will discover and run these files.
 
 ## Troubleshooting
 

@@ -8,7 +8,7 @@
   ],
   "compilerOptions": {
     "types": [
-      "jest"
+      "vitest/globals"
     ]
   }
 }
