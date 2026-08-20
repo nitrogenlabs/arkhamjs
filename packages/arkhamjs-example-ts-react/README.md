@@ -4,7 +4,7 @@ An ArkhamJS React TypeScript example. A simple base application to start you off
 
 - [react](https://www.npmjs.com/package/react) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
 - [@nlabs/arkhamjs](https://www.npmjs.com/package/arkhamjs) - A clean, simple Flux framework.
-- [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Vitest](https://vitest.dev/), [Webpack](https://webpack.js.org/), and [TypeScript](https://www.typescriptlang.org/).
+- [@nlabs/lex](https://www.npmjs.com/package/@nlabs/lex) - CLI tool to assist in development. Initialize, test, and compile your apps with zero setup. Using [Vitest](https://vitest.dev/), [Vite](https://vite.dev/), and [TypeScript](https://www.typescriptlang.org/).
 - [@nlabs/arkhamjs-storage-browser](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-browser) - ArkhamJS browser storage. Caches state in session or local storage.
 - [@nlabs/arkhamjs-middleware-logger](https://www.npmjs.com/package/@nlabs/arkhamjs-middleware-logger) - ArkhamJS console log middleware.
 
@@ -36,7 +36,7 @@ $ lex init exampleApp @nlabs/arkhamjs-example-ts-react -i
 
 ### `npm run start` also `npm run development`
 
-Runs the webpack build system to compile scripts on the fly. Also runs a local development web server which can be found at `localhost:9000`. The port can be changed in the config.
+Runs the Vite build system to compile scripts on the fly. It also starts a local development server; the port can be changed in the Lex config.
 
 ### `npm run build`
 

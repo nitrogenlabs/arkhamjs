@@ -1,5 +1,7 @@
 # ArkhamJS: A lightweight, isomorphic data state management library
 
+<img src="./packages/arkhamjs-example-ts-react/src/img/arkhamjs-logo.png" alt="ArkhamJS" width="400">
+
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![Issues](http://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs/issues)
@@ -9,20 +11,20 @@
 
 ArkhamJS stands out as a truly universal data state management library, designed to work seamlessly across all JavaScript environments. Unlike most state management solutions that focus primarily on web applications, ArkhamJS provides consistent APIs and behavior whether you're building React web apps, React Native mobile applications, or Node.js server environments. This cross-platform capability means you can use the same state management patterns and code across your entire tech stack, significantly reducing context-switching and enabling code sharing between frontend and backend systems.
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [🚀 Why ArkhamJS?](#-why-arkhamjs)
-- [🌍 Multi-Environment Support](#-multi-environment-support)
-- [📦 Packages](#-packages)
-- [🎯 Key Features](#-key-features)
-- [⚡ Performance & Bundle Size](#-performance--bundle-size)
-- [🏗️ Architecture](#️-architecture)
-- [🔄 Migration Guide](#-migration-guide)
-- [📚 Quick Start](#-quick-start)
-- [🔧 Advanced Usage](#-advanced-usage)
-- [🤝 Community & Support](#-community--support)
+- [Why ArkhamJS?](#why-arkhamjs)
+- [Multi-Environment Support](#multi-environment-support)
+- [Packages](#packages)
+- [Key Features](#key-features)
+- [Performance & Bundle Size](#performance--bundle-size)
+- [Architecture](#architecture)
+- [Migration Guide](#migration-guide)
+- [Quick Start](#quick-start)
+- [Advanced Usage](#advanced-usage)
+- [Community & Support](#community--support)
 
-## 🚀 Why ArkhamJS?
+## Why ArkhamJS?
 
 ### **Predictable State Management**
 
@@ -50,7 +52,7 @@ ArkhamJS helps you write applications that behave consistently across different 
 | **Type Safety** | Complex type definitions | First-class TypeScript |
 | **Cross-Environment** | Different solutions per platform | One consistent API |
 
-## 🌍 Multi-Environment Support
+## Multi-Environment Support
 
 ### **Universal State Management**
 
@@ -188,7 +190,7 @@ const updateUI = (): void => {
 };
 ```
 
-## 📦 Packages
+## Packages
 
 ArkhamJS is built as a modular ecosystem, allowing you to use only what you need:
 
@@ -220,7 +222,7 @@ ArkhamJS is built as a modular ecosystem, allowing you to use only what you need
 
 - **[@nlabs/arkhamjs-example-ts-react](./packages/arkhamjs-example-ts-react/README.md)** - Complete TypeScript React example
 
-## 🎯 Key Features
+## Key Features
 
 ### **1. Predictable State Container**
 
@@ -293,7 +295,7 @@ Flux.init({
 
 **Why it matters:** Built-in storage adapters provide a consistent API for persisting state across different environments.
 
-## ⚡ Performance & Bundle Size
+## Performance & Bundle Size
 
 ### **Competitive Bundle Analysis**
 
@@ -316,7 +318,7 @@ Flux.init({
 - **Event-driven updates** only trigger relevant components
 - **Lazy loading** of middleware and storage adapters
 
-## 🏗️ Architecture
+## Architecture
 
 ### **Flux + Event-Driven Design**
 
@@ -341,17 +343,19 @@ class FluxFramework extends EventEmitter {
 
 ### **State Management Patterns**
 
-| Pattern | ArkhamJS | Redux Toolkit | Zustand | Jotai | Valtio |
-|---------|----------|---------------|---------|-------|--------|
-| **Immutable Updates** | ✅ Full | ✅ Full | ✅ Partial | ✅ Full | ❌ Mutable |
-| **Event-Driven** | ✅ Native | ❌ Actions | ❌ Direct | ❌ Atoms | ❌ Proxy |
-| **Middleware Support** | ✅ Built-in | ✅ Extensive | ⚠️ Limited | ❌ No | ❌ No |
-| **DevTools** | ✅ Plugin | ✅ Built-in | ✅ Basic | ❌ No | ❌ No |
-| **Storage Integration** | ✅ Built-in | ❌ External | ✅ Plugin | ❌ No | ❌ No |
-| **TypeScript** | ✅ First-class | ✅ Excellent | ✅ Good | ✅ Built-in | ✅ Good |
-| **Multi-Platform** | ✅ Universal | ❌ Web-only | ❌ Web-only | ❌ Web-only | ❌ Web-only |
+| | ArkhamJS | [Redux Toolkit](https://redux-toolkit.js.org/) | [Zustand](https://zustand.docs.pmnd.rs/) | [MobX](https://mobx.js.org/) | [XState](https://stately.ai/docs/xstate) | [TanStack Store](https://tanstack.com/store/latest) (alpha) |
+|---|---|---|---|---|---|---|
+| **Core model** | Flux store and event bus | Central store with reducers and actions | Hook or vanilla store | Observable state and reactions | Statecharts and actors | Signals and derived stores |
+| **Update model** | Immutable state updates | Immer-backed immutable updates | Setter functions with shallow merging | Mutable observable actions | Event-driven transitions | Immutable setter functions |
+| **Extensibility** | Middleware and plugins | Middleware and enhancers | Composable middleware | Reactions and interceptors | Actors, actions, and guards | Derived stores and framework adapters |
+| **Developer tools** | ArkhamJS DevTools plugin | Redux DevTools enabled by default | Redux DevTools middleware | Community tooling | Stately Inspector | No dedicated integration |
+| **Persistence** | Browser, native, and Node adapters | Add-on or custom middleware | Built-in persist middleware | External integration | Persisted actor snapshots | External integration |
+| **Runtime scope** | Browser, React Native, and Node.js | Framework-agnostic core with UI bindings | Vanilla core with React bindings | Browser and Node.js with UI bindings | Framework-agnostic frontend and backend | Vanilla core with multiple UI adapters |
+| **Best fit** | Event-driven apps sharing one API across runtimes | Large apps needing a predictable centralized store | Lightweight client state with minimal ceremony | Reactive object and domain models | Complex workflows and state-dependent behavior | Fine-grained reactive client state |
 
-## 🔄 Migration Guide
+Capabilities describe the libraries' first-party defaults; community integrations may add more options.
+
+## Migration Guide
 
 ### **From Redux**
 
@@ -404,7 +408,7 @@ Flux.dispatch({ type: 'ADD_USER', user });
 - **Predictable state management** with immutable updates
 - **Event-driven architecture** for complex interactions
 
-## 📚 Quick Start
+## Quick Start
 
 ### **Installation**
 
@@ -488,7 +492,7 @@ const UserList = (): JSX.Element => {
 };
 ```
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### **Middleware Integration**
 
@@ -555,7 +559,7 @@ Flux.dispatch<{ type: 'ADD_USER'; user: User }>({
 });
 ```
 
-## 🤝 Community & Support
+## Community & Support
 
 ### **Getting Help**
 
@@ -574,7 +578,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🎉 Ready to Get Started?
+## Ready to Get Started?
 
 **ArkhamJS is the perfect balance of simplicity and power.** Whether you're building a small startup app or a large enterprise system, ArkhamJS scales with your needs while keeping your code clean and maintainable.
 

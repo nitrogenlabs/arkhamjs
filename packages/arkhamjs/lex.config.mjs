@@ -5,28 +5,6 @@ export default {
     provider: 'cursor',
     temperature: 0.1
   },
-  esbuild: {
-    banner: {
-      js: '/* ArkhamJS - Optimized Build */'
-    },
-    define: {
-      'process.env.NODE_ENV': '"production"'
-    },
-    drop: ['console', 'debugger'],
-    external: ['events', '@nlabs/utils/*'],
-    footer: {
-      js: '/* End ArkhamJS */'
-    },
-    format: 'esm',
-    legalComments: 'none',
-    metafile: true,
-    minify: true,
-    platform: 'browser',
-    pure: ['console.log', 'console.warn', 'console.error'],
-    sourcemap: false,
-    splitting: true,
-    target: 'es2020'
-  },
   eslint: {
     parserOptions: {
       project: './tsconfig.lint.json'
@@ -38,6 +16,22 @@ export default {
   outputPath: 'lib',
   preset: 'node',
   remove: true,
+  swc: {
+    jsc: {
+      minify: {
+        compress: {
+          drop_console: true
+        },
+        mangle: true
+      },
+      target: 'es2020'
+    },
+    minify: true,
+    module: {
+      type: 'es6'
+    },
+    sourceMaps: false
+  },
   tsconfig: 'tsconfig.build.json',
   useTypescript: true
 };
