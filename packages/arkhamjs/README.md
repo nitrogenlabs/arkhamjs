@@ -1,6 +1,6 @@
 # @nlabs/arkhamjs
 
-<img src="https://arkhamjs.io/img/logos/gh-arkhamjs.png" width="400"/>
+<img src="https://raw.githubusercontent.com/nitrogenlabs/arkhamjs/main/packages/arkhamjs-example-ts-react/src/img/arkhamjs-logo.png" alt="ArkhamJS" width="400">
 
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)

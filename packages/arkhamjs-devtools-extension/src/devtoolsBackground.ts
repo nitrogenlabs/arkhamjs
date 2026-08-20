@@ -3,6 +3,6 @@ const {devtools: {panels}} = chrome || {};
 
 // Create panel
 if(panels) {
-  panels.create('ArkhamJS', null, 'app.html', () => {});
+  panels.create('ArkhamJS', 'icons/icon16.png', 'app.html', () => {});
 }
 console.log('load::devtoolsbg');

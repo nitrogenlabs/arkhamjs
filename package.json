@@ -24,7 +24,7 @@
     "@types/react-dom": "^19.0.3",
     "jsdom": "30.0.1",
     "react-test-renderer": "^19.0.0",
-    "typescript": "^5.8.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
   "overrides": {

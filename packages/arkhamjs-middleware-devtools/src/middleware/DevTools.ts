@@ -54,7 +54,7 @@ export class DevTools {
   private actionHistory: ActionRecord[] = [];
   private messageId: number = 0;
   private isConnected: boolean = false;
-  private connectionCheckInterval?: number;
+  private connectionCheckInterval?: ReturnType<typeof setInterval>;
   private webSocket?: WebSocket;
   private performanceMetrics: PerformanceMetrics = {
     actionCount: 0,
