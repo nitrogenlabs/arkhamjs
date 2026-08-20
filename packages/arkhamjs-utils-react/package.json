@@ -81,5 +81,5 @@
   },
   "type": "module",
   "types": "./lib/index.d.ts",
-  "version": "3.32.11"
+  "version": "3.32.12"
 }
