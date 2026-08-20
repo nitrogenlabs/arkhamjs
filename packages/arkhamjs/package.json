@@ -1,39 +1,50 @@
 {
-  "name": "@nlabs/arkhamjs",
-  "version": "3.31.13",
-  "publishConfig": {
-    "access": "public"
+  "author": {
+    "email": "giraldo@nitrogenlabs.com",
+    "name": "Giraldo Rosales",
+    "url": "http://nitrogenlabs.com"
+  },
+  "browser": "./index.js",
+  "bugs": {
+    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
+  },
+  "dependencies": {
+    "@nlabs/utils": "2.10.7",
+    "events": "^3.3.0"
   },
   "description": "Javascript Flux Library",
-  "type": "module",
-  "sideEffects": false,
-  "license": "MIT",
-  "main": "./index.js",
-  "module": "./index.js",
-  "browser": "./index.js",
-  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./index.js",
-      "require": "./index.js",
-      "types": "./lib/index.d.ts"
-    },
-    "./Flux": {
-      "import": "./lib/Flux/Flux.js",
-      "require": "./lib/Flux/Flux.js",
-      "types": "./lib/Flux/Flux.d.ts"
-    },
-    "./Flux/types": {
-      "import": "./lib/Flux/Flux.types.js",
-      "require": "./lib/Flux/Flux.types.js",
-      "types": "./lib/Flux/Flux.types.d.ts"
+      "require": "./index.js"
     },
     "./constants": {
+      "types": "./lib/constants/ArkhamConstants.d.ts",
       "import": "./lib/constants/ArkhamConstants.js",
-      "require": "./lib/constants/ArkhamConstants.js",
-      "types": "./lib/constants/ArkhamConstants.d.ts"
+      "require": "./lib/constants/ArkhamConstants.js"
+    },
+    "./Flux": {
+      "types": "./lib/Flux/Flux.d.ts",
+      "import": "./lib/Flux/Flux.js",
+      "require": "./lib/Flux/Flux.js"
+    },
+    "./Flux/types": {
+      "types": "./lib/Flux/Flux.types.d.ts",
+      "import": "./lib/Flux/Flux.types.js",
+      "require": "./lib/Flux/Flux.types.js"
     }
   },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
+  "homepage": "https://arkhamjs.io",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -43,42 +54,31 @@
     "state",
     "state management"
   ],
-  "author": {
-    "name": "Giraldo Rosales",
-    "email": "giraldo@nitrogenlabs.com",
-    "url": "http://nitrogenlabs.com"
+  "license": "MIT",
+  "main": "./index.js",
+  "module": "./index.js",
+  "name": "@nlabs/arkhamjs",
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
     "url": "nitrogenlabs/arkhamjs.git"
-  },
-  "homepage": "https://arkhamjs.io",
-  "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile --remove",
     "clean": "lex clean",
     "lint": "(lex lint --fix) || true",
     "prepublishOnly": "npm run build",
+    "pretest": "npm run lint",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "pretest": "npm run lint",
     "test": "lex test",
     "update": "lex update --interactive"
   },
-  "dependencies": {
-    "@nlabs/utils": "2.10.7",
-    "events": "^3.3.0"
-  },
-  "files": [
-    "lib",
-    "index.js",
-    "index.d.ts",
-    "LICENSE",
-    "package.json",
-    "README.md"
-  ],
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a"
+  "sideEffects": false,
+  "type": "module",
+  "types": "./lib/index.d.ts",
+  "version": "3.31.13"
 }

@@ -1,50 +1,12 @@
 {
-  "name": "@nlabs/arkhamjs-devtools-extension",
-  "version": "3.11.8",
-  "publishConfig": {
-    "access": "public"
-  },
-  "description": "Advanced Chrome and Safari DevTools extension for ArkhamJS applications with time-travel debugging, performance monitoring, and state snapshots",
-  "type": "module",
-  "license": "MIT",
-  "main": "index.js",
-  "types": "./dist/index.d.ts",
-  "keywords": [
-    "arkhamjs",
-    "chrome-extension",
-    "safari-extension",
-    "devtools",
-    "debugging",
-    "time-travel",
-    "performance-monitoring",
-    "state-snapshots",
-    "nitrogenlabs"
-  ],
   "author": {
-    "name": "Giraldo Rosales",
     "email": "giraldo@nitrogenlabs.com",
+    "name": "Giraldo Rosales",
     "url": "http://nitrogenlabs.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "nitrogenlabs/arkhamjs.git"
-  },
-  "homepage": "https://arkhamjs.io",
+  "browser": "./lib/index.js",
   "bugs": {
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
-  },
-  "scripts": {
-    "build": "lex compile --remove",
-    "clean": "lex clean",
-    "lint": "lex lint --fix",
-    "prepublishOnly": "npm run build",
-    "publish:major": "npm version major && npm publish",
-    "publish:minor": "npm version minor && npm publish",
-    "publish:patch": "npm version patch && npm publish",
-    "pretest": "npm run lint",
-    "test": "lex test --passWithNoTests",
-    "start": "lex compile --watch",
-    "update": "lex update --interactive"
   },
   "dependencies": {
     "@nlabs/arkhamjs": "^3.11.8",
@@ -57,13 +19,59 @@
     "react-router": "^7.18.2",
     "react-router-dom": "^7.18.2"
   },
+  "description": "Advanced Chrome and Safari DevTools extension for ArkhamJS applications with time-travel debugging, performance monitoring, and state snapshots",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "lib",
-    "index.js",
-    "index.d.ts",
     "LICENSE",
     "package.json",
     "README.md"
   ],
-  "gitHead": "ca196f147316f6590794c49f53965ab6770b2dd6"
+  "gitHead": "ca196f147316f6590794c49f53965ab6770b2dd6",
+  "homepage": "https://arkhamjs.io",
+  "keywords": [
+    "arkhamjs",
+    "chrome-extension",
+    "debugging",
+    "devtools",
+    "nitrogenlabs",
+    "performance-monitoring",
+    "safari-extension",
+    "state-snapshots",
+    "time-travel"
+  ],
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "name": "@nlabs/arkhamjs-devtools-extension",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "nitrogenlabs/arkhamjs.git"
+  },
+  "scripts": {
+    "build": "lex compile --remove",
+    "clean": "lex clean",
+    "lint": "lex lint --fix",
+    "prepublishOnly": "npm run build",
+    "pretest": "npm run lint",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
+    "start": "lex compile --watch",
+    "test": "lex test --passWithNoTests",
+    "update": "lex update --interactive"
+  },
+  "type": "module",
+  "types": "./lib/index.d.ts",
+  "version": "3.11.8"
 }

@@ -1,22 +1,46 @@
 {
-  "name": "@nlabs/arkhamjs-utils-react",
-  "version": "3.32.11",
-  "publishConfig": {
-    "access": "public"
+  "browser": "./lib/index.js",
+  "bugs": {
+    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
+  },
+  "contributors": [
+    {
+      "email": "giraldo@nitrogenlabs.com",
+      "name": "Giraldo Rosales",
+      "url": "http://nitrogenlabs.com"
+    },
+    {
+      "email": "sartaj@sartaj.me",
+      "name": "Sartaj Chowdhury",
+      "url": "http://github.com/Sartaj"
+    }
+  ],
+  "dependencies": {
+    "@nlabs/utils": "2.10.7"
   },
   "description": "ArkhamJS React Utilities",
-  "license": "MIT",
-  "main": "./lib/index.js",
-  "browser": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "devDependencies": {
+    "@nlabs/arkhamjs": "*",
+    "react": "^19.2.8"
+  },
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./lib/index.js",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "require": "./lib/index.js"
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
+  "homepage": "https://arkhamjs.io",
   "keywords": [
     "arkhamjs",
     "flux",
@@ -24,62 +48,38 @@
     "nitrogenlabs",
     "state",
     "state management",
-    "useFlux",
     "useComponentSize",
+    "useFlux",
     "useRefSize",
     "useWindowSize"
   ],
-  "contributors": [
-    {
-      "name": "Giraldo Rosales",
-      "email": "giraldo@nitrogenlabs.com",
-      "url": "http://nitrogenlabs.com"
-    },
-    {
-      "name": "Sartaj Chowdhury",
-      "email": "sartaj@sartaj.me",
-      "url": "http://github.com/Sartaj"
-    }
-  ],
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "name": "@nlabs/arkhamjs-utils-react",
+  "peerDependencies": {
+    "@nlabs/arkhamjs": "^3.26.0",
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "nitrogenlabs/arkhamjs.git"
-  },
-  "homepage": "https://arkhamjs.io",
-  "bugs": {
-    "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "scripts": {
     "build": "lex compile --remove",
     "clean": "lex clean",
     "lint": "lex lint --fix",
     "prepublishOnly": "npm run build",
+    "pretest": "npm run lint",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "pretest": "npm run lint",
     "test": "lex test",
     "update": "lex update --interactive"
   },
-  "dependencies": {
-    "@nlabs/utils": "2.10.7"
-  },
-  "devDependencies": {
-    "@nlabs/arkhamjs": "*",
-    "react": "^19.2.8"
-  },
-  "peerDependencies": {
-    "@nlabs/arkhamjs": "^3.26.0",
-    "react": "*"
-  },
-  "files": [
-    "lib",
-    "index.js",
-    "index.d.ts",
-    "LICENSE",
-    "package.json",
-    "README.md"
-  ],
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
-  "type": "module"
+  "type": "module",
+  "types": "./lib/index.d.ts",
+  "version": "3.32.11"
 }
