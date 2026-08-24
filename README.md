@@ -4,6 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
+[![Documentation](https://img.shields.io/badge/docs-arkhamjs.nitrogenx.co-6d28d9?style=flat-square)](https://arkhamjs.nitrogenx.co)
 [![Issues](http://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs/issues)
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 

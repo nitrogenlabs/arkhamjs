@@ -12,7 +12,7 @@
     "@nlabs/utils": "2.10.7",
     "events": "^3.3.0"
   },
-  "description": "Javascript Flux Library",
+  "description": "Universal TypeScript state management with predictable Flux data flow, immutable updates, events, middleware, and persistent storage.",
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
@@ -44,15 +44,23 @@
     "README.md"
   ],
   "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
-  "homepage": "https://arkhamjs.io",
+  "homepage": "https://arkhamjs.nitrogenx.co",
   "keywords": [
     "arkhamjs",
+    "event-driven",
     "flux",
-    "global state",
+    "global-state",
     "immutable",
+    "middleware",
+    "nodejs",
     "nitrogenlabs",
+    "persistence",
+    "react",
+    "react-native",
     "state",
-    "state management"
+    "state-management",
+    "typescript",
+    "universal"
   ],
   "license": "MIT",
   "main": "./index.js",
@@ -63,7 +71,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "nitrogenlabs/arkhamjs.git"
+    "url": "git+https://github.com/nitrogenlabs/arkhamjs.git"
   },
   "scripts": {
     "build": "lex compile --remove",
