@@ -1,6 +1,6 @@
 # ArkhamJS: A lightweight, isomorphic data state management library
 
-<img src="./packages/arkhamjs-example-ts-react/src/img/arkhamjs-logo.png" alt="ArkhamJS" width="400">
+![ArkhamJS](./packages/arkhamjs-example-ts-react/src/img/arkhamjs-logo.png)
 
 [![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
 [![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs)
@@ -45,7 +45,7 @@ ArkhamJS helps you write applications that behave consistently across different 
 ### **Real-World Benefits**
 
 | Challenge | Traditional Solutions | ArkhamJS Solution |
-|-----------|----------------------|-------------------|
+ | ----------- | ---------------------- | ------------------- |
 | **State Predictability** | Complex reducers and actions | Simple store patterns |
 | **Data Consistency** | Manual immutability | Built-in immutable updates |
 | **State Debugging** | External tools, complex setup | Integrated DevTools |
@@ -301,7 +301,7 @@ Flux.init({
 ### **Competitive Bundle Analysis**
 
 | Library | Gzipped Size | Minified Size | Features |
-|---------|-------------|---------------|----------|
+ | --------- | ------------- | --------------- | ---------- |
 | **ArkhamJS** | **13.4 KB** | **40 KB** | Full-featured Flux + middleware + storage |
 | Zustand | ~3.2 KB | ~8.5 KB | Minimal, no middleware |
 | Jotai | ~4.1 KB | ~11 KB | Atomic model, no middleware |
@@ -345,7 +345,7 @@ class FluxFramework extends EventEmitter {
 ### **State Management Patterns**
 
 | | ArkhamJS | [Redux Toolkit](https://redux-toolkit.js.org/) | [Zustand](https://zustand.docs.pmnd.rs/) | [MobX](https://mobx.js.org/) | [XState](https://stately.ai/docs/xstate) | [TanStack Store](https://tanstack.com/store/latest) (alpha) |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | **Core model** | Flux store and event bus | Central store with reducers and actions | Hook or vanilla store | Observable state and reactions | Statecharts and actors | Signals and derived stores |
 | **Update model** | Immutable state updates | Immer-backed immutable updates | Setter functions with shallow merging | Mutable observable actions | Event-driven transitions | Immutable setter functions |
 | **Extensibility** | Middleware and plugins | Middleware and enhancers | Composable middleware | Reactions and interceptors | Actors, actions, and guards | Derived stores and framework adapters |
@@ -564,7 +564,7 @@ Flux.dispatch<{ type: 'ADD_USER'; user: User }>({
 
 ### **Getting Help**
 
-- **📖 [Documentation](https://arkhamjs.io)** - Complete API reference and guides
+- **📖 [Documentation](https://arkhamjs.nitrogenx.co)** - Complete API reference and guides
 - **💬 [Discord Community](https://discord.gg/Ttgev58)** - Chat with other developers
 - **🐛 [GitHub Issues](https://github.com/nitrogenlabs/arkhamjs/issues)** - Report bugs and request features
 - **📝 [Examples](./packages/arkhamjs-example-ts-react/README.md)** - Complete working examples
@@ -589,4 +589,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 npm install @nlabs/arkhamjs
 ```
 
-[View Documentation](https://arkhamjs.io) • [Join Discord](https://discord.gg/Ttgev58) • [Report Issues](https://github.com/nitrogenlabs/arkhamjs/issues)
+[View Documentation](https://arkhamjs.nitrogenx.co) • [Join Discord](https://discord.gg/Ttgev58) • [Report Issues](https://github.com/nitrogenlabs/arkhamjs/issues)
