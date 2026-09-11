@@ -177,7 +177,7 @@ export class FluxFramework extends EventEmitter {
 
     if(!silent) {
       this.emit(type, clonedAction);
-      this.emit('arkhamjs', this.state);
+      this.emit('arkhamjs', cloneDeep(this.state));
     }
 
     return Promise.resolve(clonedAction);
@@ -191,7 +191,8 @@ export class FluxFramework extends EventEmitter {
     const pathKey = Array.isArray(path) ? path.join('.') : path;
 
     if(this.stateCache.has(pathKey)) {
-      return this.stateCache.get(pathKey) as T;
+      const cachedValue = this.stateCache.get(pathKey);
+      return cloneDeep(cachedValue === undefined ? defaultValue : cachedValue) as T;
     }
 
     let storeValue: unknown;
@@ -204,9 +205,9 @@ export class FluxFramework extends EventEmitter {
     const value = storeValue ? cloneDeep(storeValue) : storeValue;
     const result = value === undefined ? defaultValue : value;
 
-    this.stateCache.set(pathKey, result);
+    this.stateCache.set(pathKey, value);
 
-    return result as T;
+    return cloneDeep(result) as T;
   }
 
   getStore(name: string = ''): FluxStore | undefined {
@@ -332,8 +333,7 @@ export class FluxFramework extends EventEmitter {
       this.state = set(this.state, path, cloneDeep(value));
       this.stateChanged = true;
 
-      const pathKey = Array.isArray(path) ? path.join('.') : path;
-      this.stateCache.delete(pathKey);
+      this.stateCache.clear();
     }
 
     if(this.options.storage && this.updateStorage) {
@@ -366,6 +366,7 @@ export class FluxFramework extends EventEmitter {
   private updateStorage: () => Promise<boolean> = () => Promise.resolve(false);
 
   private updateStoresState(type: string, data: Record<string, unknown>): void {
+    this.stateCache.clear();
     Object.keys(this.storeActions).forEach((storeName: string) => {
       const storeFn = this.storeActions[storeName];
       if(storeFn) {
@@ -481,15 +482,18 @@ export class FluxFramework extends EventEmitter {
   }
 
   private async useStorage(name: string): Promise<void> {
+    this.stateCache.clear();
     const {storage, state, storageWait} = this.options;
 
     if(storage) {
       try {
         this.state = state || await storage?.getStorageData?.(name) || {};
-        this.updateStorage = debounceCompact(
-          () => storage?.setStorageData?.(name, this.state),
-          storageWait ?? 300
-        ) as any;
+        const persist = (): Promise<boolean> => Promise.resolve(storage.setStorageData?.(name, this.state) ?? false);
+        // Immediate writes must preserve the storage adapter's completion promise.
+        // Positive storageWait retains the existing debounce behavior.
+        this.updateStorage = (storageWait ?? 300) <= 0
+          ? persist
+          : debounceCompact(persist, storageWait ?? 300) as unknown as () => Promise<boolean>;
       } catch(error) {
         // eslint-disable-next-line no-console
         console.error(`ArkhamJS Error: Using storage, "${name}".`);

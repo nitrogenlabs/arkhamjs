@@ -56,6 +56,18 @@ If you plan to persist data, you will need to add a storage to the framework:
 - React Native [@nlabs/arkhamjs-storage-native](https://github.com/nitrogenlabs/arkhamjs-storage-native)
 - NodeJS [@nlabs/arkhamjs-storage-node](https://github.com/nitrogenlabs/arkhamjs-storage-node)
 
+### Consistent reads and persistence
+
+`getState` returns an isolated snapshot, including cached reads. Writes, reducer
+updates, clearing, and rehydration invalidate cached paths; parent and child
+reads therefore reflect the same current state. Consecutive `arkhamjs` events
+receive independent root snapshots so React subscribers can detect updates.
+
+Set `storageWait: 0` when a dispatch must wait for the storage adapter's write
+before notifying listeners. Positive values retain debounced persistence (300 ms
+by default), which intentionally does not guarantee a completed write at event
+time. Storage availability and errors still depend on the selected adapter.
+
 ## Why Choose ArkhamJS?
 
 ### 🎯 **The Perfect Middle Ground**
