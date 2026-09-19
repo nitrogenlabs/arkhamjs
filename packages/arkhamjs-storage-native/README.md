@@ -1,458 +1,134 @@
 # @nlabs/arkhamjs-storage-native
 
-> **React Native Storage Integration for ArkhamJS** - Seamless AsyncStorage persistence with automatic state synchronization, compression, and encryption support for React Native applications.
+React Native AsyncStorage integration and opt-in private persistence for ArkhamJS.
+Stable **3.31.0** adds four reusable helpers without changing the existing
+`NativeStorage` API.
 
-[![npm version](https://img.shields.io/npm/v/@nlabs/arkhamjs-storage-native.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-native)
-[![npm downloads](https://img.shields.io/npm/dm/@nlabs/arkhamjs-storage-native.svg?style=flat-square)](https://www.npmjs.com/package/@nlabs/arkhamjs-storage-native)
-[![Travis](https://img.shields.io/travis/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://travis-ci.org/nitrogenlabs/arkhamjs)
-[![Issues](https://img.shields.io/github/issues/nitrogenlabs/arkhamjs.svg?style=flat-square)](https://github.com/nitrogenlabs/arkhamjs/issues)
-[![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
-[![Chat](https://img.shields.io/discord/446122412715802649.svg)](https://discord.gg/Ttgev58)
+## Installation
 
-## 🚀 Features
-
-- **📱 React Native Optimized** - Built specifically for React Native AsyncStorage
-- **💾 Automatic Persistence** - State automatically persists across app sessions
-- **🔄 Real-Time Sync** - State changes are immediately saved to AsyncStorage
-- **🎯 Selective Persistence** - Choose which parts of state to persist
-- **⚡ Performance Optimized** - Debounced writes and efficient serialization
-- **🔒 Encryption Support** - Optional encryption for sensitive data
-- **🗜️ Compression** - Automatic compression for large state objects
-- **🔧 Configurable** - Extensive options for customization
-- **🌲 Tree-shakable** - Only include what you need
-
-## 📦 Installation
-
-```bash
-npm install @nlabs/arkhamjs-storage-native
+```sh
+npm install @nlabs/arkhamjs-storage-native@3.31.0 @nlabs/arkhamjs@3.31.16
 ```
 
-### Private, identity-scoped persistence
+The package declares `@nlabs/arkhamjs ^3.26.0` and React as peers and retains its
+`@react-native-async-storage/async-storage ^3.1.1` dependency for legacy consumers.
+Configure AsyncStorage's native integration when using the root entry.
 
-The additive `@nlabs/arkhamjs-storage-native/secure` entry point provides authenticated encrypted storage,
-a bounded two-slot ciphertext journal, identity-scoped Flux collections, and session cleanup coordination.
-It loads no native modules or AsyncStorage. Platform storage, authenticated encryption, identities, and
-payload validation are supplied by the application. The existing `NativeStorage` API is unchanged.
-See [secure storage integration](./SECURE_STORAGE.md) for the contracts and lifecycle requirements.
+Import private helpers from **`@nlabs/arkhamjs-storage-native/secure`**. That import
+graph loads no React Native, AsyncStorage, Expo, native cryptography, or app code.
+The package dependency is still installed; selecting `/secure` avoids loading its
+native implementation. The host supplies platform bindings.
 
-**Peer Dependencies:**
+## Private persistence in 3.31.0
 
-- `react-native` (any version)
-- `@react-native-async-storage/async-storage` (for React Native 0.60+)
+| Helper | Shared behavior | Application responsibility |
+| --- | --- | --- |
+| `createEncryptedStorage(keys, files, cipher)` | Serializes authenticated persistence; clears the key and ciphertext on failure; blocks reuse until successful explicit cleanup | Device-only key storage, authenticated cipher, stable context and encoding |
+| `createJournalStorage({pointer, slots, maxBytes})` | Two-slot commit/recovery and UTF-8 size bounds; default limit is 4 MiB | Secure atomic pointer, private file operations and one live owner per backing store |
+| `createScopedCollection<Item, Owner>(options)` | Bounded, validated identity state in a private, storage-free Flux instance; store updates precede subscribed events | Item schema, identity namespace, item limit and restart policy |
+| `createCleanupRegistry<Reason>(errorMessage?)` | Attempts every registered cleanup and normalizes failures | Session reasons, cleanup timing and preventing further use after failure |
 
-## 🎯 Quick Start
+The following factory composes all four helpers. Its arguments are host adapters,
+not implementations supplied by the library.
 
-### **Basic Setup**
+```ts
+import {
+  createCleanupRegistry,
+  createEncryptedStorage,
+  createJournalStorage,
+  createScopedCollection
+} from '@nlabs/arkhamjs-storage-native/secure';
+import type {Cipher, JournalSlot, PrivateStorage} from '@nlabs/arkhamjs-storage-native/secure';
 
-```js
-import { Flux } from '@nlabs/arkhamjs';
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
+type Draft = {id: string; text: string};
+type Owner = {accountId: string; personaId: string};
+type CleanupReason = 'logout' | 'account-change' | 'revoked';
 
-// Initialize Flux with native storage
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore, CartStore],
-  storage: NativeStorage, // Enable AsyncStorage persistence
-  storageWait: 300 // Debounce storage updates by 300ms
-});
+const isDraft = (value: unknown): value is Draft => {
+  if(typeof value !== 'object' || value === null) return false;
+  const item = value as Record<string, unknown>;
+  return Object.keys(item).every((key) => key === 'id' || key === 'text')
+    && typeof item.id === 'string' && item.id.length > 0
+    && typeof item.text === 'string' && item.text.length <= 4000;
+};
 
-// State will automatically persist across app sessions
-Flux.dispatch({ type: 'ADD_USER', user: { name: 'John' } });
-// User data is now saved to AsyncStorage
+export const createPrivateDrafts = async (
+  keys: PrivateStorage,
+  pointer: PrivateStorage,
+  slots: {a: JournalSlot; b: JournalSlot},
+  cipher: Cipher
+) => {
+  const journal = createJournalStorage({maxBytes: 4 * 1024 * 1024, pointer, slots});
+  const storage = createEncryptedStorage(keys, journal, cipher);
+  const drafts = await createScopedCollection<Draft, Owner>({
+    context: ({accountId, personaId}) => JSON.stringify(['drafts-v1', accountId, personaId]),
+    event: 'PRIVATE_DRAFTS_CHANGED',
+    maxItems: 100,
+    storage,
+    store: 'privateDrafts',
+    validate: isDraft
+  });
+  const cleanup = createCleanupRegistry<CleanupReason>();
+  const unregisterCleanup = cleanup.register(() => drafts.purge('clear'));
+  return {cleanup, drafts, unregisterCleanup};
+};
 ```
 
-### **Storage Types**
+After constructing one instance, `await drafts.bind(owner)` before updating it.
+Use `await drafts.update((items) => [...items, draft])`, read `drafts.getSnapshot()`,
+and subscribe through `drafts.subscribe(listener)`. The listener reads the already
+updated snapshot; subscription returns a disposer. The collection's private Flux
+instance cannot receive ordinary app storage or logging middleware.
 
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
+On logout, revocation, or account change, await `cleanup.run(reason)` before
+allowing another identity to proceed. Handle a rejected cleanup as unavailable
+private storage. `purge('clear')` revokes the current owner and destroys durable
+data. `purge('reconcile')` preserves encrypted data for an eligible session to
+rebind; it is not logout. `dispose()` removes the collection's internal listener;
+it does not clear private data or unregister application subscriptions.
 
-// Use AsyncStorage (persists across app sessions)
-const asyncStorage = NativeStorage.async;
+`PrivateStorage` manages one string with `read`, `write` and `remove`. `JournalSlot`
+adds `exists` and byte `size`. The cipher must authenticate the identity context
+as additional authenticated data and use a fresh nonce for each encryption. Store
+keys with a device-only secure platform API. There is no plaintext fallback or
+built-in crypto provider. Preserve key names, journal paths, encoding and context
+when upgrading existing installations; these helpers do not migrate or silently
+encrypt ordinary stores. Read [the secure storage guide](SECURE_STORAGE.md) for
+adapter contracts, generation guards, cleanup failures, legacy slot recovery and
+cross-process limitations.
 
-// Use custom storage implementation
-const customStorage = NativeStorage.create({
-  getItem: (key) => customGet(key),
-  setItem: (key, value) => customSet(key, value),
-  removeItem: (key) => customRemove(key)
+## Existing AsyncStorage API
+
+The root entry retains ordinary JSON persistence. It does not provide encryption,
+compression, selective-path persistence, `NativeStorage.async`, or
+`NativeStorage.create`.
+
+```ts
+import {Flux} from '@nlabs/arkhamjs';
+import {NativeStorage} from '@nlabs/arkhamjs-storage-native';
+
+await Flux.init({
+  name: 'preferences',
+  storage: new NativeStorage(),
+  storageWait: 300
 });
 
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: asyncStorage, // or customStorage
-});
+const saved = await NativeStorage.setAsyncData('theme', {mode: 'dark'});
+const theme: unknown = await NativeStorage.getAsyncData('theme');
+const removed = await NativeStorage.delAsyncData('theme');
 ```
 
-## 🔧 Configuration Options
-
-### **Basic Configuration**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Storage options
-  storageWait: 300,              // Debounce storage updates (ms)
-  storageDebounce: true,         // Enable debouncing
-  storageThrottle: false,        // Use throttling instead of debouncing
-
-  // Persistence options
-  storagePersist: true,          // Enable persistence
-  storageRestore: true,          // Restore state on initialization
-  storageClear: false,           // Clear storage on initialization
-
-  // Data options
-  storageSerialize: true,        // Serialize data before storage
-  storageCompress: false,        // Compress data before storage
-  storageEncrypt: false,         // Encrypt data before storage
-
-  // Key options
-  storageKey: 'arkhamjs-state',  // Storage key prefix
-  storageNamespace: 'my-app',    // Namespace for storage keys
-});
-```
-
-### **Advanced Configuration**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Selective persistence
-  storagePaths: [
-    'user.current',    // Only persist current user
-    'user.preferences', // Only persist user preferences
-    'cart.items'       // Only persist cart items
-  ],
-
-  // Exclude sensitive data
-  storageExclude: [
-    'user.password',   // Don't persist passwords
-    'auth.token',      // Don't persist auth tokens
-    'temp.*'           // Don't persist temporary data
-  ],
-
-  // Custom serialization
-  storageSerialize: (state) => {
-    // Custom serialization logic
-    return JSON.stringify(state, (key, value) => {
-      if (key === 'password') return undefined; // Remove passwords
-      if (key === 'token') return undefined;    // Remove tokens
-      return value;
-    });
-  },
-
-  // Custom deserialization
-  storageDeserialize: (data) => {
-    // Custom deserialization logic
-    const state = JSON.parse(data);
-    // Add default values or transform data
-    return state;
-  },
-
-  // Storage events
-  storageEvents: {
-    onSave: (key, value) => {
-      console.log(`Saved to AsyncStorage: ${key}`);
-    },
-    onLoad: (key, value) => {
-      console.log(`Loaded from AsyncStorage: ${key}`);
-    },
-    onError: (error) => {
-      console.error('Storage error:', error);
-    }
-  }
-});
-```
-
-## 🎨 Storage Features
-
-### **Automatic State Persistence**
-
-State automatically persists across app sessions:
-
-```js
-// User logs in
-Flux.dispatch({ type: 'USER_LOGIN', user: { id: 1, name: 'John' } });
-
-// User closes app and reopens
-// State is automatically restored from AsyncStorage
-const user = Flux.getState('user.current'); // { id: 1, name: 'John' }
-```
-
-### **Selective Persistence**
-
-Choose which parts of state to persist:
-
-```js
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Only persist specific paths
-  storagePaths: [
-    'user.current',      // Persist current user
-    'user.preferences',  // Persist user preferences
-    'cart.items',        // Persist cart items
-    'ui.theme'           // Persist UI theme
-  ],
-
-  // Exclude sensitive or temporary data
-  storageExclude: [
-    'user.password',     // Don't persist passwords
-    'auth.token',        // Don't persist auth tokens
-    'temp.*',            // Don't persist temporary data
-    'ui.loading'         // Don't persist loading states
-  ]
-});
-```
-
-### **Data Compression**
-
-Compress large state objects to save storage space:
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Enable compression for large state objects
-  storageCompress: true,
-  storageCompressThreshold: 1024, // Compress if >1KB
-
-  // Custom compression
-  storageCompress: (data) => {
-    // Use custom compression library
-    return customCompress(data);
-  },
-
-  // Custom decompression
-  storageDecompress: (data) => {
-    // Use custom decompression library
-    return customDecompress(data);
-  }
-});
-```
-
-### **Data Encryption**
-
-Encrypt sensitive data before storage:
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Enable encryption
-  storageEncrypt: true,
-  storageEncryptKey: 'your-secret-key',
-
-  // Custom encryption
-  storageEncrypt: (data, key) => {
-    // Use custom encryption library
-    return customEncrypt(data, key);
-  },
-
-  // Custom decryption
-  storageDecrypt: (data, key) => {
-    // Use custom decryption library
-    return customDecrypt(data, key);
-  }
-});
-```
-
-## 🔍 Advanced Usage
-
-### **Custom Storage Implementation**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Create custom storage adapter
-const customStorage = NativeStorage.create({
-  // Required methods
-  getItem: async (key) => {
-    // Custom get implementation
-    return await AsyncStorage.getItem(key);
-  },
-
-  setItem: async (key, value) => {
-    // Custom set implementation
-    await AsyncStorage.setItem(key, value);
-  },
-
-  removeItem: async (key) => {
-    // Custom remove implementation
-    await AsyncStorage.removeItem(key);
-  },
-
-  // Optional methods
-  clear: async () => {
-    // Custom clear implementation
-    await AsyncStorage.clear();
-  },
-
-  getAllKeys: async () => {
-    // Custom getAllKeys implementation
-    return await AsyncStorage.getAllKeys();
-  }
-});
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: customStorage
-});
-```
-
-### **Storage Migration**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore],
-  storage: NativeStorage,
-
-  // Storage migration
-  storageMigrate: (oldData, newData) => {
-    // Migrate from old format to new format
-    if (oldData.version === 1) {
-      return {
-        ...newData,
-        user: {
-          ...newData.user,
-          // Migrate old user format
-          current: oldData.user ? { ...oldData.user, id: oldData.user.id || 1 } : null
-        }
-      };
-    }
-    return newData;
-  },
-
-  // Version tracking
-  storageVersion: 2,
-
-  // Migration events
-  storageEvents: {
-    onMigrate: (oldVersion, newVersion) => {
-      console.log(`Migrated from v${oldVersion} to v${newVersion}`);
-    }
-  }
-});
-```
-
-## 🎯 Use Cases
-
-### **User Preferences Persistence**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [UserStore, PreferencesStore],
-  storage: NativeStorage,
-
-  // Only persist user preferences
-  storagePaths: [
-    'user.preferences.theme',
-    'user.preferences.language',
-    'user.preferences.notifications',
-    'ui.sidebar.collapsed'
-  ]
-});
-
-// User preferences will persist across app sessions
-Flux.dispatch({ type: 'SET_THEME', theme: 'dark' });
-// Theme preference is automatically saved
-```
-
-### **Shopping Cart Persistence**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [CartStore],
-  storage: NativeStorage,
-
-  // Persist cart items
-  storagePaths: ['cart.items', 'cart.total'],
-
-  // Don't persist temporary cart state
-  storageExclude: ['cart.loading', 'cart.error']
-});
-
-// Cart items persist if user closes app
-Flux.dispatch({ type: 'CART_ADD', item: { id: 1, name: 'Product' } });
-// Cart is automatically saved
-```
-
-### **Form Data Persistence**
-
-```js
-import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
-
-Flux.init({
-  name: 'my-app',
-  stores: [FormStore],
-  storage: NativeStorage,
-
-  // Persist form data with short debounce
-  storageWait: 100,
-  storagePaths: ['form.draft'],
-
-  // Clear form data on successful submission
-  storageEvents: {
-    onAction: (action) => {
-      if (action.type === 'FORM_SUBMIT_SUCCESS') {
-        // Clear draft data
-        AsyncStorage.removeItem('arkhamjs-state-form.draft');
-      }
-    }
-  }
-});
-
-// Form data is automatically saved as user types
-// Prevents data loss if user accidentally closes app
-```
-
-## 🔗 Related Packages
-
-- **[@nlabs/arkhamjs](./arkhamjs/README.md)** - Core Flux framework
-- **[@nlabs/arkhamjs-storage-browser](./arkhamjs-storage-browser/README.md)** - Browser storage
-- **[@nlabs/arkhamjs-storage-node](./arkhamjs-storage-node/README.md)** - Node.js storage
-
-## 📚 Documentation
-
-For detailed documentation and examples, visit [arkhamjs.io](https://arkhamjs.io).
-
-## 🤝 Community & Support
-
-- **💬 [Discord Community](https://discord.gg/Ttgev58)** - Chat with other developers
-- **🐛 [GitHub Issues](https://github.com/nitrogenlabs/arkhamjs/issues)** - Report bugs and request features
-- **📖 [Documentation](https://arkhamjs.io)** - Complete API reference
-
-## 📄 License
-
-MIT License - see [LICENSE](../LICENSE) file for details.
+`setAsyncData` and `delAsyncData` return a success boolean; storage errors return
+`false`. `getAsyncData` parses JSON, preserves older non-JSON strings, and returns
+`null` for missing values or storage errors. Instance methods `getStorageData`
+and `setStorageData` implement the Flux storage contract. Keep credentials and
+private collections out of ordinary AsyncStorage persistence.
+
+## Documentation and license
+
+- [ArkhamJS](../arkhamjs/README.md)
+- [Browser storage](../arkhamjs-storage-browser/README.md)
+- [Node storage](../arkhamjs-storage-node/README.md)
+- [Secure adapter guide](SECURE_STORAGE.md)
+- [Documentation](https://arkhamjs.nitrogenx.co)
+- [MIT license](LICENSE)

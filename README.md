@@ -17,6 +17,7 @@ ArkhamJS stands out as a truly universal data state management library, designed
 - [Why ArkhamJS?](#why-arkhamjs)
 - [Multi-Environment Support](#multi-environment-support)
 - [Packages](#packages)
+- [Private native persistence](#private-native-persistence)
 - [Key Features](#key-features)
 - [Performance & Bundle Size](#performance--bundle-size)
 - [Architecture](#architecture)
@@ -117,7 +118,7 @@ import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
 Flux.init({
   name: 'my-app',
   stores: [UserStore],
-  storage: NativeStorage, // AsyncStorage for React Native
+  storage: new NativeStorage(), // Ordinary AsyncStorage persistence
   storageWait: 300
 });
 
@@ -208,7 +209,7 @@ ArkhamJS is built as a modular ecosystem, allowing you to use only what you need
 ### **Storage Solutions**
 
 - **[@nlabs/arkhamjs-storage-browser](./packages/arkhamjs-storage-browser/README.md)** - Browser storage (localStorage, sessionStorage)
-- **[@nlabs/arkhamjs-storage-native](./packages/arkhamjs-storage-native/README.md)** - React Native storage (AsyncStorage)
+- **[@nlabs/arkhamjs-storage-native](./packages/arkhamjs-storage-native/README.md)** - React Native AsyncStorage and opt-in private persistence through `/secure`
 - **[@nlabs/arkhamjs-storage-node](./packages/arkhamjs-storage-node/README.md)** - Node.js storage (file system, databases)
 
 ### **React Integration**
@@ -222,6 +223,40 @@ ArkhamJS is built as a modular ecosystem, allowing you to use only what you need
 ### **Examples & Templates**
 
 - **[@nlabs/arkhamjs-example-ts-react](./packages/arkhamjs-example-ts-react/README.md)** - Complete TypeScript React example
+
+## Private native persistence
+
+The stable `@nlabs/arkhamjs-storage-native@3.31.0` minor release adds reusable
+private-state helpers for React Native hosts and other consumers with compatible
+adapters. Import them from `@nlabs/arkhamjs-storage-native/secure`:
+
+```ts
+import {
+  createCleanupRegistry,
+  createEncryptedStorage,
+  createJournalStorage,
+  createScopedCollection
+} from '@nlabs/arkhamjs-storage-native/secure';
+```
+
+- `createEncryptedStorage` serializes authenticated encrypted values and attempts
+  key/ciphertext destruction on failure, with no plaintext fallback.
+- `createJournalStorage` commits ciphertext through two bounded slots and a
+  secure pointer, supporting recovery without in-memory state.
+- `createScopedCollection` validates bounded identity-owned state in its own
+  storage-free Flux instance. Ordinary application persistence and logging do
+  not receive its private data; updates precede subscribed Flux events.
+- `createCleanupRegistry` attempts every registered cleanup, even when another
+  callback fails, and returns one fixed failure reason.
+
+The `/secure` import graph loads no native modules. Applications supply device-only
+key storage, files, authenticated encryption, identities, payload rules and session
+lifecycle policy. The ordinary `NativeStorage` API remains compatible and does not
+silently encrypt existing stores. Use `purge('clear')` for logout/revocation;
+`purge('reconcile')` intentionally retains encrypted data for eligible restoration.
+See the [native package README](packages/arkhamjs-storage-native/README.md) for a
+complete typed example and the [secure adapter guide](packages/arkhamjs-storage-native/SECURE_STORAGE.md)
+for failure, migration and single-owner requirements.
 
 ## Key Features
 
