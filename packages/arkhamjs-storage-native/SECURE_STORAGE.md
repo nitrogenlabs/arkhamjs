@@ -1,5 +1,7 @@
 # Private persistence
 
+Available in the stable `@nlabs/arkhamjs-storage-native@3.31.0` minor release.
+
 Import the opt-in helpers from `@nlabs/arkhamjs-storage-native/secure`. This subpath does not load
 React Native, AsyncStorage, Expo, or any product code. The existing root `NativeStorage` API retains
 its existing behavior; these helpers do not silently encrypt existing stores.

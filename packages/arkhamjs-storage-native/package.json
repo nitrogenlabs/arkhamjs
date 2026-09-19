@@ -35,7 +35,8 @@
     "LICENSE",
     "package.json",
     "README.md",
-    "SECURE_STORAGE.md"
+    "SECURE_STORAGE.md",
+    "CHANGELOG.md"
   ],
   "homepage": "https://arkhamjs.io",
   "keywords": [
@@ -76,5 +77,5 @@
   },
   "type": "module",
   "types": "./lib/index.d.ts",
-  "version": "3.31.0-secure-storage.0"
+  "version": "3.31.0"
 }
