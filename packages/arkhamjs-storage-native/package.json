@@ -21,7 +21,12 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./secure": {
+      "types": "./lib/secure/index.d.ts",
+      "import": "./lib/secure/index.js",
+      "require": "./lib/secure/index.js"
+    }
   },
   "files": [
     "index.d.ts",
@@ -29,9 +34,9 @@
     "lib",
     "LICENSE",
     "package.json",
-    "README.md"
+    "README.md",
+    "SECURE_STORAGE.md"
   ],
-  "gitHead": "fc371e1e28fe0ae35d40d29a217d5f0e990ec32a",
   "homepage": "https://arkhamjs.io",
   "keywords": [
     "arkhamjs",
@@ -56,7 +61,7 @@
     "url": "nitrogenlabs/arkhamjs.git"
   },
   "scripts": {
-    "build": "lex compile --remove",
+    "build": "lex compile --remove --config tsconfig.build.json",
     "clean": "lex clean",
     "deploy": "lex build --remove && s3-deploy './lib/static/**' --cwd './lib/static/' --region us-east-1 --bucket arkhamjs.io/versions --gzip",
     "lint": "lex lint --fix",
@@ -65,10 +70,11 @@
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "test": "lex test",
+    "start": "lex compile --watch --config tsconfig.build.json",
+    "test": "lex test --config vitest.config.mts",
     "update": "lex update --interactive"
   },
   "type": "module",
   "types": "./lib/index.d.ts",
-  "version": "3.30.12"
+  "version": "3.31.0-secure-storage.0"
 }

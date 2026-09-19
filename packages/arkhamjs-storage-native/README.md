@@ -28,6 +28,14 @@
 npm install @nlabs/arkhamjs-storage-native
 ```
 
+### Private, identity-scoped persistence
+
+The additive `@nlabs/arkhamjs-storage-native/secure` entry point provides authenticated encrypted storage,
+a bounded two-slot ciphertext journal, identity-scoped Flux collections, and session cleanup coordination.
+It loads no native modules or AsyncStorage. Platform storage, authenticated encryption, identities, and
+payload validation are supplied by the application. The existing `NativeStorage` API is unchanged.
+See [secure storage integration](./SECURE_STORAGE.md) for the contracts and lifecycle requirements.
+
 **Peer Dependencies:**
 
 - `react-native` (any version)

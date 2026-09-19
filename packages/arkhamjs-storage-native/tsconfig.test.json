@@ -8,7 +8,8 @@
   ],
   "compilerOptions": {
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "node"
     ]
   }
 }
