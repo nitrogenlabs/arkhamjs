@@ -5,7 +5,7 @@
 import type {AsyncStorage as AsyncStorageType} from '@react-native-async-storage/async-storage';
 import AsyncStorageModule from '@react-native-async-storage/async-storage';
 
-import {NativeStorageOptions} from './NativeStorage.types.js';
+import {NativeSessionStorageOptions, NativeStorageOptions} from './NativeStorage.types.js';
 
 // Type assertion needed for NodeNext module resolution with AsyncStorage
 const AsyncStorage = AsyncStorageModule as AsyncStorageType;
@@ -15,10 +15,29 @@ export class NativeStorage {
 
   private pending: Promise<unknown> = Promise.resolve();
 
+  private persisted = new Map<string, string | null>();
+
   constructor(options: NativeStorageOptions = {}) {
     this.getStorageData = this.getStorageData.bind(this);
     this.setStorageData = this.setStorageData.bind(this);
+    this.clearStorageData = this.clearStorageData.bind(this);
     this.options = {...this.options, ...options};
+  }
+
+  /** The caller supplies Keychain/Keystore-backed storage; this never falls back to AsyncStorage. */
+  static forSession(options: NativeSessionStorageOptions): NativeStorage {
+    const backend = options?.backend;
+    if(!backend || typeof backend.getItem !== 'function' || typeof backend.setItem !== 'function'
+      || typeof backend.removeItem !== 'function') {
+      throw new TypeError('Session storage requires an explicit secure backend.');
+    }
+    if(typeof options.namespace !== 'string' || !/^[A-Za-z0-9._-]+$/.test(options.namespace)) {
+      throw new TypeError('Session storage requires a namespace containing letters, numbers, dots, hyphens or underscores.');
+    }
+    if(typeof options.select !== 'function' || typeof options.validate !== 'function') {
+      throw new TypeError('Session storage requires a projection and restore validator.');
+    }
+    return new NativeStorage({...options, skipUnchanged: options.skipUnchanged ?? true, throwOnError: true});
   }
 
   static delAsyncData(key: string): Promise<boolean> {
@@ -65,6 +84,8 @@ export class NativeStorage {
 
   private enqueue<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
     const result = this.pending.then(operation).catch((error) => {
+      // A backend can fail after changing data. Never trust cached writes after an error.
+      this.persisted.clear();
       if(this.options.throwOnError) {
         throw error;
       }
@@ -82,8 +103,12 @@ export class NativeStorage {
   getStorageData(key: string): Promise<any> {
     return this.enqueue(async () => {
       const backend = this.options.backend ?? AsyncStorage;
-      const value = await backend.getItem(this.storageKey(key));
+      const storageKey = this.storageKey(key);
+      const value = await backend.getItem(storageKey);
       if(value === null) {
+        if(this.options.skipUnchanged) {
+          this.persisted.set(storageKey, null);
+        }
         return null;
       }
       let data: unknown;
@@ -95,7 +120,20 @@ export class NativeStorage {
         }
         data = value;
       }
-      return this.options.select ? this.options.select(data) : data;
+      const selected = this.options.select ? this.options.select(data) : data;
+      if(this.options.validate && this.options.validate(selected) !== true) {
+        this.persisted.delete(storageKey);
+        await backend.removeItem(storageKey);
+        if(this.options.skipUnchanged) {
+          this.persisted.set(storageKey, null);
+        }
+        return null;
+      }
+      if(this.options.skipUnchanged) {
+        // Keep the raw value so a subsequent save still removes unselected legacy fields.
+        this.persisted.set(storageKey, value);
+      }
+      return selected;
     }, null);
   }
 
@@ -110,12 +148,33 @@ export class NativeStorage {
     }
     return this.enqueue(async () => {
       const backend = this.options.backend ?? AsyncStorage;
+      const storageKey = this.storageKey(key);
       if(serialized === undefined) {
-        await backend.removeItem(this.storageKey(key));
+        // A missing projected session can remain absent across unrelated Flux updates.
+        // Explicit clears (undefined input) must always reach the backend.
+        if(value !== undefined && this.options.skipUnchanged && this.persisted.get(storageKey) === null) {
+          return true;
+        }
+        this.persisted.delete(storageKey);
+        await backend.removeItem(storageKey);
+        if(this.options.skipUnchanged) {
+          this.persisted.set(storageKey, null);
+        }
       } else {
-        await backend.setItem(this.storageKey(key), serialized);
+        if(this.options.skipUnchanged && this.persisted.get(storageKey) === serialized) {
+          return true;
+        }
+        await backend.setItem(storageKey, serialized);
+        if(this.options.skipUnchanged) {
+          this.persisted.set(storageKey, serialized);
+        }
       }
       return true;
     }, false);
+  }
+
+  /** Delete regardless of projection, ordered after earlier reads and writes. */
+  clearStorageData(key: string): Promise<boolean> {
+    return this.setStorageData(key, undefined);
   }
 }

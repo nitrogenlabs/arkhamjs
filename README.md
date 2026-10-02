@@ -117,7 +117,7 @@ import { NativeStorage } from '@nlabs/arkhamjs-storage-native';
 Flux.init({
   name: 'my-app',
   stores: [UserStore],
-  storage: NativeStorage, // AsyncStorage for React Native
+  storage: new NativeStorage({skipUnchanged: true}), // Non-sensitive state in AsyncStorage
   storageWait: 300
 });
 
@@ -132,6 +132,8 @@ const UserProfile = (): JSX.Element => {
   );
 };
 ```
+
+For authentication sessions, use `NativeStorage.forSession` with a secure backend, a minimal projection, restore validation, and `storageWait: 0`. See the [native session storage guide](./packages/arkhamjs-storage-native/README.md).
 
 ### **Node.js Applications**
 
@@ -208,7 +210,7 @@ ArkhamJS is built as a modular ecosystem, allowing you to use only what you need
 ### **Storage Solutions**
 
 - **[@nlabs/arkhamjs-storage-browser](./packages/arkhamjs-storage-browser/README.md)** - Browser storage (localStorage, sessionStorage)
-- **[@nlabs/arkhamjs-storage-native](./packages/arkhamjs-storage-native/README.md)** - React Native storage (AsyncStorage)
+- **[@nlabs/arkhamjs-storage-native](./packages/arkhamjs-storage-native/README.md)** - React Native persistence with configurable secure session storage and AsyncStorage for non-sensitive state
 - **[@nlabs/arkhamjs-storage-node](./packages/arkhamjs-storage-node/README.md)** - Node.js storage (file system, databases)
 
 ### **React Integration**
@@ -289,7 +291,7 @@ Flux.init({
 // Consistent storage API across platforms
 Flux.init({
   storage: BrowserStorage, // Browser
-  // or: NativeStorage,    // React Native
+  // or: new NativeStorage(), // React Native non-sensitive state
   // or: NodeStorage       // Node.js
 });
 ```
