@@ -9,12 +9,12 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "dependencies": {
-    "@nlabs/utils": "2.10.7"
+    "@nlabs/utils": "2.11.0"
   },
   "description": "Add console logging for ArkhamJS",
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.6.4",
     "typescript": "^7.0.2"
   },
   "exports": {

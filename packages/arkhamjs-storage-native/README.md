@@ -157,3 +157,21 @@ This repository has no native app harness; unit tests do not verify device Keych
 ## License
 
 MIT; see the repository LICENSE.
+
+The default import is typed against `NativeStorageBackend`, supported by AsyncStorage `^2.2.0 || ^3.1.1`. Exact 2.2.0 and 3.1.1 strict type fixtures and unmocked web bundle default get/set/remove contracts verify this boundary. Native consumers must still verify their own Metro/device graph; injection does not remove the static dependency. One instance owns the disk queue, including partial failures and later writes. Preference hydration policy belongs in the core memory controller; raw legacy codecs belong in the consumer.
+
+## Ordered read-modify-write
+
+`updateStorageData(key, updater): Promise<boolean>` executes a backend read, projected/validated restore, synchronous updater, candidate projection/validation, and persistence in one turn of this instance's existing queue. Calls to get, set, clear and update retain invocation order. Use one instance for a persistence boundary. This does not provide cross-instance/process transactions or an operating-system durability guarantee.
+
+```ts
+await storage.updateStorageData('outbox', (current) => ({
+  value: Array.isArray(current) ? [...current, nextOperation] : [nextOperation]
+}));
+```
+
+The pure callback receives `unknown | null`; narrow the domain shape locally. It returns `{value: nextValue}` synchronously. The decision wrapper rejects async callback types; runtime thenable decisions and thenable values are invalid. `{value: undefined}` explicitly deletes without projection, even when already absent. Other projected absence follows the existing unchanged-write policy. A successful result is `true` after the backend promise resolves, including unchanged-write skips. Failures reject with the original error in strict mode and return `false` in legacy mode. Every failure leaves the queue available for later retries.
+
+The updater runs when its queued read completes, rather than at invocation: do not close over mutable account/environment inputs. Capture domain inputs before calling the method. Constructor options are copied, and the string key and callback are captured at invocation. Candidate values are serialized before waiting for backend persistence. The callback and its returned decision/value getters must not call storage methods: same-instance reentrant operations throw synchronously before serialization or enqueue, and catching that error in the callback still rejects the outer update. Do not schedule asynchronous side effects from the callback.
+
+Invalid restored data causes an update failure without deleting it. Invalid candidates, updater exceptions, projection/validation errors and serialization errors never invoke a backend write or deletion. Missing entries produce `null` without restore projection/validation. Unlike legacy set, update validates projected candidates when present; an undefined candidate explicitly removes. Backend errors can occur after the platform has partially changed data; the adapter invalidates write tracking and cannot roll back the platform. Existing get still deletes invalid restored data; existing set still omits candidate validation. Static helpers and other instances are outside this queue.

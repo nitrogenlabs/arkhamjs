@@ -8,3 +8,5 @@ import {Flux, FluxFramework} from './Flux/Flux.js';
 export * from './Flux/Flux.types.js';
 export {ArkhamConstants, Flux, FluxFramework};
 
+export * from './PersistedPreferences/PersistedPreferences.js';
+export * from './PersistedPreferences/PersistedPreferences.types.js';

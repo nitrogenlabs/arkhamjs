@@ -9,7 +9,7 @@
     "url": "https://github.com/nitrogenlabs/arkhamjs/issues"
   },
   "dependencies": {
-    "@nlabs/utils": "2.10.7"
+    "@nlabs/utils": "2.11.0"
   },
   "description": "Integrate ArkhamJS state management within Redux",
   "devDependencies": {

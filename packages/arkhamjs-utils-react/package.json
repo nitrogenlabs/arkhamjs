@@ -16,12 +16,13 @@
     }
   ],
   "dependencies": {
-    "@nlabs/utils": "2.10.7"
+    "@nlabs/utils": "2.11.0"
   },
   "description": "ArkhamJS React Utilities",
   "devDependencies": {
     "@nlabs/arkhamjs": "*",
-    "react": "^19.2.8"
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "exports": {
     ".": {

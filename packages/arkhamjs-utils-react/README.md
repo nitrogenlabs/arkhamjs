@@ -47,7 +47,7 @@ Flux.init({
 
 const App = (): JSX.Element => {
   return (
-    <FluxProvider>
+    <FluxProvider flux={Flux}>
       <UserList />
       <CartSummary />
     </FluxProvider>
@@ -68,7 +68,7 @@ interface User {
 
 const UserList = (): JSX.Element => {
   // Get state with automatic re-renders
-  const users = useFluxState<User[]>('user.users', []);
+  const users = useFluxState('user.users', []);
 
   // Get dispatch function
   const dispatch = useFluxDispatch();
@@ -126,8 +126,8 @@ interface User {
 
 const UserProfile = (): JSX.Element => {
   // Subscribe to specific state path
-  const user = useFluxState<User | null>('user.current', null);
-  const isLoading = useFluxState<boolean>('user.loading', false);
+  const user = useFluxState('user.current', null);
+  const isLoading = useFluxState('user.loading', false);
 
   if (isLoading) return <div>Loading...</div>;
   if (!user) return <div>No user found</div>;
@@ -275,8 +275,8 @@ interface User {
 }
 
 const useUserManagement = () => {
-  const users = useFluxState<User[]>('user.users', []);
-  const currentUser = useFluxState<User | null>('user.current', null);
+  const users = useFluxState('user.users', []);
+  const currentUser = useFluxState('user.current', null);
   const dispatch = useFluxDispatch();
 
   const addUser = (user: Omit<User, 'id'>): void => {
@@ -330,7 +330,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useFluxState, useFluxDispatch } from '@nlabs/arkhamjs-utils-react';
 
 const OptimizedUserList = (): JSX.Element => {
-  const users = useFluxState<User[]>('user.users', []);
+  const users = useFluxState('user.users', []);
   const dispatch = useFluxDispatch();
 
   // Memoize expensive computations
@@ -381,8 +381,8 @@ const App = (): JSX.Element => {
 
 ```typescript
 const ShoppingCart = (): JSX.Element => {
-  const cartItems = useFluxState<CartItem[]>('cart.items', []);
-  const total = useFluxState<number>('cart.total', 0);
+  const cartItems = useFluxState('cart.items', []);
+  const total = useFluxState('cart.total', 0);
   const dispatch = useFluxDispatch();
 
   const addToCart = (product: Product): void => {
@@ -412,7 +412,7 @@ const ShoppingCart = (): JSX.Element => {
 
 ```typescript
 const Dashboard = (): JSX.Element => {
-  const metrics = useFluxState<Metrics>('dashboard.metrics', {});
+  const metrics = useFluxState('dashboard.metrics', {});
   const { width, height } = useWindowSize();
   const isMobile = width < 768;
 
@@ -457,3 +457,9 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Start building reactive React applications with ArkhamJS today!** 🚀
+
+Provider subscribes before rereading state, including StrictMode replay and Flux replacement. Selection responds directly to key/default changes and preserves equal selected values.
+
+## Whole-snapshot path selections
+
+`useFluxSnapshot<T>(key, defaultValue)` selects a dotted path from whole Flux snapshots and listens for store events through the current FluxProvider. It catches updates before subscription and rereads whole state for events without a payload. The first default value remains stable for the component lifetime; null, false, zero and array leaves remain values, while paths descending through arrays use the fallback. Changing key/provider resubscribes and cleanup removes the exact callback. Missing Provider throws a descriptive error. Unlike legacy useFluxState this hook does not read cached keyed paths.

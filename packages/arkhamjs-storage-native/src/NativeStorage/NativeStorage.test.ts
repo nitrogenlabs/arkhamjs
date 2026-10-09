@@ -393,3 +393,406 @@ describe('session storage', () => {
     }
   });
 });
+
+describe('default-backend-contract', () => {
+  it('uses the default backend for instance get/set/remove operations', async () => {
+    const storage = new NativeStorage({throwOnError: true});
+    expect(await storage.setStorageData('default', 'on')).toBe(true);
+    expect(await storage.getStorageData('default')).toBe('on');
+    expect(await storage.clearStorageData('default')).toBe(true);
+    expect(await storage.getStorageData('default')).toBeNull();
+  });
+  it('keeps legacy static fallbacks for rejected and synchronous backend failures', async () => {
+    const {default: backend} = await import('@react-native-async-storage/async-storage');
+    for(const synchronous of [false, true]) {
+      const fail = () => { if(synchronous) { throw Error('backend'); } return Promise.reject(Error('backend')); };
+      vi.mocked(backend.getItem).mockImplementationOnce(fail);
+      expect(await NativeStorage.getAsyncData('failure')).toBeNull();
+      vi.mocked(backend.setItem).mockImplementationOnce(fail);
+      expect(await NativeStorage.setAsyncData('failure', undefined)).toBe(false);
+      vi.mocked(backend.removeItem).mockImplementationOnce(fail);
+      expect(await NativeStorage.delAsyncData('failure')).toBe(false);
+    }
+    mockStorage.legacy = 'raw';
+    expect(await NativeStorage.getAsyncData('legacy')).toBe('raw');
+  });
+});
+
+describe('preference backend queue contract', () => {
+  it('orders captured enum writes across a partial failure and permits final restore', async () => {
+    const disk = new Map<string, string>();
+    const calls: string[] = [];
+    let release!: () => void;
+    const first = new Promise<void>((resolve) => { release = resolve; });
+    const backend = {
+      getItem: async (key: string) => disk.get(key) ?? null,
+      removeItem: async (key: string) => { disk.delete(key); },
+      setItem: async (key: string, value: string) => {
+        calls.push(value);
+        disk.set(key, value);
+        if(calls.length === 1) { await first; throw Error('partial failure'); }
+      }
+    };
+    const storage = new NativeStorage({backend, skipUnchanged: false, throwOnError: true});
+    const firstWrite = storage.setStorageData('sound', 'on');
+    const failed = expect(firstWrite).rejects.toThrow('partial failure');
+    const secondWrite = storage.setStorageData('sound', 'off');
+    await Promise.resolve();
+    expect(calls).toEqual(['"on"']);
+    release();
+    await failed;
+    expect(await secondWrite).toBe(true);
+    expect(calls).toEqual(['"on"', '"off"']);
+    expect(await new NativeStorage({backend, throwOnError: true}).getStorageData('sound')).toBe('off');
+  });
+});
+
+describe('ordered update', () => {
+  const create = (options: any = {}) => {
+    const values = new Map<string, string>();
+    const backend = {
+      getItem: vi.fn(async (key: string) => values.get(key) ?? null),
+      removeItem: vi.fn(async (key: string) => {
+        values.delete(key);
+      }),
+      setItem: vi.fn(async (key: string, value: string) => {
+        values.set(key, value);
+      })
+    };
+    return {backend, storage: new NativeStorage({backend, throwOnError: true, ...options}), values};
+  };
+
+  it('orders concurrent updates, get, set, clear and captures queued set values', async () => {
+    const {storage, backend} = create();
+    const increment = (current: unknown) => ({value: typeof current === 'number' ? current + 1 : 1});
+    const first = storage.updateStorageData('box', increment);
+    const second = storage.updateStorageData('box', increment);
+    const before = storage.getStorageData('box');
+    const value = {count: 3};
+    const set = storage.setStorageData('box', value);
+    value.count = 99;
+    const after = storage.getStorageData('box');
+    const clear = storage.clearStorageData('box');
+    const last = storage.updateStorageData('box', increment);
+    const final = storage.getStorageData('box');
+
+    expect(await Promise.all([first, second, before, set, after, clear, last, final]))
+      .toEqual([true, true, 2, true, {count: 3}, true, true, 1]);
+    expect(backend.setItem.mock.calls.map(([, data]) => data)).toEqual(['1', '2', '{"count":3}', '1']);
+  });
+
+  it('validates projected restore and candidate without committing invalid updates', async () => {
+    const {storage, backend, values} = create({namespace: 'prod', select: (data: any) => ({count: data.count}),
+      skipUnchanged: true, validate: (data: any) => typeof data.count === 'number' && data.count > 0});
+    values.set('prod.box', '{"count":1,"legacy":true}');
+    const seen: unknown[] = [];
+    await storage.updateStorageData('box', (current) => {
+      seen.push(current);
+      return {value: {count: 2, password: 'omitted'}};
+    });
+
+    expect(seen).toEqual([{count: 1}]);
+    expect(values.get('prod.box')).toBe('{"count":2}');
+    await expect(storage.updateStorageData('box', () => ({value: {count: 0}}))).rejects.toThrow('Updated data failed validation');
+
+    values.set('prod.box', '{"count":0}');
+    const updater = vi.fn(() => ({value: {count: 2}}));
+
+    await expect(storage.updateStorageData('box', updater)).rejects.toThrow('Stored data failed validation');
+    expect(updater).not.toHaveBeenCalled();
+    expect(values.get('prod.box')).toBe('{"count":0}');
+    expect(backend.setItem).toHaveBeenCalledTimes(1);
+    expect(backend.removeItem).not.toHaveBeenCalled();
+  });
+
+  it('preserves exact domain errors and rejects asynchronous or invalid decisions without writes', async () => {
+    const {storage, backend} = create();
+    const error = Error('conflict');
+
+    await expect(storage.updateStorageData('box', () => {
+      throw error;
+    })).rejects.toBe(error);
+
+    for(const decision of [() => null, () => 1, () => ({}), () => Promise.resolve({value: 1}),
+      () => Promise.reject(Error('async callback')), () => ({value: Promise.resolve(1)}),
+      () => ({value: Promise.reject(Error('async value'))})]) {
+      // eslint-disable-next-line no-await-in-loop -- Cases verify ordered failure recovery.
+      await expect(storage.updateStorageData('box', decision as any)).rejects.toThrow();
+    }
+    const circular: any = {};
+    circular.self = circular;
+
+    await expect(storage.updateStorageData('box', () => ({value: circular}))).rejects.toThrow();
+    expect(backend.setItem).not.toHaveBeenCalled();
+    expect(await storage.updateStorageData('box', () => ({value: 1}))).toBe(true);
+  });
+
+  it('rejects reentrant calls before serialization or enqueue and still rejects caught attempts', async () => {
+    const select = vi.fn((value) => value);
+    const {storage, backend} = create({select});
+    for(const operation of [() => storage.getStorageData('nested'), () => storage.setStorageData('nested', 1),
+      () => storage.clearStorageData('nested'), () => storage.updateStorageData('nested', () => ({value: 1}))]) {
+      // eslint-disable-next-line no-await-in-loop -- Cases verify ordered failure recovery.
+      await expect(storage.updateStorageData('box', () => {
+        try {
+          operation();
+        } catch{ /* Forbidden attempts cannot commit. */ }
+        return {value: 2};
+      })).rejects.toThrow('cannot be invoked');
+    }
+
+    expect(select).not.toHaveBeenCalled();
+    expect(backend.setItem).not.toHaveBeenCalled();
+    expect(backend.removeItem).not.toHaveBeenCalled();
+    expect(backend.getItem.mock.calls).toEqual(Array.from({length: 4}, () => ['box']));
+    expect(await storage.setStorageData('box', 3)).toBe(true);
+  });
+
+  it('resolves only after persistence and snapshots callback-owned values before awaiting writes', async () => {
+    const {storage, backend, values} = create();
+    let release!: () => void;
+    const blocked = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    backend.setItem.mockImplementation(async (key, value) => {
+      await blocked;
+      values.set(key, value);
+    });
+    const value = {count: 1};
+    let done = false;
+    const updating = storage.updateStorageData('box', () => ({value})).then((result) => {
+      done = true;
+      return result;
+    });
+    await vi.waitFor(() => expect(backend.setItem).toHaveBeenCalled());
+    value.count = 99;
+
+    expect(done).toBe(false);
+
+    const read = storage.getStorageData('box');
+    release();
+
+    expect(await updating).toBe(true);
+    expect(await read).toEqual({count: 1});
+  });
+
+  it('retains strict failures and legacy false fallbacks with queue recovery', async () => {
+    for(const throwOnError of [true, false]) {
+      for(const method of ['getItem', 'setItem', 'removeItem'] as const) {
+        const {storage, backend} = create({throwOnError});
+        const error = Error('locked');
+        backend[method].mockRejectedValueOnce(error);
+        const updater = vi.fn(() => ({value: method === 'removeItem' ? undefined : 1}));
+        const result = storage.updateStorageData('box', updater);
+        if(throwOnError) {
+          // eslint-disable-next-line no-await-in-loop -- Cases verify ordered failure recovery.
+          await expect(result).rejects.toBe(error);
+        } else {
+          // eslint-disable-next-line no-await-in-loop -- Cases verify ordered failure recovery.
+          expect(await result).toBe(false);
+        }
+        if(method === 'getItem') {
+          expect(updater).not.toHaveBeenCalled();
+        }
+
+        // eslint-disable-next-line no-await-in-loop -- Cases verify ordered failure recovery.
+        expect(await storage.updateStorageData('box', () => ({value: 2}))).toBe(true);
+      }
+    }
+  });
+
+  it('skips unchanged projected updates but always deletes explicit undefined decisions', async () => {
+    const {storage, backend} = create({skipUnchanged: true});
+    await storage.setStorageData('box', 1);
+    await storage.updateStorageData('box', (current) => ({value: current}));
+
+    expect(backend.setItem).toHaveBeenCalledTimes(1);
+
+    await storage.updateStorageData('box', () => ({value: undefined}));
+    await storage.updateStorageData('box', () => ({value: undefined}));
+
+    expect(backend.removeItem).toHaveBeenCalledTimes(2);
+
+    const projected = new NativeStorage({backend, select: () => undefined, skipUnchanged: true, throwOnError: true});
+    await projected.updateStorageData('absent', () => ({value: {ignored: true}}));
+
+    expect(backend.removeItem).toHaveBeenCalledTimes(2);
+  });
+
+  it('rejects reentrant decision getters before committing and preserves constructor configuration', async () => {
+    const options = {namespace: 'account.original', throwOnError: true};
+    const {storage, backend, values} = create(options);
+    const updating = storage.updateStorageData('box', () => ({value: 1}));
+    options.namespace = 'account.changed';
+
+    expect(await updating).toBe(true);
+    expect(values.get('account.original.box')).toBe('1');
+    expect(values.has('account.changed.box')).toBe(false);
+    await expect(storage.updateStorageData('box', () => ({
+      get value() {
+        try {
+          storage.clearStorageData('box');
+        } catch{ /* A caught reentrant getter still invalidates its decision. */ }
+        return 2;
+      }
+    }))).rejects.toThrow('cannot be invoked');
+    expect(backend.setItem).toHaveBeenCalledTimes(1);
+    expect(backend.removeItem).not.toHaveBeenCalled();
+  });
+});
+
+describe('ordered update synchronous restore hooks', () => {
+  const cases = [true, false].flatMap((throwOnError) => ['restore', 'candidate'].flatMap((stage) =>
+    ['resolved', 'rejected', 'custom'].map((kind) => ({kind, stage, throwOnError}))));
+
+  it.each(cases)('rejects $kind $stage projections (strict=$throwOnError) without commit', async ({kind, stage, throwOnError}) => {
+    const values = new Map([['box', '1']]);
+    const backend = {
+      getItem: vi.fn(async (key: string) => values.get(key) ?? null),
+      removeItem: vi.fn(async (key: string) => {
+        values.delete(key);
+      }),
+      setItem: vi.fn(async (key: string, value: string) => {
+        values.set(key, value);
+      })
+    };
+    const then = vi.fn();
+    let failProjection = true;
+    const validate = vi.fn(() => true);
+    const storage = new NativeStorage({backend, select: (value) => {
+      if(failProjection && value === (stage === 'restore' ? 1 : 2)) {
+        if(kind === 'resolved') {
+          return Promise.resolve(value);
+        }
+        if(kind === 'rejected') {
+          return Promise.reject(Error('projection rejected'));
+        }
+        return {then};
+      }
+      return value;
+    }, throwOnError, validate});
+    const updater = vi.fn(() => ({value: 2}));
+    const result = storage.updateStorageData('box', updater);
+    if(throwOnError) {
+      await expect(result).rejects.toThrow('synchronous');
+    } else {
+      expect(await result).toBe(false);
+    }
+
+    expect(validate).toHaveBeenCalledTimes(stage === 'restore' ? 0 : 1);
+    expect(updater).toHaveBeenCalledTimes(stage === 'restore' ? 0 : 1);
+    expect(then).not.toHaveBeenCalled();
+    expect(backend.setItem).not.toHaveBeenCalled();
+    expect(backend.removeItem).not.toHaveBeenCalled();
+    expect(values.get('box')).toBe('1');
+
+    failProjection = false;
+
+    expect(await storage.updateStorageData('box', () => ({value: 3}))).toBe(true);
+    expect(values.get('box')).toBe('3');
+  });
+
+  const reentrantCases = ['select', 'validate'].flatMap((hook) => ['get', 'set', 'clear', 'update'].flatMap((method) =>
+    [true, false].flatMap((caught) => [true, false].map((throwOnError) => ({caught, hook, method, throwOnError})))));
+
+  it.each(reentrantCases)('rejects $hook reentrant $method (caught=$caught strict=$throwOnError)', async ({caught, hook, method, throwOnError}) => {
+    const values = new Map([['box', '1']]);
+    const backend = {
+      getItem: vi.fn(async (key: string) => values.get(key) ?? null),
+      removeItem: vi.fn(async (key: string) => {
+        values.delete(key);
+      }),
+      setItem: vi.fn(async (key: string, value: string) => {
+        values.set(key, value);
+      })
+    };
+    let reenter = true;
+    let storage: NativeStorage;
+    const nested = () => {
+      if(!reenter) {
+        return;
+      }
+      if(method === 'get') {
+        storage.getStorageData('nested');
+      }
+      if(method === 'set') {
+        storage.setStorageData('nested', 99);
+      }
+      if(method === 'clear') {
+        storage.clearStorageData('box');
+      }
+      if(method === 'update') {
+        storage.updateStorageData('nested', () => ({value: 99}));
+      }
+    };
+    const invoke = () => {
+      if(caught) {
+        try {
+          nested();
+        } catch{ /* A caught attempt must still invalidate the outer update. */ }
+      } else {
+        nested();
+      }
+    };
+    storage = new NativeStorage({backend, select: (value) => {
+      if(hook === 'select') {
+        invoke();
+      }
+      return value;
+    },
+    throwOnError, validate: () => {
+      if(hook === 'validate') {
+        invoke();
+      }
+      return true;
+    }});
+    const updater = vi.fn(() => ({value: 2}));
+    const result = storage.updateStorageData('box', updater);
+    if(throwOnError) {
+      await expect(result).rejects.toThrow('cannot be invoked');
+    } else {
+      expect(await result).toBe(false);
+    }
+
+    expect(updater).not.toHaveBeenCalled();
+    expect(backend.getItem.mock.calls).toEqual([['box']]);
+    expect(backend.setItem).not.toHaveBeenCalled();
+    expect(backend.removeItem).not.toHaveBeenCalled();
+    expect(values.get('box')).toBe('1');
+
+    reenter = false;
+
+    expect(await storage.updateStorageData('box', () => ({value: 3}))).toBe(true);
+    expect(await storage.getStorageData('box')).toBe(3);
+  });
+
+  it('lets external callers enqueue while an update awaits the native read', async () => {
+    let release!: () => void;
+    const blocked = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const values = new Map([['box', '1']]);
+    const backend = {
+      getItem: vi.fn(async (key: string) => {
+        await blocked;
+        return values.get(key) ?? null;
+      }),
+      removeItem: vi.fn(async (key: string) => {
+        values.delete(key);
+      }),
+      setItem: vi.fn(async (key: string, value: string) => {
+        values.set(key, value);
+      })
+    };
+    const storage = new NativeStorage({backend, throwOnError: true});
+    const updating = storage.updateStorageData('box', () => ({value: 2}));
+    await vi.waitFor(() => expect(backend.getItem).toHaveBeenCalled());
+    const writing = storage.setStorageData('box', 3);
+    const reading = storage.getStorageData('box');
+    const clearing = storage.clearStorageData('box');
+    release();
+
+    expect(await Promise.all([updating, writing, reading, clearing])).toEqual([true, true, 3, true]);
+    expect(values.has('box')).toBe(false);
+  });
+});

@@ -8,6 +8,7 @@ export {useComponentSize} from './useComponentSize.js';
 export {useFlux} from './useFlux.js';
 export {useFluxDispatch} from './useFluxDispatch.js';
 export {useFluxListener} from './useFluxListener.js';
+export {useFluxSnapshot} from './useFluxSnapshot.js';
 export {useFluxState} from './useFluxState.js';
 export {useFluxValue} from './useFluxValue.js';
 export {useRefSize} from './useRefSize.js';

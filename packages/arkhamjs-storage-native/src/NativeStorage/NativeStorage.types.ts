@@ -26,3 +26,11 @@ export interface NativeSessionStorageOptions extends Omit<NativeStorageOptions, 
   select: (value: any) => unknown;
   validate: (value: any) => boolean;
 }
+
+/** A synchronous update decision. An undefined value explicitly deletes the entry. */
+export interface NativeStorageUpdate {
+  value: unknown;
+}
+
+/** Pure synchronous callback; current is the projected, validated restore value or null. */
+export type NativeStorageUpdater = (current: unknown) => NativeStorageUpdate;

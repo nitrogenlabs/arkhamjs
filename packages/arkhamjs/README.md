@@ -297,3 +297,9 @@ Try tinkering with a simplified demo in [JSFiddle](https://jsfiddle.net/nitrog7/
 ### React Typescript Example
 
 For a complete example of a React setup using Typescript, feel free to start your project with [arkhamjs-example-ts-react](https://github.com/nitrogenlabs/arkhamjs-example-ts-react).
+
+### Memory-only persisted preferences
+
+`createPersistedPreferences({entries, storage})` creates a dedicated `preferences` Flux store with immutable `{value, revision, hydrated}` entries. Read with `getSnapshot()` or public Flux React bindings. `set` and functional `update` commit before events and invoke persistence in change order, including reentrant listeners. Storage owns its disk queue; no persistence or middleware is attached to this Flux. Consumers may read and subscribe but must not mutate its store, attach storage or install middleware.
+
+`hydrate(entry)` memoizes one read, restores only untouched entries, and marks readiness for missing/invalid/failed reads without writing defaults or deleting data. `dispose()` suppresses obsolete read/write completion events and removes listeners without cancelling intended disk writes. Preference policies and codecs belong to the consumer. Diagnostic actions contain entry/revision/success only; no backend errors are stored.

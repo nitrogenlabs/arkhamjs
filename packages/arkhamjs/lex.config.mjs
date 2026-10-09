@@ -11,6 +11,11 @@ export default {
     }
   },
   vitest: {
+    coverage: {
+      enabled: true,
+      include: ['src/PersistedPreferences/PersistedPreferences.ts'],
+      thresholds: {perFile: true, branches: 90, functions: 90, lines: 90, statements: 90}
+    },
     environment: 'jsdom'
   },
   outputPath: 'lib',

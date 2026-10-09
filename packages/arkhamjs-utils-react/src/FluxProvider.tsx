@@ -15,13 +15,15 @@ export const FluxProvider: FC<FluxProviderProps> = ({children, flux}) => {
   const ref = useRef(state);
 
   useEffect(() => {
-    const updateState = (newState: any) => {
+    const updateState = (eventState: any) => {
+      const newState = eventState === undefined ? flux.getState() : eventState;
       if(!isEqual(newState, ref.current)) {
         ref.current = newState;
         setState(newState);
       }
     };
     flux.addListener('arkhamjs', updateState);
+    updateState(flux.getState());
 
     return () => {
       flux.removeListener('arkhamjs', updateState);
