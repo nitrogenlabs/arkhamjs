@@ -89,5 +89,5 @@
   "sideEffects": false,
   "type": "module",
   "types": "./lib/index.d.ts",
-  "version": "3.31.16"
+  "version": "3.32.0"
 }
