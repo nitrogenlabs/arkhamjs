@@ -175,3 +175,13 @@ The pure callback receives `unknown | null`; narrow the domain shape locally. It
 The updater runs when its queued read completes, rather than at invocation: do not close over mutable account/environment inputs. Capture domain inputs before calling the method. Constructor options are copied, and the string key and callback are captured at invocation. Candidate values are serialized before waiting for backend persistence. The callback and its returned decision/value getters must not call storage methods: same-instance reentrant operations throw synchronously before serialization or enqueue, and catching that error in the callback still rejects the outer update. Do not schedule asynchronous side effects from the callback.
 
 Invalid restored data causes an update failure without deleting it. Invalid candidates, updater exceptions, projection/validation errors and serialization errors never invoke a backend write or deletion. Missing entries produce `null` without restore projection/validation. Unlike legacy set, update validates projected candidates when present; an undefined candidate explicitly removes. Backend errors can occur after the platform has partially changed data; the adapter invalidates write tracking and cannot roll back the platform. Existing get still deletes invalid restored data; existing set still omits candidate validation. Static helpers and other instances are outside this queue.
+
+
+## Secure private persistence
+
+The optional `@nlabs/arkhamjs-storage-native/secure` public entry point provides encrypted storage,
+a ciphertext journal, identity-scoped collections and cleanup callbacks. These helpers were introduced
+in 3.31.0 and restored in 3.32.1 after the 3.32.0 package omitted that subpath. They load no React Native
+or AsyncStorage host bindings. See [SECURE_STORAGE.md](./SECURE_STORAGE.md) for injected platform
+requirements, failure behavior and migration constraints. The current NativeStorage implementation
+and root exports retain their 3.32.0 behavior.
